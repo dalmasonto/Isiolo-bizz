@@ -206,7 +206,7 @@ const Header = () => {
                                     ? `${otherLinkClasses} active` : otherLinkClasses
                             }
                         >
-                            <img src="/assets/img/logo-dark.png" width={142} alt="Cartzilla" />
+                            <img src="/assets/images/esiolo-logo.jpg" width={142} alt="Cartzilla" />
                         </NavLink>
                         <a
                             className="navbar-brand d-sm-none flex-shrink-0 me-2"

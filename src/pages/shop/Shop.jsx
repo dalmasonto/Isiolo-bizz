@@ -3,12 +3,12 @@ import QuickView from '../../components/shop/QuickView'
 import ProductCard from '../../components/shop/ProductCard';
 
 
-const products = [
+export const products = [
   {
     id: 1,
     title: 'Cotton Lace Blouse',
     price: 235,
-    image: '/assets/img/shop/catalog/01.jpg',
+    image: '/assets/images/products/Camel-chocolate.jpg',
     category: {
       id: 1,
       title: 'Women\'s Clothing',
@@ -24,7 +24,7 @@ const products = [
     id: 2,
     title: 'Mom\'s Favorite Gift Basket',
     price: 129,
-    image: '/assets/img/shop/catalog/02.jpg',
+    image: '/assets/images/products/chilli-pepper.jpg',
     category: {
       id: 2,
       title: 'Gift Baskets',
@@ -40,7 +40,7 @@ const products = [
     id: 3,
     title: 'Water Resistant Backpack',
     price: 19,
-    image: '/assets/img/shop/catalog/03.jpg',
+    image: '/assets/images/products/dried-camel-meat.jpg',
     category: {
       id: 3,
       title: 'Bags &amp; Accessories',
@@ -56,7 +56,7 @@ const products = [
     id: 4,
     title: 'Cotton Polo Regular Fit',
     price: 32,
-    image: '/assets/img/shop/catalog/04.jpg',
+    image: '/assets/images/products/Fresh-Camel-Milk.jpg',
     category: {
       id: 1,
       title: 'Women\'s Clothing',
@@ -72,7 +72,7 @@ const products = [
     id: 5,
     title: 'Men\'s Sports Jacket',
     price: 128,
-    image: '/assets/img/shop/catalog/05.jpg',
+    image: '/assets/images/products/Honey-1kg2.jpg',
     category: {
       id: 1,
       title: 'Women\'s Clothing',
@@ -2084,7 +2084,9 @@ const Shop = () => {
               {/* Products*/}
               {
                 products.map((product) => (
-                  <ProductCard key={`_product_${product.id}`} product={product} />
+                  <div key={`_product_${product.id}`} className="col-md-4 col-sm-6 px-2 mb-4">
+                    <ProductCard product={product} />
+                  </div>
                 ))
               }
             </div>
@@ -2112,7 +2114,9 @@ const Shop = () => {
             <div className="row mx-n2">
               {
                 products.map((product) => (
-                  <ProductCard key={`_product_${product.id}`} product={product} />
+                  <div key={`_product_${product.id}`} className="col-md-4 col-sm-6 px-2 mb-4">
+                    <ProductCard product={product} />
+                  </div>
                 ))
               }
             </div>
