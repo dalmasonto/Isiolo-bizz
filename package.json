@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.8",
+    "@mantine/carousel": "^6.0.6",
     "@mantine/core": "^6.0.0-alpha.8",
     "@mantine/dates": "^6.0.10",
     "@mantine/dropzone": "^6.0.10",
@@ -18,6 +19,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "dayjs": "^1.11.7",
+    "embla-carousel-react": "^7.1.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "nanoid": "^4.0.2",

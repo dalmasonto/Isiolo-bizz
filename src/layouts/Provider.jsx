@@ -8,7 +8,7 @@ const Provider = ({ children }) => {
         <MantineProvider withGlobalStyles withNormalizeCSS>
             <ModalsProvider>
                 {children}
-                <Notifications position='top-right' />
+                <Notifications position='bottom-left' />
             </ModalsProvider>
         </MantineProvider>
     )

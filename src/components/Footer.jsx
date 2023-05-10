@@ -1,4 +1,7 @@
+import { Image } from '@mantine/core'
 import React from 'react'
+import { CATEOGORIES } from '../config/constants'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
     return (
@@ -9,169 +12,22 @@ const Footer = () => {
                         <div className="widget widget-links widget-light pb-2 mb-4">
                             <h3 className="widget-title text-light">Shop departments</h3>
                             <ul className="widget-list">
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Sneakers &amp; Athletic
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Athletic Apparel
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Sandals
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Jeans
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Shirts &amp; Tops
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Shorts
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        T-Shirts
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Swimwear
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Clogs &amp; Mules
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Bags &amp; Wallets
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Accessories
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Sunglasses &amp; Eyewear
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Watches
-                                    </a>
-                                </li>
+                                {
+                                    CATEOGORIES.map((category, index) => (
+                                        <li key={`category_${category.id}`} className="widget-list-item">
+                                            <Link
+                                                className="widget-list-link"
+                                                to="/shop"
+                                            >
+                                                {category.name}
+                                            </Link>
+                                        </li>
+                                    ))
+                                }
                             </ul>
                         </div>
                     </div>
                     <div className="col-md-4 col-sm-6">
-                        <div className="widget widget-links widget-light pb-2 mb-4">
-                            <h3 className="widget-title text-light">
-                                Account &amp; shipping info
-                            </h3>
-                            <ul className="widget-list">
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Your account
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Shipping rates &amp; policies
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Refunds &amp; replacements
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Order tracking
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Delivery info
-                                    </a>
-                                </li>
-                                <li className="widget-list-item">
-                                    <a
-                                        className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
-                                    >
-                                        Taxes &amp; fees
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                         <div className="widget widget-links widget-light pb-2 mb-4">
                             <h3 className="widget-title text-light">About us</h3>
                             <ul className="widget-list">
@@ -257,31 +113,6 @@ const Footer = () => {
                                 <div className="subscription-status" />
                             </form>
                         </div>
-                        <div className="widget pb-2 mb-4">
-                            <h3 className="widget-title text-light pb-1">Download our app</h3>
-                            <div className="d-flex flex-wrap">
-                                <div className="me-2 mb-2">
-                                    <a
-                                        className="btn-market btn-apple"
-                                        href="home-fashion-store-v2.html#"
-                                        role="button"
-                                    >
-                                        <span className="btn-market-subtitle">Download on the</span>
-                                        <span className="btn-market-title">App Store</span>
-                                    </a>
-                                </div>
-                                <div className="mb-2">
-                                    <a
-                                        className="btn-market btn-google"
-                                        href="home-fashion-store-v2.html#"
-                                        role="button"
-                                    >
-                                        <span className="btn-market-subtitle">Download on the</span>
-                                        <span className="btn-market-title">Google Play</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -355,99 +186,17 @@ const Footer = () => {
                                     className="d-inline-block align-middle mt-n1 me-3"
                                     href="home-fashion-store-v2.html#"
                                 >
-                                    <img
+                                    <Image
                                         className="d-block"
-                                        src="img/footer-logo-light.png"
+                                        src="/assets/images/esiolo-logo.jpg"
                                         width={117}
-                                        alt="Cartzilla"
+                                        alt="Esiolo"
+                                        radius={"md"}
                                     />
                                 </a>
-                                <div className="btn-group dropdown disable-autohide">
-                                    <button
-                                        className="btn btn-outline-light border-light btn-sm dropdown-toggle px-2"
-                                        type="button"
-                                        data-bs-toggle="dropdown"
-                                    >
-                                        <img
-                                            className="me-2"
-                                            src="img/flags/en.png"
-                                            width={20}
-                                            alt="English"
-                                        />
-                                        Eng / $
-                                    </button>
-                                    <ul className="dropdown-menu my-1">
-                                        <li className="dropdown-item">
-                                            <select className="form-select form-select-sm">
-                                                <option value="usd">$ USD</option>
-                                                <option value="eur">€ EUR</option>
-                                                <option value="ukp">£ UKP</option>
-                                                <option value="jpy">¥ JPY</option>
-                                            </select>
-                                        </li>
-                                        <li>
-                                            <a
-                                                className="dropdown-item pb-1"
-                                                href="home-fashion-store-v2.html#"
-                                            >
-                                                <img
-                                                    className="me-2"
-                                                    src="img/flags/fr.png"
-                                                    width={20}
-                                                    alt="Français"
-                                                />
-                                                Français
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                className="dropdown-item pb-1"
-                                                href="home-fashion-store-v2.html#"
-                                            >
-                                                <img
-                                                    className="me-2"
-                                                    src="img/flags/de.png"
-                                                    width={20}
-                                                    alt="Deutsch"
-                                                />
-                                                Deutsch
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                className="dropdown-item"
-                                                href="home-fashion-store-v2.html#"
-                                            >
-                                                <img
-                                                    className="me-2"
-                                                    src="img/flags/it.png"
-                                                    width={20}
-                                                    alt="Italiano"
-                                                />
-                                                Italiano
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </div>
                             <div className="widget widget-links widget-light">
                                 <ul className="widget-list d-flex flex-wrap justify-content-center justify-content-md-start">
-                                    <li className="widget-list-item me-4">
-                                        <a
-                                            className="widget-list-link"
-                                            href="home-fashion-store-v2.html#"
-                                        >
-                                            Outlets
-                                        </a>
-                                    </li>
-                                    <li className="widget-list-item me-4">
-                                        <a
-                                            className="widget-list-link"
-                                            href="home-fashion-store-v2.html#"
-                                        >
-                                            Affiliates
-                                        </a>
-                                    </li>
                                     <li className="widget-list-item me-4">
                                         <a
                                             className="widget-list-link"
@@ -510,7 +259,7 @@ const Footer = () => {
                             </div>
                             <img
                                 className="d-inline-block"
-                                src="img/cards-alt.png"
+                                src="/assets/img/cards-alt.png"
                                 width={187}
                                 alt="Payment methods"
                             />
@@ -520,11 +269,11 @@ const Footer = () => {
                         © All rights reserved. Made by{" "}
                         <a
                             className="text-light"
-                            href="https://createx.studio/"
+                            href="https://livesoftwaredeveloper.com/"
                             target="_blank"
                             rel="noopener"
                         >
-                            Createx Studio
+                            Live Software Developer
                         </a>
                     </div>
                 </div>

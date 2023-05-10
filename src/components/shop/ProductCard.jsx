@@ -50,60 +50,14 @@ const ProductCard = ({ product }) => {
                 <div className="d-flex justify-content-between">
                     <div className="product-price">
                         <span className="text-accent">
-                            KES {product?.price}  <small>00</small>
+                            KES {product?.price}
                         </span>
                     </div>
-                    <Rating value={product.rating} readOnly size='sm' />
+                    <Rating value={product.rating} readOnly size='sm' fractions={2} />
                 </div>
             </div>
             <div className="card-body card-body-hidden">
-                <div className="text-center pb-2">
-                    <div className="form-check form-option form-check-inline mb-2">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            name="size1"
-                            id="s-75"
-                        />
-                        <label className="form-option-label" htmlFor="s-75">
-                            7.5
-                        </label>
-                    </div>
-                    <div className="form-check form-option form-check-inline mb-2">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            name="size1"
-                            id="s-80"
-                            checked
-                        />
-                        <label className="form-option-label" htmlFor="s-80">
-                            8
-                        </label>
-                    </div>
-                    <div className="form-check form-option form-check-inline mb-2">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            name="size1"
-                            id="s-85"
-                        />
-                        <label className="form-option-label" htmlFor="s-85">
-                            8.5
-                        </label>
-                    </div>
-                    <div className="form-check form-option form-check-inline mb-2">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            name="size1"
-                            id="s-90"
-                        />
-                        <label className="form-option-label" htmlFor="s-90">
-                            9
-                        </label>
-                    </div>
-                </div>
+                
                 <button
                     className="btn btn-primary btn-sm d-block w-100 mb-2"
                     type="button"

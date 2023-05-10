@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const About = () => {
     return (
@@ -14,19 +15,15 @@ const About = () => {
                         <div className="mx-auto py-lg-5" style={{ maxWidth: "35rem" }}>
                             <h2 className="h3 pb-3">Search, Select, Buy online</h2>
                             <p className="fs-sm pb-3 text-muted">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id
-                                purus at risus pellentesque faucibus a quis eros. In eu fermentum leo.
-                                Integer ut eros lacus. Proin ut accumsan leo. Morbi vitae est eget
-                                dolor consequat aliquam eget quis dolor. Mauris rutrum fermentum erat,
-                                at euismod lorem pharetra nec. Duis erat lectus, ultrices euismod
-                                sagittis at, pharetra eu nisl. Phasellus id ante at velit tincidunt
-                                hendrerit. Aenean dolor dolor tristique nec. Tristique nulla aliquet
-                                enim tortor at auctor urna nunc. Sit amet aliquam id diam maecenas
-                                ultricies mi eget.
+                            Esiolo was set up in 2021 as part of an E4Impact project to build drought resilience in Isiolo county (DRIC). It consists of 13 groups from various wards in Isiolo namely Bulapesa, Burat, Wabera, Merti, Kina, and Oldonyiro.  The groups each sell a selection of products that range from camel milk, livestock (goat, camel, cows) horticultural products, Nyrinyri, fodder, poultry, and honey.  Collectively the groups in the co-op have over 400 members.
+
+As part of the DRIC project, an online marketplace was created where the Co-op members can now sell their products. They also all have their own individual online shops.
+
+The groups part of the Co-op are Nasole Sacco, Merti, Oldinyiro SACCO, Rural Women’s Access, Tawakwal  Co-operative, Wiyukiririe, Bidii farmers, Kitos, Kambi Ya Juu, Galesa women, Anolei Co-operative, and Jua Kali Nyirnyir
                             </p>
-                            <a className="btn btn-primary btn-shadow" href="shop-grid-ls.html">
+                            <Link className="btn btn-primary btn-shadow" to={'/shop'}>
                                 View products
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </section>
@@ -252,58 +249,6 @@ const About = () => {
                                     </a>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </section>
-                {/* Section: We are hiring*/}
-                <hr />
-                <section className="row g-0">
-                    <div
-                        className="col-md-6 bg-position-center bg-size-cover bg-secondary order-md-2"
-                        style={{ minHeight: "15rem", backgroundImage: "url(/assets/img/about/05.jpg)" }}
-                    />
-                    <div className="col-md-6 px-3 px-md-5 py-5 order-md-1">
-                        <div className="mx-auto py-lg-5" style={{ maxWidth: "35rem" }}>
-                            <h2 className="h3 mb-2">We are hiring new talents</h2>
-                            <p className="fs-sm text-muted pb-2">
-                                If you want to be part of our team please submit you CV using the form
-                                below:
-                            </p>
-                            <form className="needs-validation row g-4" method="post" noValidate="">
-                                <div className="col-sm-6">
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        placeholder="Your name"
-                                        required=""
-                                    />
-                                </div>
-                                <div className="col-sm-6">
-                                    <input
-                                        className="form-control"
-                                        type="email"
-                                        placeholder="Your email"
-                                        required=""
-                                    />
-                                </div>
-                                <div className="col-12">
-                                    <textarea
-                                        className="form-control"
-                                        rows={4}
-                                        placeholder="Message"
-                                        required=""
-                                        defaultValue={""}
-                                    />
-                                </div>
-                                <div className="col-12">
-                                    <input className="form-control" type="file" required="" />
-                                </div>
-                                <div className="col-12">
-                                    <button className="btn btn-info btn-shadow" type="submit">
-                                        Submit your CV
-                                    </button>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </section>

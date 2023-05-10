@@ -2,6 +2,8 @@ import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { removeCartItem, selectCartItems, selectCartTotal } from '../providers/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { Box, Grid, Group, HoverCard, Image, ScrollArea } from '@mantine/core'
+import { SHOPS } from '../config/constants'
 
 
 const navlinks = [
@@ -49,11 +51,79 @@ const navlinks = [
     },
 ]
 
-const CartItem = ({item}) => {
+const HeaderCart = () => {
+    const cartItems = useSelector(selectCartItems)
+    const cartTotal = useSelector(selectCartTotal)
+    return (
+        <HoverCard width={280} shadow="md" position='bottom-end'>
+            <HoverCard.Target>
+                <Group spacing={0}>
+                    <a
+                        className="navbar-tool-icon-box bg-secondary dropdown-toggle"
+                        href="javascript:void(0)"
+                    >
+                        <span className="navbar-tool-label">
+                            {cartItems?.length}
+                        </span>
+                        <i className="navbar-tool-icon ci-cart" />
+                    </a>
+                    <a className="navbar-tool-text" href="javascript:void(0)">
+                        <small>My Cart</small>Kes {cartTotal}
+                    </a>
+                </Group>
+            </HoverCard.Target>
+            <HoverCard.Dropdown>
+                <Box sx={{
+                    height: '400px',
+                }}>
+                    <ScrollArea style={{
+                        height: 'calc(100% - 140px)'
+                    }} scrollbarSize={4}>
+                        <Box p="sm">
+                            {
+                                cartItems.map((item, i) => (
+                                    <CartItem key={`nav_cart_item_${i}`} item={item} />
+                                ))
+                            }
+                        </Box>
+                    </ScrollArea>
+                    <Box sx={{
+                        height: '140px',
+                    }}>
+                        <div className="d-flex flex-wrap justify-content-between align-items-center py-3">
+                            <div className="fs-sm me-2 py-2">
+                                <span className="text-muted">Subtotal:</span>
+                                <span className="text-accent fs-base ms-1">
+                                    KES {cartTotal}.<small>00</small>
+                                </span>
+                            </div>
+                            <Link
+                                className="btn btn-outline-secondary btn-sm"
+                                to={'/cart'}
+                            >
+                                Expand cart
+                                <i className="ci-arrow-right ms-1 me-n1" />
+                            </Link>
+                        </div>
+                        <Link
+                            className="btn btn-primary btn-sm d-block w-100"
+                            to={`/checkout`}
+                        >
+                            <i className="ci-card me-2 fs-base align-middle" />
+                            Checkout
+                        </Link>
+                    </Box>
+                </Box>
+            </HoverCard.Dropdown>
+        </HoverCard>
+    )
+}
+
+const CartItem = ({ item }) => {
     const dispatch = useDispatch()
 
     const removeItemFromCart = () => {
-        dispatch(removeCartItem({id: item.product.id}))
+        dispatch(removeCartItem({ id: item.product.id }))
     }
 
     return (
@@ -206,13 +276,13 @@ const Header = () => {
                                     ? `${otherLinkClasses} active` : otherLinkClasses
                             }
                         >
-                            <img src="/assets/images/esiolo-logo.jpg" width={142} alt="Cartzilla" />
+                            <img src="/assets/images/esiolo-logo.jpg" width={142} alt="Esiolo" />
                         </NavLink>
                         <a
                             className="navbar-brand d-sm-none flex-shrink-0 me-2"
                             href="/"
                         >
-                            <img src="/assets/img/logo-icon.png" width={74} alt="Cartzilla" />
+                            <img src="/assets/images/esiolo-logo.jpg" width={74} alt="Esiolo" />
                         </a>
                         <div className="input-group d-none d-lg-flex mx-4">
                             <input
@@ -249,10 +319,9 @@ const Header = () => {
                                     <i className="navbar-tool-icon ci-heart" />
                                 </div>
                             </a> */}
-                            <a
+                            <Link
                                 className="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2"
-                                href="home-fashion-store-v2.html#signin-modal"
-                                data-bs-toggle="modal"
+                                to={`/account`}
                             >
                                 <div className="navbar-tool-icon-box">
                                     <i className="navbar-tool-icon ci-user" />
@@ -260,61 +329,11 @@ const Header = () => {
                                 <div className="navbar-tool-text ms-n3">
                                     <small>Hello, Sign in</small>My Account
                                 </div>
-                            </a>
+                            </Link>
                             <div className="navbar-tool dropdown ms-3">
-                                <a
-                                    className="navbar-tool-icon-box bg-secondary dropdown-toggle"
-                                    href="javascript:void(0)"
-                                >
-                                    <span className="navbar-tool-label">
-                                        {cartItems?.length}
-                                    </span>
-                                    <i className="navbar-tool-icon ci-cart" />
-                                </a>
-                                <a className="navbar-tool-text" href="javascript:void(0)">
-                                    <small>My Cart</small>Kes {cartTotal}
-                                </a>
+
                                 {/* Cart dropdown*/}
-                                <div className="dropdown-menu dropdown-menu-end">
-                                    <div
-                                        className="widget widget-cart px-3 pt-2 pb-3"
-                                        style={{ width: "20rem" }}
-                                    >
-                                        <div
-                                            style={{ height: "15rem" }}
-                                            data-simplebar=""
-                                            data-simplebar-auto-hide="false"
-                                        >
-                                            {
-                                                cartItems.map((item, i) => (
-                                                    <CartItem key={`nav_cart_item_${i}`} item={item} />
-                                                ))
-                                            }
-                                        </div>
-                                        <div className="d-flex flex-wrap justify-content-between align-items-center py-3">
-                                            <div className="fs-sm me-2 py-2">
-                                                <span className="text-muted">Subtotal:</span>
-                                                <span className="text-accent fs-base ms-1">
-                                                    KES {cartTotal}.<small>00</small>
-                                                </span>
-                                            </div>
-                                            <Link
-                                                className="btn btn-outline-secondary btn-sm"
-                                                to={'/cart'}
-                                            >
-                                                Expand cart
-                                                <i className="ci-arrow-right ms-1 me-n1" />
-                                            </Link>
-                                        </div>
-                                        <Link
-                                            className="btn btn-primary btn-sm d-block w-100"
-                                            to={`/checkout`}
-                                        >
-                                            <i className="ci-card me-2 fs-base align-middle" />
-                                            Checkout
-                                        </Link>
-                                    </div>
-                                </div>
+                                <HeaderCart />
                             </div>
                         </div>
                     </div>
@@ -336,248 +355,30 @@ const Header = () => {
                                 <li className="nav-item dropdown">
                                     <a
                                         className="nav-link dropdown-toggle ps-lg-0"
-                                        href="home-fashion-store-v2.html#"
+                                        href=""
                                         data-bs-toggle="dropdown"
                                     >
                                         <i className="ci-view-grid me-2" />
                                         Departments
                                     </a>
-                                    <div className="dropdown-menu px-2 pb-4">
-                                        <div className="d-flex flex-wrap flex-sm-nowrap">
-                                            <div className="mega-dropdown-column pt-3 pt-sm-4 px-2 px-lg-3">
-                                                <div className="widget widget-links">
-                                                    <a
-                                                        className="d-block overflow-hidden rounded-3 mb-3"
-                                                        href="home-fashion-store-v2.html#"
-                                                    >
-                                                        <img src="/assets/img/shop/departments/01.jpg" alt="Clothing" />
-                                                    </a>
-                                                    <h6 className="fs-base mb-2">Clothing</h6>
-                                                    <ul className="widget-list">
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
+                                    <div className="dropdown-menu px-2 pb-4" style={{width: "800px", maxWidth: '90vw'}}>
+                                        <Grid>
+                                            {
+                                                SHOPS?.map((shop, index) => (
+                                                    <Grid.Col key={`shop_${shop?.id}`} span={4} sm={2}>
+                                                        <div className="widget widget-links">
+                                                            <Link
+                                                                className="d-block overflow-hidden rounded-3 mb-3"
+                                                                to={`/shop/${shop?.id}`}
                                                             >
-                                                                Women's clothing
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Men's clothing
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Kid's clothing
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div className="mega-dropdown-column pt-4 px-2 px-lg-3">
-                                                <div className="widget widget-links">
-                                                    <a
-                                                        className="d-block overflow-hidden rounded-3 mb-3"
-                                                        href="home-fashion-store-v2.html#"
-                                                    >
-                                                        <img src="/assets/img/shop/departments/02.jpg" alt="Shoes" />
-                                                    </a>
-                                                    <h6 className="fs-base mb-2">Shoes</h6>
-                                                    <ul className="widget-list">
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Women's shoes
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Men's shoes
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Kid's shoes
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div className="mega-dropdown-column pt-4 px-2 px-lg-3">
-                                                <div className="widget widget-links">
-                                                    <a
-                                                        className="d-block overflow-hidden rounded-3 mb-3"
-                                                        href="home-fashion-store-v2.html#"
-                                                    >
-                                                        <img src="/assets/img/shop/departments/03.jpg" alt="Gadgets" />
-                                                    </a>
-                                                    <h6 className="fs-base mb-2">Gadgets</h6>
-                                                    <ul className="widget-list">
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Smartphones &amp; Tablets
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Wearable gadgets
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                E-book readers
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="d-flex flex-wrap flex-sm-nowrap">
-                                            <div className="mega-dropdown-column pt-4 px-2 px-lg-3">
-                                                <div className="widget widget-links">
-                                                    <a
-                                                        className="d-block overflow-hidden rounded-3 mb-3"
-                                                        href="home-fashion-store-v2.html#"
-                                                    >
-                                                        <img
-                                                            src="/assets/img/shop/departments/04.jpg"
-                                                            alt="Furniture"
-                                                        />
-                                                    </a>
-                                                    <h6 className="fs-base mb-2">Furniture &amp; Decor</h6>
-                                                    <ul className="widget-list">
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Home furniture
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Office furniture
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Lighting and decoration
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div className="mega-dropdown-column pt-4 px-2 px-lg-3">
-                                                <div className="widget widget-links">
-                                                    <a
-                                                        className="d-block overflow-hidden rounded-3 mb-3"
-                                                        href="home-fashion-store-v2.html#"
-                                                    >
-                                                        <img
-                                                            src="/assets/img/shop/departments/05.jpg"
-                                                            alt="Accessories"
-                                                        />
-                                                    </a>
-                                                    <h6 className="fs-base mb-2">Accessories</h6>
-                                                    <ul className="widget-list">
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Hats
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Sunglasses
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Bags
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div className="mega-dropdown-column pt-4 px-2 px-lg-3">
-                                                <div className="widget widget-links">
-                                                    <a
-                                                        className="d-block overflow-hidden rounded-3 mb-3"
-                                                        href="home-fashion-store-v2.html#"
-                                                    >
-                                                        <img
-                                                            src="/assets/img/shop/departments/06.jpg"
-                                                            alt="Entertainment"
-                                                        />
-                                                    </a>
-                                                    <h6 className="fs-base mb-2">Entertainment</h6>
-                                                    <ul className="widget-list">
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Kid's toys
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Video games
-                                                            </a>
-                                                        </li>
-                                                        <li className="widget-list-item mb-1">
-                                                            <a
-                                                                className="widget-list-link"
-                                                                href="home-fashion-store-v2.html#"
-                                                            >
-                                                                Outdoor / Camping
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                                <Image src={shop?.logo} alt="Clothing" height={100} />
+                                                            </Link>
+                                                            <h6 className="fs-base mb-2">{shop?.name}</h6>
+                                                        </div>
+                                                    </Grid.Col>
+                                                ))
+                                            }
+                                        </Grid>
                                     </div>
                                 </li>
                             </ul>
