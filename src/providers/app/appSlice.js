@@ -31,10 +31,18 @@ export const appSlice = createSlice({
       state.loggedIn = false;
     },
     addToCart: (state, action) => {
-      console.log(action.payload)
+      const item = action.payload
+      const itemExists = state.cart.items.find(item => item.product.id === action.payload.product.id);
+      if(itemExists){
+        state.cart.items = state.cart.items.map(item => {
+          if(item.product.id === action.payload.product.id){
+            item.qty += 1;
+          }
+          return item;
+        });
+        return;
+      }
       state.cart.items.push(action.payload);
-      state.cart.itemsCount += 1;
-      state.cart.total += action.payload.product.price * action.payload.qty;
     },
     addItemQuantity: (state, action) => {
       state.cart.items = state.cart.items.map(item => {

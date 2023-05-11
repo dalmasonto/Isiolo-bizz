@@ -12,6 +12,19 @@ import SignInregister from './pages/auth/SignInregister';
 import RecoverPassword from './pages/auth/RecoverPassword';
 import Shop from './pages/shop/Shop';
 import SingleProduct from './pages/shop/SingleProduct';
+import MerchantLayout from './layouts/MerchantLayout';
+import AddProduct from './pages/merchant/AddProduct';
+import Products from './pages/merchant/Products';
+import { ADMIN_BASE_URL } from './config/constants';
+import AdminLayout from './layouts/AdminLayout';
+import MerchantDashboard from './pages/merchant/MerchantDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import Merchants from './pages/admin/Merchants';
+import Categories from './pages/admin/products/Categories';
+import ContactForm from './pages/admin/ContactForm';
+import Reviews from './pages/admin/Reviews';
+import Users from './pages/admin/Users';
+import OrderHistory from './pages/merchant/OrderHistory';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +71,66 @@ const router = createBrowserRouter([
       {
         path: "/account/profile",
         element: <AccountProfile />,
+      },
+      {
+        path: "/merchant",
+        element: <MerchantLayout />,
+        children: [
+          {
+            path: "",
+            element: <AccountProfile />,
+          },
+          {
+            path: "dashboard",
+            element: <MerchantDashboard />,
+          },
+          {
+            path: "orders",
+            element: <OrderHistory />,
+          },
+          {
+            path: "products",
+            element: <Products />,
+          },
+          {
+            path: "add-product",
+            element: <AddProduct />,
+          },
+        ]
+      },
+      {
+        path: ADMIN_BASE_URL,
+        element: <AdminLayout />,
+        children: [
+          {
+            path: "",
+            element: <AccountProfile />,
+          },
+          {
+            path: "dashboard",
+            element: <AdminDashboard />,
+          },
+          {
+            path: "users",
+            element: <Users />,
+          },
+          {
+            path: "merchants",
+            element: <Merchants />,
+          },
+          {
+            path: "categories",
+            element: <Categories />,
+          },
+          {
+            path: "contact-form-entries",
+            element: <ContactForm />,
+          },
+          {
+            path: "reviews",
+            element: <Reviews />,
+          },
+        ]
       },
     ]
   },

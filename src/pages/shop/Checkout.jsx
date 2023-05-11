@@ -1,6 +1,51 @@
+import { Image } from '@mantine/core'
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { CURRENCY } from '../../config/constants'
+import { useSelector } from 'react-redux'
+import { selectCartItems, selectCartTotal } from '../../providers/app/appSlice'
+
+const ItemSummary = ({ item }) => {
+    return (
+        <div className="d-flex align-items-center pb-2 border-bottom">
+            <Link
+                className="d-block flex-shrink-0 me-2"
+                to={`/shop/product/${item.id}`}
+            >
+                <Image
+                    radius="md"
+                    src={item?.product?.image}
+                    width={64}
+                    alt="Product"
+                />
+            </Link>
+            <div className="ps-1">
+                <h6 className="widget-product-title">
+                    <a href="marketplace-single.html">
+                        {item?.product?.title}
+                    </a>
+                </h6>
+                <div className="widget-product-meta">
+                    <span className="text-accent border-end pe-2 me-2">
+                        {CURRENCY} {item?.product?.price}
+                    </span>
+                    <span className="fs-xs text-muted border-end pe-2 me-2">
+                        qty: {item?.qty}
+                    </span>
+                    <span className='fs-xs text-muted' >
+                        {CURRENCY} {item?.qty * item?.product?.price}
+                    </span>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const Checkout = () => {
+
+    const items = useSelector(selectCartItems)
+    const cartTotal = useSelector(selectCartTotal)
+
     return (
         <>
             {/* Page Title*/}
@@ -10,13 +55,13 @@ const Checkout = () => {
                         <nav aria-label="breadcrumb">
                             <ol className="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
                                 <li className="breadcrumb-item">
-                                    <a className="text-nowrap" href="index.html">
+                                    <Link className="text-nowrap" to={"/"}>
                                         <i className="ci-home" />
                                         Home
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="breadcrumb-item text-nowrap">
-                                    <a href="marketplace-category.html">Market</a>
+                                    <Link to={'/shop'}>Shop</Link>
                                 </li>
                                 <li
                                     className="breadcrumb-item text-nowrap active"
@@ -92,16 +137,7 @@ const Checkout = () => {
                                         </label>
                                         <select className="form-select" id="mc-country">
                                             <option value="">Select country</option>
-                                            <option value="Argentina">Argentina</option>
-                                            <option value="Belgium">Belgium</option>
-                                            <option value="France">France</option>
-                                            <option value="Germany">Germany</option>
-                                            <option value="Madagascar" selected="">
-                                                Madagascar
-                                            </option>
-                                            <option value="Spain">Spain</option>
-                                            <option value="UK">United Kingdom</option>
-                                            <option value="USA">USA</option>
+                                            <option value="Kenya" selected>Kenya</option>
                                         </select>
                                     </div>
                                 </div>
@@ -355,100 +391,23 @@ const Checkout = () => {
                             <div className="p-4 h-100 ms-auto border-start">
                                 <div className="widget px-lg-2 py-2 mb-3">
                                     <h2 className="widget-title text-center">Order summary</h2>
-                                    <div className="d-flex align-items-center pb-2 border-bottom">
-                                        <a
-                                            className="d-block flex-shrink-0 me-2"
-                                            href="marketplace-single.html"
-                                        >
-                                            <img
-                                                className="rounded-1"
-                                                src="img/marketplace/products/widget/01.jpg"
-                                                width={64}
-                                                alt="Product"
-                                            />
-                                        </a>
-                                        <div className="ps-1">
-                                            <h6 className="widget-product-title">
-                                                <a href="marketplace-single.html">
-                                                    UI Isometric Devices Pack
-                                                </a>
-                                            </h6>
-                                            <div className="widget-product-meta">
-                                                <span className="text-accent border-end pe-2 me-2">
-                                                    $23.<small>00</small>
-                                                </span>
-                                                <span className="fs-xs text-muted">Standard license</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex align-items-center py-2 border-bottom">
-                                        <a
-                                            className="d-block flex-shrink-0 me-2"
-                                            href="marketplace-single.html"
-                                        >
-                                            <img
-                                                className="rounded-1"
-                                                src="img/marketplace/products/widget/02.jpg"
-                                                width={64}
-                                                alt="Product"
-                                            />
-                                        </a>
-                                        <div className="ps-1">
-                                            <h6 className="widget-product-title">
-                                                <a href="marketplace-single.html">
-                                                    Project Devices Showcase
-                                                </a>
-                                            </h6>
-                                            <div className="widget-product-meta">
-                                                <span className="text-accent border-end pe-2 me-2">
-                                                    $18.<small>00</small>
-                                                </span>
-                                                <span className="fs-xs text-muted">Standard license</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex align-items-center py-2 border-bottom">
-                                        <a
-                                            className="d-block flex-shrink-0 me-2"
-                                            href="marketplace-single.html"
-                                        >
-                                            <img
-                                                className="rounded-1"
-                                                src="img/marketplace/products/widget/03.jpg"
-                                                width={64}
-                                                alt="Product"
-                                            />
-                                        </a>
-                                        <div className="ps-1">
-                                            <h6 className="widget-product-title">
-                                                <a href="marketplace-single.html">
-                                                    Gravity Devices UI Mockup
-                                                </a>
-                                            </h6>
-                                            <div className="widget-product-meta">
-                                                <span className="text-accent border-end pe-2 me-2">
-                                                    $15.<small>00</small>
-                                                </span>
-                                                <span className="fs-xs text-muted">Standard license</span>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    {
+                                        items.map((item, i) => (
+                                            <ItemSummary key={`summary_item_${i}`} item={item} />
+                                        ))
+                                    }
+
                                     <ul className="list-unstyled fs-sm pt-3 pb-2 border-bottom">
                                         <li className="d-flex justify-content-between align-items-center">
                                             <span className="me-2">Subtotal:</span>
                                             <span className="text-end">
-                                                $56.<small>00</small>
-                                            </span>
-                                        </li>
-                                        <li className="d-flex justify-content-between align-items-center">
-                                            <span className="me-2">Taxes:</span>
-                                            <span className="text-end">
-                                                $9.<small>30</small>
+                                                {CURRENCY} {cartTotal}
                                             </span>
                                         </li>
                                     </ul>
                                     <h3 className="fw-normal text-center my-4">
-                                        $65.<small>30</small>
+                                        {CURRENCY} {cartTotal}
                                     </h3>
                                 </div>
                             </div>

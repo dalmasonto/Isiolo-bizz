@@ -3,295 +3,495 @@ import React from 'react'
 const AccountProfile = () => {
     return (
         <>
-            {/* Page Title*/}
-            <div className="page-title-overlap bg-dark pt-4">
-                <div className="container d-lg-flex justify-content-between py-2 py-lg-3">
-                    <div className="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
-                        <nav aria-label="breadcrumb">
-                            <ol className="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
-                                <li className="breadcrumb-item">
-                                    <a className="text-nowrap" href="index.html">
-                                        <i className="ci-home" />
-                                        Home
-                                    </a>
-                                </li>
-                                <li className="breadcrumb-item text-nowrap">
-                                    <a href="account-profile.html#">Account</a>
-                                </li>
-                                <li
-                                    className="breadcrumb-item text-nowrap active"
-                                    aria-current="page"
+            <h2 className="h3 py-2 text-center text-sm-start">Settings</h2>
+            {/* Tabs*/}
+            <ul className="nav nav-tabs nav-justified" role="tablist">
+                <li className="nav-item">
+                    <a
+                        className="nav-link px-0 active"
+                        href="dashboard-settings.html#profile"
+                        data-bs-toggle="tab"
+                        role="tab"
+                    >
+                        <div className="d-none d-lg-block">
+                            <i className="ci-user opacity-60 me-2" />
+                            Profile
+                        </div>
+                        <div className="d-lg-none text-center">
+                            <i className="ci-user opacity-60 d-block fs-xl mb-2" />
+                            <span className="fs-ms">Profile</span>
+                        </div>
+                    </a>
+                </li>
+                <li className="nav-item">
+                    <a
+                        className="nav-link px-0"
+                        href="dashboard-settings.html#notifications"
+                        data-bs-toggle="tab"
+                        role="tab"
+                    >
+                        <div className="d-none d-lg-block">
+                            <i className="ci-bell opacity-60 me-2" />
+                            Notifications
+                        </div>
+                        <div className="d-lg-none text-center">
+                            <i className="ci-bell opacity-60 d-block fs-xl mb-2" />
+                            <span className="fs-ms">Notifications</span>
+                        </div>
+                    </a>
+                </li>
+                <li className="nav-item">
+                    <a
+                        className="nav-link px-0"
+                        href="dashboard-settings.html#payment"
+                        data-bs-toggle="tab"
+                        role="tab"
+                    >
+                        <div className="d-none d-lg-block">
+                            <i className="ci-card opacity-60 me-2" />
+                            Payment methods
+                        </div>
+                        <div className="d-lg-none text-center">
+                            <i className="ci-card opacity-60 d-block fs-xl mb-2" />
+                            <span className="fs-ms">Payment</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            {/* Tab content*/}
+            <div className="tab-content">
+                {/* Profile*/}
+                <div className="tab-pane fade show active" id="profile" role="tabpanel">
+                    <div className="bg-secondary rounded-3 p-4 mb-4">
+                        <div className="d-flex align-items-center">
+                            <img
+                                className="rounded"
+                                src="img/marketplace/account/avatar.png"
+                                width={90}
+                                alt="Createx Studio"
+                            />
+                            <div className="ps-3">
+                                <button
+                                    className="btn btn-light btn-shadow btn-sm mb-2"
+                                    type="button"
                                 >
-                                    Profile info
-                                </li>
-                            </ol>
-                        </nav>
+                                    <i className="ci-loading me-2" />
+                                    Change <span className="d-none d-sm-inline">avatar</span>
+                                </button>
+                                <div className="p mb-0 fs-ms text-muted">
+                                    Upload JPG, GIF or PNG image. 300 x 300 required.
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="order-lg-1 pe-lg-4 text-center text-lg-start">
-                        <h1 className="h3 text-light mb-0">Profile info</h1>
+                    <div className="row gx-4 gy-3">
+                        <div className="col-sm-6">
+                            <label className="form-label" htmlFor="dashboard-fn">
+                                First Name
+                            </label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="dashboard-fn"
+                                defaultValue="John"
+                            />
+                        </div>
+                        <div className="col-sm-6">
+                            <label className="form-label" htmlFor="dashboard-ln">
+                                Last Name
+                            </label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="dashboard-ln"
+                                defaultValue="Doe"
+                            />
+                        </div>
+                        <div className="col-sm-6">
+                            <label className="form-label" htmlFor="dashboard-email">
+                                Email address
+                            </label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="dashboard-email"
+                                defaultValue="contact@example.com"
+                                disabled=""
+                            />
+                        </div>
+                        <div className="col-sm-6">
+                            <label className="form-label" htmlFor="dashboard-profile-name">
+                                Profile Name
+                            </label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="dashboard-profile-name"
+                                defaultValue="Createx Studio"
+                            />
+                        </div>
+                        <div className="col-sm-6">
+                            <label className="form-label" htmlFor="dashboard-country">
+                                Country
+                            </label>
+                            <select className="form-select" id="dashboard-country">
+                                <option value="">Select country</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="France">France</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Madagascar" selected="">
+                                    Madagascar
+                                </option>
+                                <option value="Spain">Spain</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="USA">USA</option>
+                            </select>
+                        </div>
+                        <div className="col-sm-6">
+                            <label className="form-label" htmlFor="dashboard-city">
+                                City
+                            </label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="dashboard-city"
+                                defaultValue="Antananarivo"
+                            />
+                        </div>
+                        <div className="col-sm-6">
+                            <label className="form-label" htmlFor="dashboard-address">
+                                Address Line
+                            </label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="dashboard-address"
+                                defaultValue="Some Cool Street, 22/1"
+                            />
+                        </div>
+                        <div className="col-sm-6">
+                            <label className="form-label" htmlFor="dashboard-zip">
+                                ZIP Code
+                            </label>
+                            <input className="form-control" type="text" id="dashboard-zip" />
+                        </div>
+                        <div className="col-12">
+                            <hr className="mt-2 mb-4" />
+                            <div className="d-sm-flex justify-content-between align-items-center">
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="freelancer"
+                                        defaultChecked=""
+                                    />
+                                    <label className="form-check-label" htmlFor="freelancer">
+                                        I'm available for freelance
+                                    </label>
+                                </div>
+                                <button className="btn btn-primary mt-3 mt-sm-0" type="button">
+                                    Save changes
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="container pb-5 mb-2 mb-md-4">
-                <div className="row">
-                    {/* Sidebar*/}
-                    <aside className="col-lg-4 pt-4 pt-lg-0 pe-xl-5">
-                        <div className="bg-white rounded-3 shadow-lg pt-1 mb-5 mb-lg-0">
-                            <div className="d-md-flex justify-content-between align-items-center text-center text-md-start p-4">
-                                <div className="d-md-flex align-items-center">
-                                    <div
-                                        className="img-thumbnail rounded-circle position-relative flex-shrink-0 mx-auto mb-2 mx-md-0 mb-md-0"
-                                        style={{ width: "6.375rem" }}
-                                    >
-                                        <span
-                                            className="badge bg-warning position-absolute end-0 mt-n2"
+                {/* Notifications*/}
+                <div className="tab-pane fade" id="notifications" role="tabpanel">
+                    <div className="bg-secondary rounded-3 p-4">
+                        <div className="form-check form-switch">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id="nf-disable-all"
+                                data-master-checkbox-for="#notifocation-settings"
+                            />
+                            <label
+                                className="form-check-label fw-medium"
+                                htmlFor="nf-disable-all"
+                            >
+                                Enable/disable all notifications
+                            </label>
+                        </div>
+                    </div>
+                    <div id="notifocation-settings">
+                        <div className="border-bottom p-4">
+                            <div className="form-check form-switch">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="nf-product-sold"
+                                    defaultChecked=""
+                                />
+                                <label className="form-check-label" htmlFor="nf-product-sold">
+                                    Product sold notifications
+                                </label>
+                            </div>
+                            <div className="form-text">
+                                Send an email when someone purchased one of my products
+                            </div>
+                        </div>
+                        <div className="border-bottom p-4">
+                            <div className="form-check form-switch">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="nf-product-updated"
+                                    defaultChecked=""
+                                />
+                                <label className="form-check-label" htmlFor="nf-product-updated">
+                                    Product update notifications
+                                </label>
+                            </div>
+                            <div className="form-text">
+                                Send an email when a product I've purchased is updated
+                            </div>
+                        </div>
+                        <div className="border-bottom p-4">
+                            <div className="form-check form-switch">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="nf-product-comment"
+                                    defaultChecked=""
+                                />
+                                <label className="form-check-label" htmlFor="nf-product-comment">
+                                    Product comment notifications
+                                </label>
+                            </div>
+                            <div className="form-text">
+                                Send an email when someone comments on one of my products
+                            </div>
+                        </div>
+                        <div className="border-bottom p-4">
+                            <div className="form-check form-switch">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="nf-product-review"
+                                    defaultChecked=""
+                                />
+                                <label className="form-check-label" htmlFor="nf-product-review">
+                                    Product review notification
+                                </label>
+                            </div>
+                            <div className="form-text">
+                                Send an email when someone leaves a review with their rating
+                            </div>
+                        </div>
+                        <div className="border-bottom p-4">
+                            <div className="form-check form-switch">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="nf-daily-summary"
+                                />
+                                <label className="form-check-label" htmlFor="nf-daily-summary">
+                                    Daily summary emails
+                                </label>
+                            </div>
+                            <div className="form-text">
+                                Send me a daily summary of all products sold, commented or reviewed
+                            </div>
+                        </div>
+                    </div>
+                    <div className="text-sm-end mt-4">
+                        <button className="btn btn-primary" type="button">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+                {/* Payment methods*/}
+                <div className="tab-pane fade" id="payment" role="tabpanel">
+                    <div className="bg-secondary rounded-3 p-4 mb-4">
+                        <p className="fs-sm text-muted mb-0">
+                            Primary payment method is used by default
+                        </p>
+                    </div>
+                    <div className="table-responsive fs-md mb-4">
+                        <table className="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Your credit / debit cards</th>
+                                    <th>Name on card</th>
+                                    <th>Expires on</th>
+                                    <th />
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="py-3 align-middle">
+                                        <div className="d-flex align-items-center">
+                                            <img src="img/card-visa.png" width={39} alt="Visa" />
+                                            <div className="ps-2">
+                                                <span className="fw-medium text-heading me-1">Visa</span>
+                                                ending in 4999
+                                                <span className="align-middle badge badge-info ms-2">
+                                                    Primary
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="py-3 align-middle">John doe</td>
+                                    <td className="py-3 align-middle">08 / 2019</td>
+                                    <td className="py-3 align-middle">
+                                        <a
+                                            className="nav-link-style me-2"
+                                            href="dashboard-settings.html#"
                                             data-bs-toggle="tooltip"
-                                            title="Reward points"
+                                            title="Edit"
                                         >
-                                            384
-                                        </span>
-                                        <img
-                                            className="rounded-circle"
-                                            src="img/shop/account/avatar.jpg"
-                                            alt="Susan Gardner"
-                                        />
-                                    </div>
-                                    <div className="ps-md-3">
-                                        <h3 className="fs-base mb-0">Susan Gardner</h3>
-                                        <span className="text-accent fs-sm">s.gardner@example.com</span>
-                                    </div>
-                                </div>
-                                <a
-                                    className="btn btn-primary d-lg-none mb-2 mt-3 mt-md-0"
-                                    href="account-profile.html#account-menu"
-                                    data-bs-toggle="collapse"
-                                    aria-expanded="false"
-                                >
-                                    <i className="ci-menu me-2" />
-                                    Account menu
-                                </a>
-                            </div>
-                            <div className="d-lg-block collapse" id="account-menu">
-                                <div className="bg-secondary px-4 py-3">
-                                    <h3 className="fs-sm mb-0 text-muted">Dashboard</h3>
-                                </div>
-                                <ul className="list-unstyled mb-0">
-                                    <li className="border-bottom mb-0">
-                                        <a
-                                            className="nav-link-style d-flex align-items-center px-4 py-3"
-                                            href="account-orders.html"
-                                        >
-                                            <i className="ci-bag opacity-60 me-2" />
-                                            Orders<span className="fs-sm text-muted ms-auto">1</span>
+                                            <i className="ci-edit" />
                                         </a>
-                                    </li>
-                                    <li className="border-bottom mb-0">
                                         <a
-                                            className="nav-link-style d-flex align-items-center px-4 py-3"
-                                            href="account-wishlist.html"
+                                            className="nav-link-style text-danger"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Remove"
                                         >
-                                            <i className="ci-heart opacity-60 me-2" />
-                                            Wishlist<span className="fs-sm text-muted ms-auto">3</span>
+                                            <div className="ci-trash" />
                                         </a>
-                                    </li>
-                                    <li className="mb-0">
-                                        <a
-                                            className="nav-link-style d-flex align-items-center px-4 py-3"
-                                            href="account-tickets.html"
-                                        >
-                                            <i className="ci-help opacity-60 me-2" />
-                                            Support tickets
-                                            <span className="fs-sm text-muted ms-auto">1</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div className="bg-secondary px-4 py-3">
-                                    <h3 className="fs-sm mb-0 text-muted">Account settings</h3>
-                                </div>
-                                <ul className="list-unstyled mb-0">
-                                    <li className="border-bottom mb-0">
-                                        <a
-                                            className="nav-link-style d-flex align-items-center px-4 py-3 active"
-                                            href="account-profile.html"
-                                        >
-                                            <i className="ci-user opacity-60 me-2" />
-                                            Profile info
-                                        </a>
-                                    </li>
-                                    <li className="border-bottom mb-0">
-                                        <a
-                                            className="nav-link-style d-flex align-items-center px-4 py-3"
-                                            href="account-address.html"
-                                        >
-                                            <i className="ci-location opacity-60 me-2" />
-                                            Addresses
-                                        </a>
-                                    </li>
-                                    <li className="mb-0">
-                                        <a
-                                            className="nav-link-style d-flex align-items-center px-4 py-3"
-                                            href="account-payment.html"
-                                        >
-                                            <i className="ci-card opacity-60 me-2" />
-                                            Payment methods
-                                        </a>
-                                    </li>
-                                    <li className="d-lg-none border-top mb-0">
-                                        <a
-                                            className="nav-link-style d-flex align-items-center px-4 py-3"
-                                            href="account-signin.html"
-                                        >
-                                            <i className="ci-sign-out opacity-60 me-2" />
-                                            Sign out
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </aside>
-                    {/* Content  */}
-                    <section className="col-lg-8">
-                        {/* Toolbar*/}
-                        <div className="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
-                            <h6 className="fs-base text-light mb-0">
-                                Update you profile details below:
-                            </h6>
-                            <a className="btn btn-primary btn-sm" href="account-signin.html">
-                                <i className="ci-sign-out me-2" />
-                                Sign out
-                            </a>
-                        </div>
-                        {/* Profile form*/}
-                        <form>
-                            <div className="bg-secondary rounded-3 p-4 mb-4">
-                                <div className="d-flex align-items-center">
-                                    <img
-                                        className="rounded"
-                                        src="img/shop/account/avatar.jpg"
-                                        width={90}
-                                        alt="Susan Gardner"
-                                    />
-                                    <div className="ps-3">
-                                        <button
-                                            className="btn btn-light btn-shadow btn-sm mb-2"
-                                            type="button"
-                                        >
-                                            <i className="ci-loading me-2" />
-                                            Change avatar
-                                        </button>
-                                        <div className="p mb-0 fs-ms text-muted">
-                                            Upload JPG, GIF or PNG image. 300 x 300 required.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 align-middle">
+                                        <div className="d-flex align-items-center">
+                                            <img src="img/card-master.png" width={39} alt="MesterCard" />
+                                            <div className="ps-2">
+                                                <span className="fw-medium text-heading me-1">
+                                                    MasterCard
+                                                </span>
+                                                ending in 0015
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row gx-4 gy-3">
-                                <div className="col-sm-6">
-                                    <label className="form-label" htmlFor="account-fn">
-                                        First Name
-                                    </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="account-fn"
-                                        defaultValue="Susan"
-                                    />
-                                </div>
-                                <div className="col-sm-6">
-                                    <label className="form-label" htmlFor="account-ln">
-                                        Last Name
-                                    </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="account-ln"
-                                        defaultValue="Gardner"
-                                    />
-                                </div>
-                                <div className="col-sm-6">
-                                    <label className="form-label" htmlFor="account-email">
-                                        Email Address
-                                    </label>
-                                    <input
-                                        className="form-control"
-                                        type="email"
-                                        id="account-email"
-                                        defaultValue="s.gardner@example.com"
-                                        disabled=""
-                                    />
-                                </div>
-                                <div className="col-sm-6">
-                                    <label className="form-label" htmlFor="account-phone">
-                                        Phone Number
-                                    </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="account-phone"
-                                        defaultValue="+7 (805) 348 95 72"
-                                        required=""
-                                    />
-                                </div>
-                                <div className="col-sm-6">
-                                    <label className="form-label" htmlFor="account-pass">
-                                        New Password
-                                    </label>
-                                    <div className="password-toggle">
-                                        <input
-                                            className="form-control"
-                                            type="password"
-                                            id="account-pass"
-                                        />
-                                        <label
-                                            className="password-toggle-btn"
-                                            aria-label="Show/hide password"
+                                    </td>
+                                    <td className="py-3 align-middle">John doe</td>
+                                    <td className="py-3 align-middle">11 / 2021</td>
+                                    <td className="py-3 align-middle">
+                                        <a
+                                            className="nav-link-style me-2"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Edit"
                                         >
-                                            <input className="password-toggle-check" type="checkbox" />
-                                            <span className="password-toggle-indicator" />
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6">
-                                    <label className="form-label" htmlFor="account-confirm-pass">
-                                        Confirm Password
-                                    </label>
-                                    <div className="password-toggle">
-                                        <input
-                                            className="form-control"
-                                            type="password"
-                                            id="account-confirm-pass"
-                                        />
-                                        <label
-                                            className="password-toggle-btn"
-                                            aria-label="Show/hide password"
+                                            <i className="ci-edit" />
+                                        </a>
+                                        <a
+                                            className="nav-link-style text-danger"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Remove"
                                         >
-                                            <input className="password-toggle-check" type="checkbox" />
-                                            <span className="password-toggle-indicator" />
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="col-12">
-                                    <hr className="mt-2 mb-3" />
-                                    <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                        <div className="form-check">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                id="subscribe_me"
-                                                defaultChecked=""
-                                            />
-                                            <label className="form-check-label" htmlFor="subscribe_me">
-                                                Subscribe me to Newsletter
-                                            </label>
+                                            <div className="ci-trash" />
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 align-middle">
+                                        <div className="d-flex align-items-center">
+                                            <img src="img/card-paypal.png" width={39} alt="PayPal" />
+                                            <div className="ps-2">
+                                                <span className="fw-medium text-heading me-1">PayPal</span>
+                                                j.doe@example.com
+                                            </div>
                                         </div>
-                                        <button className="btn btn-primary mt-3 mt-sm-0" type="button">
-                                            Update profile
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </section>
+                                    </td>
+                                    <td className="py-3 align-middle">—</td>
+                                    <td className="py-3 align-middle">—</td>
+                                    <td className="py-3 align-middle">
+                                        <a
+                                            className="nav-link-style me-2"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Edit"
+                                        >
+                                            <i className="ci-edit" />
+                                        </a>
+                                        <a
+                                            className="nav-link-style text-danger"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Remove"
+                                        >
+                                            <div className="ci-trash" />
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 align-middle">
+                                        <div className="d-flex align-items-center">
+                                            <img src="img/card-visa.png" width={39} alt="Visa" />
+                                            <div className="ps-2">
+                                                <span className="fw-medium text-heading me-1">Visa</span>
+                                                ending in 6073
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="py-3 align-middle">John doe</td>
+                                    <td className="py-3 align-middle">09 / 2021</td>
+                                    <td className="py-3 align-middle">
+                                        <a
+                                            className="nav-link-style me-2"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Edit"
+                                        >
+                                            <i className="ci-edit" />
+                                        </a>
+                                        <a
+                                            className="nav-link-style text-danger"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Remove"
+                                        >
+                                            <div className="ci-trash" />
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="py-3 align-middle">
+                                        <div className="d-flex align-items-center">
+                                            <img src="img/card-visa.png" width={39} alt="Visa" />
+                                            <div className="ps-2">
+                                                <span className="fw-medium text-heading me-1">Visa</span>
+                                                ending in 9791
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="py-3 align-middle">John doe</td>
+                                    <td className="py-3 align-middle">05 / 2021</td>
+                                    <td className="py-3 align-middle">
+                                        <a
+                                            className="nav-link-style me-2"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Edit"
+                                        >
+                                            <i className="ci-edit" />
+                                        </a>
+                                        <a
+                                            className="nav-link-style text-danger"
+                                            href="dashboard-settings.html#"
+                                            data-bs-toggle="tooltip"
+                                            title="Remove"
+                                        >
+                                            <div className="ci-trash" />
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="text-sm-end">
+                        <a
+                            className="btn btn-primary"
+                            href="dashboard-settings.html#add-payment"
+                            data-bs-toggle="modal"
+                        >
+                            Add payment method
+                        </a>
+                    </div>
                 </div>
             </div>
         </>

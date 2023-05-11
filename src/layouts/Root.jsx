@@ -26,7 +26,10 @@ const Root = () => {
     };
 
     useLayoutEffect(() => {
-        window.scrollTo(0, 0);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
         routeChangeListener()
     }, [location.pathname]);
 

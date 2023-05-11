@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { removeCartItem, selectCartItems, selectCartTotal } from '../providers/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Grid, Group, HoverCard, Image, ScrollArea } from '@mantine/core'
-import { SHOPS } from '../config/constants'
+import { ADMIN_BASE_URL, CURRENCY, SHOPS } from '../config/constants'
 
 
 const navlinks = [
@@ -43,9 +43,23 @@ const navlinks = [
         children: []
     },
     {
-        id: 'd',
+        id: 'e',
         label: 'Sign In/ Sign Up',
         to: '/account/auth/',
+        icon: '',
+        children: []
+    },
+    {
+        id: 'f',
+        label: 'Merchant',
+        to: '/merchant',
+        icon: '',
+        children: []
+    },
+    {
+        id: 'f',
+        label: 'Admin',
+        to: ADMIN_BASE_URL,
         icon: '',
         children: []
     },
@@ -152,9 +166,9 @@ const CartItem = ({ item }) => {
                     </h6>
                     <div className="widget-product-meta">
                         <span className="text-accent me-2">
-                            Kes {item.product.price}.<small>00</small>
+                            {CURRENCY} {item.product.price}
                         </span>
-                        <span className="text-muted">x {item.qty}</span>
+                        <span className="text-muted">x {item?.qty}</span>
                     </div>
                 </div>
             </div>

@@ -29,6 +29,9 @@ export const CATEOGORIES = [
     },
 ]
 
+export const ADMIN_BASE_URL = "management"
+export const CURRENCY = "KES"
+
 export const SHOPS = [
     {
         id: 1,
