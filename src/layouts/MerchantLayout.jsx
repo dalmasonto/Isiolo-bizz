@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MerchantSidebar from '../components/account/MerchantSidebar'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectLoggedIn } from '../providers/app/appSlice'
 
 const MerchantLayout = () => {
+    const loggedIn = useSelector(selectLoggedIn)
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!loggedIn) {
+            navigate('/account/auth')
+        }
+    }, [loggedIn])
     return (
         <div>
 

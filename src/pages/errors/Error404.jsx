@@ -2,8 +2,12 @@ import React from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../../providers/app/appSlice'
+import { Text } from '@mantine/core'
 
 const Error404 = () => {
+    const user = useSelector(selectUser)
     return (
         <>
             <main className="page-wrapper">
@@ -17,6 +21,9 @@ const Error404 = () => {
                                 width={340}
                                 alt="404 Error"
                             />
+                            <Text>
+                                {JSON.stringify(user)}
+                            </Text>
                             <h1 className="h3">404 error</h1>
                             <h3 className="h5 fw-normal mb-4">
                                 We can't seem to find the page you are looking for.

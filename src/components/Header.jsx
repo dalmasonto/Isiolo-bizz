@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { removeCartItem, selectCartItems, selectCartTotal } from '../providers/app/appSlice'
+import { logout, removeCartItem, selectCartItems, selectCartTotal, selectLoggedIn, selectUser } from '../providers/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Grid, Group, HoverCard, Image, ScrollArea } from '@mantine/core'
+import { Anchor, Box, Grid, Group, HoverCard, Image, ScrollArea, Text } from '@mantine/core'
 import { ADMIN_BASE_URL, CURRENCY, SHOPS } from '../config/constants'
+import { limitChars } from '../config/config';
+import { modals } from '@mantine/modals'
 
 
 const navlinks = [
@@ -42,26 +44,29 @@ const navlinks = [
         icon: '',
         children: []
     },
-    {
-        id: 'e',
-        label: 'Sign In/ Sign Up',
-        to: '/account/auth/',
-        icon: '',
-        children: []
-    },
+    // {
+    //     id: 'e',
+    //     label: 'Sign In/ Sign Up',
+    //     to: '/account/auth/',
+    //     icon: '',
+    //     children: [],
+    //     logInRequired: true
+    // },
     {
         id: 'f',
         label: 'Merchant',
         to: '/merchant',
         icon: '',
-        children: []
+        children: [],
+        logInRequired: true
     },
     {
         id: 'f',
         label: 'Admin',
         to: ADMIN_BASE_URL,
         icon: '',
-        children: []
+        children: [],
+        logInRequired: true
     },
 ]
 
@@ -176,7 +181,7 @@ const CartItem = ({ item }) => {
     )
 }
 
-const NavItem = ({ id, label, to, icon, children }) => {
+const NavItem = ({ id, label, to, icon, children, click }) => {
     if (children?.length > 0) {
         return (
             <li className="nav-item dropdown">
@@ -206,6 +211,7 @@ const NavItem = ({ id, label, to, icon, children }) => {
                     isActive
                         ? `nav-link active` : 'nav-link'
                 }
+                onClick={click}
             >
                 {label}
             </NavLink>
@@ -214,11 +220,30 @@ const NavItem = ({ id, label, to, icon, children }) => {
 }
 
 const Header = () => {
-
-    const cartItems = useSelector(selectCartItems)
-    const cartTotal = useSelector(selectCartTotal)
+    const [navbarOpen, setNavbarOPen] = React.useState(false)
+    const loggedIn = useSelector(selectLoggedIn)
+    const user = useSelector(selectUser)
+    const dispatch = useDispatch()
 
     const otherLinkClasses = "nav-item"
+
+    const openCloseNavbar = () => {
+        setNavbarOPen(!navbarOpen)
+    }
+
+    const handleLogout = () => modals.openConfirmModal({
+        title: 'You are about to Logout!',
+        centered: true,
+        radius: "lg",
+        children: (
+            <Text size="sm">
+                Please confirm that you want to logout.
+            </Text>
+        ),
+        labels: { confirm: 'Confirm', cancel: 'Cancel' },
+        onCancel: () => {},
+        onConfirm: () => dispatch(logout()),
+    });
 
     return (
         <header className="shadow-sm">
@@ -310,8 +335,9 @@ const Header = () => {
                             <button
                                 className="navbar-toggler"
                                 type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#navbarCollapse"
+                                // data-bs-toggle="collapse"
+                                // data-bs-target="#navbarCollapse"
+                                onClick={openCloseNavbar}
                             >
                                 <span className="navbar-toggler-icon" />
                             </button>
@@ -333,17 +359,24 @@ const Header = () => {
                                     <i className="navbar-tool-icon ci-heart" />
                                 </div>
                             </a> */}
-                            <Link
-                                className="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2"
-                                to={`/account`}
-                            >
+                            <div className="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" style={{ cursor: "pointer" }}>
                                 <div className="navbar-tool-icon-box">
                                     <i className="navbar-tool-icon ci-user" />
                                 </div>
-                                <div className="navbar-tool-text ms-n3">
-                                    <small>Hello, Sign in</small>My Account
-                                </div>
-                            </Link>
+                                {
+                                    loggedIn ? (
+                                        <div className="navbar-tool-text ms-n3" onClick={handleLogout}>
+                                            <small>Hello {limitChars(user?.user?.account?.first_name, 6)}, Sign out </small>My Account
+                                        </div>
+                                    ) : (
+                                        <Link to='/account/auth'>
+                                            <div className="navbar-tool-text ms-n3">
+                                                <small>Hello, Sign in</small>Account
+                                            </div>
+                                        </Link>
+                                    )
+                                }
+                            </div>
                             <div className="navbar-tool dropdown ms-3">
 
                                 {/* Cart dropdown*/}
@@ -354,7 +387,7 @@ const Header = () => {
                 </div>
                 <div className="navbar navbar-expand-lg navbar-light navbar-stuck-menu mt-n2 pt-0 pb-2">
                     <div className="container">
-                        <div className="collapse navbar-collapse" id="navbarCollapse">
+                        <div className={`collapse navbar-collapse ${navbarOpen ? 'show' : ''}`} id="navbarCollapse">
                             {/* Search*/}
                             <div className="input-group d-lg-none my-3">
                                 <i className="ci-search position-absolute top-50 start-0 translate-middle-y text-muted fs-base ms-3" />
@@ -375,12 +408,12 @@ const Header = () => {
                                         <i className="ci-view-grid me-2" />
                                         Departments
                                     </a>
-                                    <div className="dropdown-menu px-2 pb-4" style={{width: "800px", maxWidth: '90vw'}}>
+                                    <div className="dropdown-menu px-2 pb-4" style={{ width: "800px", maxWidth: '90vw' }}>
                                         <Grid>
                                             {
                                                 SHOPS?.map((shop, index) => (
                                                     <Grid.Col key={`shop_${shop?.id}`} span={4} sm={2}>
-                                                        <div className="widget widget-links">
+                                                        <div className="widget widget-links" onClick={() => setNavbarOPen(false)}>
                                                             <Link
                                                                 className="d-block overflow-hidden rounded-3 mb-3"
                                                                 to={`/shop/${shop?.id}`}
@@ -399,8 +432,13 @@ const Header = () => {
                             {/* Primary menu*/}
                             <ul className="navbar-nav">
                                 {
-                                    navlinks.map((link, index) => (
-                                        <NavItem key={index} {...link} />
+                                    navlinks.filter(item => !item?.logInRequired).map((link, index) => (
+                                        <NavItem key={index} {...link} click={() => setNavbarOPen(false)} loggedIn={loggedIn} />
+                                    ))
+                                }
+                                {
+                                    loggedIn && navlinks.filter(item => item?.logInRequired).map((link, index) => (
+                                        <NavItem key={index} {...link} click={() => setNavbarOPen(false)} loggedIn={loggedIn} />
                                     ))
                                 }
                             </ul>

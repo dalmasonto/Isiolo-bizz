@@ -1,10 +1,19 @@
-import React from 'react'
-import MerchantSidebar from '../components/account/MerchantSidebar'
-import { Outlet } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { Rating } from '@mantine/core'
 import AdminSidebar from '../components/account/AdminSidebar'
+import { useSelector } from 'react-redux'
+import { selectLoggedIn } from '../providers/app/appSlice'
+import { ADMIN_BASE_URL } from '../config/constants'
 
 const AdminLayout = () => {
+    const loggedIn = useSelector(selectLoggedIn)
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!loggedIn) {
+            navigate(`/account/auth?redirect=/${ADMIN_BASE_URL}/`)
+        }
+    }, [loggedIn])
     return (
         <div>
 
@@ -36,7 +45,7 @@ const AdminLayout = () => {
                         <div className="text-sm-end">
                             <div className="text-light fs-base">System rating</div>
                             <div className="star-rating">
-                               <Rating value={4.5} fractions={2} />
+                                <Rating value={4.5} fractions={2} />
                             </div>
                             <div className="text-light opacity-60 fs-xs">Based on 98 reviews</div>
                         </div>

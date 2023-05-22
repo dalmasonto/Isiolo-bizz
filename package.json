@@ -18,6 +18,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^7.1.0",
     "localforage": "^1.10.0",
@@ -30,6 +31,8 @@
     "react-scripts": "5.0.1",
     "redux-persist": "^6.0.0",
     "sort-by": "^1.2.0",
+    "swr": "^2.1.5",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

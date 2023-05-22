@@ -1,3 +1,41 @@
+
+
+export const BASE_API_URL = "https://api.esiolo.biz/api"
+
+export const URLS = {
+    // Auth
+    LOGIN: `${BASE_API_URL}/auth/sign-in`,
+    SIGNUP: `${BASE_API_URL}/auth/sign-up`,
+    EMAIL_VERIFICATION: `${BASE_API_URL}/auth/email-verification`,
+    LOGOUT: `${BASE_API_URL}/auth/sign-out`,
+    FORGOT_PASSWORD: `${BASE_API_URL}/auth/forgot-password`,
+    RESET_PASSWORD: `${BASE_API_URL}/auth/reset-password`,
+    // Account
+    ACCOUNT: `${BASE_API_URL}/user/account`,
+    // Merchant
+    MERCHANTS: `${BASE_API_URL}/merchant`,
+    // CLient
+    CLIENTS: `${BASE_API_URL}/client`,
+    // COUPONS
+    COUPONS: `${BASE_API_URL}/coupon`,
+    // ORDERS
+    ORDERS: `${BASE_API_URL}/order`,
+    // PRODUCT CATEGORIES
+    CATEGORIES: `${BASE_API_URL}/product/category`,
+    // PRODUCTS
+    PRODUCTS: `${BASE_API_URL}/product/catalog`,
+    // PRODUCT GALLERY
+    PRODUCT_GALLERY: `${BASE_API_URL}/product/gallery`,
+    // PAYOUT
+    PAYOUT: `${BASE_API_URL}/payout`,
+    // PURCHASE
+    PURCHASE: `${BASE_API_URL}/purchase`,
+    // STATEMENT
+    STATEMENT: `${BASE_API_URL}/statement`,
+    // TRANSACTION
+    TRANSACTION: `${BASE_API_URL}/transaction`,
+}
+
 export const CATEOGORIES = [
     {
         id: 1,

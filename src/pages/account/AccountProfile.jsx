@@ -1,6 +1,67 @@
-import React from 'react'
+import { useForm } from '@mantine/form'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectToken, selectUser, updateUserAccount } from '../../providers/app/appSlice';
+import { Loader, Select, TextInput } from '@mantine/core';
+import { makeRequestOne } from '../../config/config';
+import { URLS } from '../../config/constants';
+import { showNotification } from '@mantine/notifications';
+import { IconAlertCircle } from '@tabler/icons';
+import { displayErrors } from '../../config/functions';
 
 const AccountProfile = () => {
+    const [loading, setLoading] = useState(false)
+    const user = useSelector(selectUser)
+    console.log(user)
+    const token = useSelector(selectToken)
+    const account = user?.user?.account
+    const dispatch = useDispatch()
+    const userForm = useForm({
+        initialValues: {
+            "telephone": account?.telephone,
+            "national_id": account?.national_id,
+            // "avatar": account?.avatar,
+            "salutation": account?.salutation,
+            "first_name": account?.first_name,
+            "middle_name": account?.middle_name,
+            "last_name": account?.last_name,
+            "gender": account?.gender,
+            "address_line_1": account?.address_line_1,
+            "address_line_2": account?.address_line_2,
+            "city": account?.city,
+            "state": account?.state,
+            "country": account?.country,
+        },
+    })
+
+    const handleUpdate = (values) => {
+        values['user_id'] = account.user_id
+        setLoading(true)
+        makeRequestOne(URLS.ACCOUNT + `/${account?.id}`, 'PUT', {
+            Authorization: `Bearer ${token}`
+        }, values, {}).then(res => {
+            console.log(res)
+            const accountData = res?.data?.data
+            dispatch(updateUserAccount(accountData))
+            showNotification({
+                title: 'Update Success',
+                message: 'You have successfully updated your profile.',
+                color: 'green',
+                icon: <IconAlertCircle />,
+            })
+        }).catch(err => {
+            displayErrors(userForm, err?.response?.data?.errors)
+            showNotification({
+                title: 'Update Failed!',
+                message: 'There has been an error, please try again later!',
+                color: 'red',
+                icon: <IconAlertCircle />,
+            })
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
+
     return (
         <>
             <h2 className="h3 py-2 text-center text-sm-start">Settings</h2>
@@ -23,7 +84,7 @@ const AccountProfile = () => {
                         </div>
                     </a>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <a
                         className="nav-link px-0"
                         href="dashboard-settings.html#notifications"
@@ -39,24 +100,7 @@ const AccountProfile = () => {
                             <span className="fs-ms">Notifications</span>
                         </div>
                     </a>
-                </li>
-                <li className="nav-item">
-                    <a
-                        className="nav-link px-0"
-                        href="dashboard-settings.html#payment"
-                        data-bs-toggle="tab"
-                        role="tab"
-                    >
-                        <div className="d-none d-lg-block">
-                            <i className="ci-card opacity-60 me-2" />
-                            Payment methods
-                        </div>
-                        <div className="d-lg-none text-center">
-                            <i className="ci-card opacity-60 d-block fs-xl mb-2" />
-                            <span className="fs-ms">Payment</span>
-                        </div>
-                    </a>
-                </li>
+                </li> */}
             </ul>
             {/* Tab content*/}
             <div className="tab-content">
@@ -66,9 +110,9 @@ const AccountProfile = () => {
                         <div className="d-flex align-items-center">
                             <img
                                 className="rounded"
-                                src="img/marketplace/account/avatar.png"
+                                src={account?.avatar}
                                 width={90}
-                                alt="Createx Studio"
+                                alt={account?.first_name}
                             />
                             <div className="ps-3">
                                 <button
@@ -84,121 +128,128 @@ const AccountProfile = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row gx-4 gy-3">
-                        <div className="col-sm-6">
-                            <label className="form-label" htmlFor="dashboard-fn">
-                                First Name
-                            </label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                id="dashboard-fn"
-                                defaultValue="John"
-                            />
-                        </div>
-                        <div className="col-sm-6">
-                            <label className="form-label" htmlFor="dashboard-ln">
-                                Last Name
-                            </label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                id="dashboard-ln"
-                                defaultValue="Doe"
-                            />
-                        </div>
-                        <div className="col-sm-6">
-                            <label className="form-label" htmlFor="dashboard-email">
-                                Email address
-                            </label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                id="dashboard-email"
-                                defaultValue="contact@example.com"
-                                disabled=""
-                            />
-                        </div>
-                        <div className="col-sm-6">
-                            <label className="form-label" htmlFor="dashboard-profile-name">
-                                Profile Name
-                            </label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                id="dashboard-profile-name"
-                                defaultValue="Createx Studio"
-                            />
-                        </div>
-                        <div className="col-sm-6">
-                            <label className="form-label" htmlFor="dashboard-country">
-                                Country
-                            </label>
-                            <select className="form-select" id="dashboard-country">
-                                <option value="">Select country</option>
-                                <option value="Argentina">Argentina</option>
-                                <option value="Belgium">Belgium</option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="Madagascar" selected="">
-                                    Madagascar
-                                </option>
-                                <option value="Spain">Spain</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="USA">USA</option>
-                            </select>
-                        </div>
-                        <div className="col-sm-6">
-                            <label className="form-label" htmlFor="dashboard-city">
-                                City
-                            </label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                id="dashboard-city"
-                                defaultValue="Antananarivo"
-                            />
-                        </div>
-                        <div className="col-sm-6">
-                            <label className="form-label" htmlFor="dashboard-address">
-                                Address Line
-                            </label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                id="dashboard-address"
-                                defaultValue="Some Cool Street, 22/1"
-                            />
-                        </div>
-                        <div className="col-sm-6">
-                            <label className="form-label" htmlFor="dashboard-zip">
-                                ZIP Code
-                            </label>
-                            <input className="form-control" type="text" id="dashboard-zip" />
-                        </div>
-                        <div className="col-12">
-                            <hr className="mt-2 mb-4" />
-                            <div className="d-sm-flex justify-content-between align-items-center">
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        id="freelancer"
-                                        defaultChecked=""
-                                    />
-                                    <label className="form-check-label" htmlFor="freelancer">
-                                        I'm available for freelance
-                                    </label>
+                    <form onSubmit={userForm.onSubmit((values) => handleUpdate(values))}>
+                        <div className="row gx-4 gy-3">
+                            <div className="col-sm-4">
+                                <TextInput
+                                    label='First Name'
+                                    placeholder='John'
+                                    type="text"
+                                    {...userForm.getInputProps('first_name')}
+                                />
+                            </div>
+                            <div className="col-sm-4">
+                                <TextInput
+                                    label='Middle Name'
+                                    placeholder='Doe'
+                                    type="text"
+                                    {...userForm.getInputProps('middle_name')}
+                                />
+                            </div>
+                            <div className="col-sm-4">
+                                <TextInput
+                                    label='Last Name'
+                                    placeholder='Doe'
+                                    type="text"
+                                    {...userForm.getInputProps('last_name')}
+                                />
+                            </div>
+                            <div className="col-sm-6">
+                                <TextInput
+                                    label='Email'
+                                    placeholder="example@gmail.com"
+                                    type="text"
+                                    value={user?.user?.email}
+                                    disabled
+                                />
+                            </div>
+                            <div className="col-sm-6">
+                                <TextInput
+                                    label='Telephone'
+                                    placeholder='08012345678'
+                                    type="text"
+                                    {...userForm.getInputProps('telephone')}
+                                />
+                            </div>
+                            <div className="col-sm-3">
+                                <Select
+                                    label='Gender'
+                                    placeholder='Gender'
+                                    type="text"
+                                    {...userForm.getInputProps('gender')}
+                                    data={[
+                                        { value: 'male', label: 'Male' },
+                                        { value: 'female', label: 'Female' },
+                                        { value: 'prefer-not-to-say', label: 'Prefer not to say' }
+                                    ]}
+                                />
+                            </div>
+                            <div className="col-sm-3">
+                                <TextInput
+                                    label='Salutation'
+                                    type="text"
+                                    placeholder='Mr.'
+                                    {...userForm.getInputProps('salutation')}
+                                />
+                            </div>
+                            <div className="col-sm-6">
+                                <TextInput
+                                    label='Country'
+                                    placeholder='Kenya'
+                                    type="text"
+                                    {...userForm.getInputProps('country')}
+                                />
+                            </div>
+                            <div className="col-sm-6">
+                                <TextInput
+                                    label='State'
+                                    placeholder='Nairobi'
+                                    type="text"
+                                    {...userForm.getInputProps('state')}
+                                />
+                            </div>
+                            <div className="col-sm-6">
+                                <TextInput
+                                    label='City'
+                                    placeholder='Nairobi'
+                                    type="text"
+                                    {...userForm.getInputProps('city')}
+                                />
+                            </div>
+                            <div className="col-sm-6">
+                                <TextInput
+                                    label='Address Line 1'
+                                    placeholder='1234 Main St'
+                                    type="text"
+                                    {...userForm.getInputProps('address_line_1')}
+                                />
+                            </div>
+                            <div className="col-sm-6">
+                                <TextInput
+                                    label='Address Line 2'
+                                    placeholder='Apartment, studio, or floor'
+                                    type="text"
+                                    {...userForm.getInputProps('address_line_2')}
+                                />
+                            </div>
+                            <div className="col-12">
+                                <hr className="mt-2 mb-4" />
+                                <div className="d-sm-flex justify-content-end align-items-center">
+                                    <button className="btn btn-primary mt-3 mt-sm-0" type="submit">
+                                        Save changes
+                                        {
+                                            loading ?
+                                                <Loader color='white' ml="sm" size="sm" />
+                                                : null
+                                        }
+                                    </button>
                                 </div>
-                                <button className="btn btn-primary mt-3 mt-sm-0" type="button">
-                                    Save changes
-                                </button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 {/* Notifications*/}
-                <div className="tab-pane fade" id="notifications" role="tabpanel">
+                {/* <div className="tab-pane fade" id="notifications" role="tabpanel">
                     <div className="bg-secondary rounded-3 p-4">
                         <div className="form-check form-switch">
                             <input
@@ -301,198 +352,7 @@ const AccountProfile = () => {
                             Save changes
                         </button>
                     </div>
-                </div>
-                {/* Payment methods*/}
-                <div className="tab-pane fade" id="payment" role="tabpanel">
-                    <div className="bg-secondary rounded-3 p-4 mb-4">
-                        <p className="fs-sm text-muted mb-0">
-                            Primary payment method is used by default
-                        </p>
-                    </div>
-                    <div className="table-responsive fs-md mb-4">
-                        <table className="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Your credit / debit cards</th>
-                                    <th>Name on card</th>
-                                    <th>Expires on</th>
-                                    <th />
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className="py-3 align-middle">
-                                        <div className="d-flex align-items-center">
-                                            <img src="img/card-visa.png" width={39} alt="Visa" />
-                                            <div className="ps-2">
-                                                <span className="fw-medium text-heading me-1">Visa</span>
-                                                ending in 4999
-                                                <span className="align-middle badge badge-info ms-2">
-                                                    Primary
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 align-middle">John doe</td>
-                                    <td className="py-3 align-middle">08 / 2019</td>
-                                    <td className="py-3 align-middle">
-                                        <a
-                                            className="nav-link-style me-2"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit"
-                                        >
-                                            <i className="ci-edit" />
-                                        </a>
-                                        <a
-                                            className="nav-link-style text-danger"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Remove"
-                                        >
-                                            <div className="ci-trash" />
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="py-3 align-middle">
-                                        <div className="d-flex align-items-center">
-                                            <img src="img/card-master.png" width={39} alt="MesterCard" />
-                                            <div className="ps-2">
-                                                <span className="fw-medium text-heading me-1">
-                                                    MasterCard
-                                                </span>
-                                                ending in 0015
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 align-middle">John doe</td>
-                                    <td className="py-3 align-middle">11 / 2021</td>
-                                    <td className="py-3 align-middle">
-                                        <a
-                                            className="nav-link-style me-2"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit"
-                                        >
-                                            <i className="ci-edit" />
-                                        </a>
-                                        <a
-                                            className="nav-link-style text-danger"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Remove"
-                                        >
-                                            <div className="ci-trash" />
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="py-3 align-middle">
-                                        <div className="d-flex align-items-center">
-                                            <img src="img/card-paypal.png" width={39} alt="PayPal" />
-                                            <div className="ps-2">
-                                                <span className="fw-medium text-heading me-1">PayPal</span>
-                                                j.doe@example.com
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 align-middle">—</td>
-                                    <td className="py-3 align-middle">—</td>
-                                    <td className="py-3 align-middle">
-                                        <a
-                                            className="nav-link-style me-2"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit"
-                                        >
-                                            <i className="ci-edit" />
-                                        </a>
-                                        <a
-                                            className="nav-link-style text-danger"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Remove"
-                                        >
-                                            <div className="ci-trash" />
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="py-3 align-middle">
-                                        <div className="d-flex align-items-center">
-                                            <img src="img/card-visa.png" width={39} alt="Visa" />
-                                            <div className="ps-2">
-                                                <span className="fw-medium text-heading me-1">Visa</span>
-                                                ending in 6073
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 align-middle">John doe</td>
-                                    <td className="py-3 align-middle">09 / 2021</td>
-                                    <td className="py-3 align-middle">
-                                        <a
-                                            className="nav-link-style me-2"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit"
-                                        >
-                                            <i className="ci-edit" />
-                                        </a>
-                                        <a
-                                            className="nav-link-style text-danger"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Remove"
-                                        >
-                                            <div className="ci-trash" />
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="py-3 align-middle">
-                                        <div className="d-flex align-items-center">
-                                            <img src="img/card-visa.png" width={39} alt="Visa" />
-                                            <div className="ps-2">
-                                                <span className="fw-medium text-heading me-1">Visa</span>
-                                                ending in 9791
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 align-middle">John doe</td>
-                                    <td className="py-3 align-middle">05 / 2021</td>
-                                    <td className="py-3 align-middle">
-                                        <a
-                                            className="nav-link-style me-2"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit"
-                                        >
-                                            <i className="ci-edit" />
-                                        </a>
-                                        <a
-                                            className="nav-link-style text-danger"
-                                            href="dashboard-settings.html#"
-                                            data-bs-toggle="tooltip"
-                                            title="Remove"
-                                        >
-                                            <div className="ci-trash" />
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="text-sm-end">
-                        <a
-                            className="btn btn-primary"
-                            href="dashboard-settings.html#add-payment"
-                            data-bs-toggle="modal"
-                        >
-                            Add payment method
-                        </a>
-                    </div>
-                </div>
+                </div> */}
             </div>
         </>
     )

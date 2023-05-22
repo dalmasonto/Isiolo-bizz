@@ -1,4 +1,4 @@
-import { Alert, Avatar, Button, Image, Text } from '@mantine/core'
+import { Alert, Avatar, Box, Button, Image, Text } from '@mantine/core'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -16,10 +16,9 @@ const CartItem = ({ item }) => {
 
     return (
         <div className="d-block d-sm-flex align-items-center py-4 border-bottom">
-            <Link
+            <Box
                 className="d-block position-relative mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
                 style={{ width: "12.5rem" }}
-                to={`/shop`}
             >
                 <Image
                     width={100}
@@ -35,7 +34,7 @@ const CartItem = ({ item }) => {
                 >
                     <i className="ci-trash" />
                 </span>
-            </Link>
+            </Box>
             <div className="text-center text-sm-start">
                 <h3 className="h6 product-title mb-2">
                     <Link to={`/shop`}>

@@ -19,22 +19,22 @@ const sidebarLinkgs = [
             {
                 title: 'Dashboard',
                 icon: 'ci-bag',
-                to: '/merchant/dashboard',
+                to: '/merchant/dashboard/',
             },
             {
                 title: 'Orders',
                 icon: 'ci-cart',
-                to: '/merchant/orders',
+                to: '/merchant/orders/',
             },
             {
                 title: 'Products',
                 icon: 'ci-package',
-                to: '/merchant/products',
+                to: '/merchant/products/',
             },
             {
                 title: 'Add Product',
                 icon: 'ci-add',
-                to: '/merchant/add-product',
+                to: '/merchant/add-product/',
             },
         ]
     },

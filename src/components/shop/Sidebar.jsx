@@ -1,10 +1,21 @@
 import React from 'react'
-import Categories from '../../pages/admin/products/Categories';
-import { CATEOGORIES, SHOPS } from '../../config/constants';
+import { URLS } from '../../config/constants';
 import { Link } from 'react-router-dom';
-import { Text } from '@mantine/core';
+import { Checkbox, Text } from '@mantine/core';
+import useSwr from 'swr';
+import { makeRequestOne } from '../../config/config';
+import { useSelector } from 'react-redux';
+import { selectToken } from '../../providers/app/appSlice';
 
 const Sidebar = () => {
+    const [selectedMerchants, setSelectedMerchants] = React.useState([])
+    const token = useSelector(selectToken)
+    const categoriesQuery = useSwr([URLS.CATEGORIES + "/", 'GET', { Authorization: `Bearer ${token}` }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const categoriesData = categoriesQuery?.data?.data?.data
+
+    const merchantsQuery = useSwr([URLS.MERCHANTS + "/", 'GET', { Authorization: `Bearer ${token}` }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const merchantsData = merchantsQuery?.data?.data?.data
+
     return (
         <aside className="col-lg-4">
             {/* Sidebar*/}
@@ -27,7 +38,7 @@ const Sidebar = () => {
                     <div className="widget widget-categories mb-4 pb-4 border-bottom">
                         <h3 className="widget-title">Categories</h3>
                         {
-                            CATEOGORIES.map((category) => (
+                            categoriesData?.map((category) => (
                                 <Link
                                     key={`_category_${category?.id}`}
                                     className="widget-list-link d-flex justify-content-between align-items-center"
@@ -59,28 +70,25 @@ const Sidebar = () => {
                             data-simplebar=""
                             data-simplebar-auto-hide="false"
                         >
-                            {
-                                SHOPS.map((shop) => (
-                                    <li key={`shop_brand_${shop?.id}`} className="widget-filter-item d-flex justify-content-between align-items-center mb-1">
-                                        <div className="form-check">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                id={shop?.id}
-                                            />
-                                            <label
-                                                className="form-check-label widget-filter-item-text"
-                                                htmlFor={shop?.id}
-                                            >
-                                                {shop?.name}
-                                            </label>
-                                        </div>
-                                        <span className="fs-xs text-muted">
-                                            {Math.ceil(Math.random() * 600)}
-                                        </span>
-                                    </li>
-                                ))
-                            }
+                            <Checkbox.Group value={selectedMerchants} onChange={setSelectedMerchants}>
+                                {
+                                    merchantsData?.map((merchant) => (
+                                        <li key={`shop_brand_${merchant?.id}`} className="widget-filter-item d-flex justify-content-between align-items-center mb-1">
+                                            <div >
+                                                <Checkbox
+                                                    value={merchant?.id + ""}
+                                                    label={merchant?.name}
+                                                    labelPosition='right'
+                                                    ml={0}
+                                                />
+                                            </div>
+                                            <span className="fs-xs text-muted">
+                                                {Math.ceil(Math.random() * 600)}
+                                            </span>
+                                        </li>
+                                    ))
+                                }
+                            </Checkbox.Group>
                         </ul>
                     </div>
                 </div>

@@ -10,7 +10,7 @@ const sidebarLinkgs = [
             {
                 title: 'Settings',
                 icon: 'ci-settings',
-                to: `/${ADMIN_BASE_URL}`,
+                to: `/${ADMIN_BASE_URL}/`,
             },
         ]
     },
@@ -20,32 +20,32 @@ const sidebarLinkgs = [
             {
                 title: 'Dashboard',
                 icon: 'ci-bag',
-                to: `/${ADMIN_BASE_URL}/dashboard`,
+                to: `/${ADMIN_BASE_URL}/dashboard/`,
             },
             {
                 title: 'Users',
                 icon: 'ci-user',
-                to: `/${ADMIN_BASE_URL}/users`,
+                to: `/${ADMIN_BASE_URL}/users/`,
             },
             {
                 title: 'Merchants',
                 icon: 'ci-store',
-                to: `/${ADMIN_BASE_URL}/merchants`,
+                to: `/${ADMIN_BASE_URL}/merchants/`,
             },
             {
                 title: 'Categories',
                 icon: 'ci-package',
-                to: `/${ADMIN_BASE_URL}/categories`,
+                to: `/${ADMIN_BASE_URL}/categories/`,
             },
             {
                 title: 'Contact Form Entries',
                 icon: 'ci-message',
-                to: `/${ADMIN_BASE_URL}/contact-form-entries`,
+                to: `/${ADMIN_BASE_URL}/contact-form-entries/`,
             },
             {
                 title: 'Reviews',
                 icon: 'ci-star',
-                to: `/${ADMIN_BASE_URL}/reviews`,
+                to: `/${ADMIN_BASE_URL}/reviews/`,
             }
         ]
     },

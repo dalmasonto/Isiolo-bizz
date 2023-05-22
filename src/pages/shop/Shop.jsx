@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom';
 import Sidebar from '../../components/shop/Sidebar';
 import Toolbar from '../../components/shop/Toolbar';
 import CustomPagination from '../../components/shop/CustomPagination';
+import { useSelector } from 'react-redux';
+import { selectToken } from '../../providers/app/appSlice';
+import useSwr from 'swr';
+import { URLS } from '../../config/constants';
+import { makeRequestOne } from '../../config/config';
 
 
 export const products = [
@@ -92,6 +97,10 @@ export const products = [
 
 
 const Shop = () => {
+  const token = useSelector(selectToken)
+  const productsQuery = useSwr([URLS.PRODUCTS + "/", 'GET', { Authorization: `Bearer ${token}` }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const productsData = productsQuery?.data?.data?.data
+
   return (
     <>
       <QuickView />
