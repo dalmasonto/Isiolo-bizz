@@ -1,6 +1,57 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../../providers/app/appSlice'
+import useSwr from 'swr';
+import { CURRENCY, URLS } from '../../config/constants';
+import { formatCurrency, makeRequestOne } from '../../config/config';
+import { modals } from '@mantine/modals';
+import { Text } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
+import { IconAlertCircle, IconAlertTriangle } from '@tabler/icons';
 
 const Products = () => {
+
+  const user = useSelector(selectUser)
+  const token = user?.token
+  const merchant = user?.user?.merchant
+  const merchantQuery = useSwr([`${URLS.MERCHANTS}/${merchant?.id}?include=products`, 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const products = merchantQuery?.data?.data?.data?.products
+
+  const deleteProduct = (id) => {
+
+    makeRequestOne(`${URLS.PRODUCTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {}).then(res => {
+      showNotification({
+        title: 'Product Deleted', 
+        message: 'Product has been deleted successfully',
+        color: 'green',
+        icon: <IconAlertCircle />,
+      })
+      merchantQuery.mutate()
+    }).catch(err => {
+      showNotification({
+        title: 'Product Delete Failed',
+        message: 'Product could not be deleted. Please try again later',
+        color: 'red',
+        icon: <IconAlertTriangle />,
+      })
+    })
+
+  }
+
+  const handleDelete = (product) => modals.openConfirmModal({
+    title: `You are about to delete ${product?.name}!`,
+    centered: true,
+    radius: "lg",
+    children: (
+      <Text size="sm">
+        Are you sure you want to delete {product?.name}?
+      </Text>
+    ),
+    labels: { confirm: 'Confirm', cancel: 'Cancel' },
+    onCancel: () => { },
+    onConfirm: () => deleteProduct(product?.id),
+  });
+
   return (
     <div>
       <div className="pt-2 px-4 ps-lg-0 pe-xl-5">
@@ -9,302 +60,56 @@ const Products = () => {
           <h2 className="h3 py-2 me-2 text-center text-sm-start">
             Your products
             <span className="badge bg-faded-accent fs-sm text-body align-middle ms-2">
-              5
+              {products?.length ? products?.length : 0}
             </span>
           </h2>
         </div>
       </div>
       {/* Product*/}
-      <div className="d-block d-sm-flex align-items-center py-4 border-bottom">
-        <a
-          className="d-block mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
-          href="marketplace-single.html"
-          style={{ width: "12.5rem" }}
-        >
-          <img
-            className="rounded-3"
-            src="img/marketplace/products/th08.jpg"
-            alt="Product"
-          />
-        </a>
-        <div className="text-center text-sm-start">
-          <h3 className="h6 product-title mb-2">
-            <a href="marketplace-single.html">Flat-line E-Commerce Icons (AI)</a>
-          </h3>
-          <div className="d-inline-block text-accent">
-            $18.<small>00</small>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Sales: <span className="fw-medium">26</span>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Earnings:{" "}
-            <span className="fw-medium">
-              $327.<small>60</small>
-            </span>
-          </div>
-          <div className="d-flex justify-content-center justify-content-sm-start pt-3">
-            <button
-              className="btn bg-faded-accent btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Download"
+      {
+        products?.map((product, i) => (
+          <div key={`product_${product?.id}_${i}`} className="d-block d-sm-flex align-items-center py-4 border-bottom">
+            <a
+              className="d-block mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
+              href="marketplace-single.html"
+              style={{ width: "12.5rem" }}
             >
-              <i className="ci-download text-accent" />
-            </button>
-            <button
-              className="btn bg-faded-info btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Edit"
-            >
-              <i className="ci-edit text-info" />
-            </button>
-            <button
-              className="btn bg-faded-danger btn-icon"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Delete"
-            >
-              <i className="ci-trash text-danger" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* Product*/}
-      <div className="d-block d-sm-flex align-items-center py-4 border-bottom">
-        <a
-          className="d-block mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
-          href="marketplace-single.html"
-          style={{ width: "12.5rem" }}
-        >
-          <img
-            className="rounded-3"
-            src="img/marketplace/products/th09.jpg"
-            alt="Product"
-          />
-        </a>
-        <div className="text-center text-sm-start">
-          <h3 className="h6 product-title mb-2">
-            <a href="marketplace-single.html">
-              Square Style Mobile UI Kit (Sketch)
+              <img
+                className="rounded-3"
+                src="/assets/images/products/Fresh-Camel-Milk.jpg"
+                alt="Product"
+              />
             </a>
-          </h3>
-          <div className="d-inline-block text-accent">
-            $24.<small>00</small>
+            <div className="text-center text-sm-start">
+              <h3 className="h6 product-title mb-2">
+                <Text>{product?.name}</Text>
+              </h3>
+              <div className="d-inline-block text-accent">
+                {CURRENCY} {formatCurrency(product?.price)}
+              </div>
+              <div className="d-flex justify-content-center justify-content-sm-start pt-3">
+                <button
+                  className="btn bg-faded-info btn-icon me-2"
+                  type="button"
+                  data-bs-toggle="tooltip"
+                  title="Edit"
+                >
+                  <i className="ci-edit text-info" />
+                </button>
+                <button
+                  className="btn bg-faded-danger btn-icon"
+                  type="button"
+                  data-bs-toggle="tooltip"
+                  title="Delete"
+                  onClick={() => handleDelete(product)}
+                >
+                  <i className="ci-trash text-danger" />
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Sales: <span className="fw-medium">153</span>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Earnings:{" "}
-            <span className="fw-medium">
-              $2,570.<small>40</small>
-            </span>
-          </div>
-          <div className="d-flex justify-content-center justify-content-sm-start pt-3">
-            <button
-              className="btn bg-faded-accent btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Download"
-            >
-              <i className="ci-download text-accent" />
-            </button>
-            <button
-              className="btn bg-faded-info btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Edit"
-            >
-              <i className="ci-edit text-info" />
-            </button>
-            <button
-              className="btn bg-faded-danger btn-icon"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Delete"
-            >
-              <i className="ci-trash text-danger" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* Product*/}
-      <div className="d-block d-sm-flex align-items-center py-4 border-bottom">
-        <a
-          className="d-block mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
-          href="marketplace-single.html"
-          style={{ width: "12.5rem" }}
-        >
-          <img
-            className="rounded-3"
-            src="img/marketplace/products/th10.jpg"
-            alt="Product"
-          />
-        </a>
-        <div className="text-center text-sm-start">
-          <h3 className="h6 product-title mb-2">
-            <a href="marketplace-single.html">
-              Floating Phone and Tablet Mockup (PSD)
-            </a>
-          </h3>
-          <div className="d-inline-block text-accent">
-            $15.<small>00</small>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Sales: <span className="fw-medium">109</span>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Earnings:{" "}
-            <span className="fw-medium">
-              $1,144.<small>50</small>
-            </span>
-          </div>
-          <div className="d-flex justify-content-center justify-content-sm-start pt-3">
-            <button
-              className="btn bg-faded-accent btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Download"
-            >
-              <i className="ci-download text-accent" />
-            </button>
-            <button
-              className="btn bg-faded-info btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Edit"
-            >
-              <i className="ci-edit text-info" />
-            </button>
-            <button
-              className="btn bg-faded-danger btn-icon"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Delete"
-            >
-              <i className="ci-trash text-danger" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* Product*/}
-      <div className="d-block d-sm-flex align-items-center py-4 border-bottom">
-        <a
-          className="d-block mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
-          href="marketplace-single.html"
-          style={{ width: "12.5rem" }}
-        >
-          <img
-            className="rounded-3"
-            src="img/marketplace/products/th11.jpg"
-            alt="Product"
-          />
-        </a>
-        <div className="text-center text-sm-start">
-          <h3 className="h6 product-title mb-2">
-            <a href="marketplace-single.html">Minimal Mobile App UI Kit (Sketch)</a>
-          </h3>
-          <div className="d-inline-block text-accent">
-            $23.<small>00</small>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Sales: <span className="fw-medium">117</span>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Earnings:{" "}
-            <span className="fw-medium">
-              $1,883.<small>70</small>
-            </span>
-          </div>
-          <div className="d-flex justify-content-center justify-content-sm-start pt-3">
-            <button
-              className="btn bg-faded-accent btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Download"
-            >
-              <i className="ci-download text-accent" />
-            </button>
-            <button
-              className="btn bg-faded-info btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Edit"
-            >
-              <i className="ci-edit text-info" />
-            </button>
-            <button
-              className="btn bg-faded-danger btn-icon"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Delete"
-            >
-              <i className="ci-trash text-danger" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* Product*/}
-      <div className="d-block d-sm-flex align-items-center pt-4 pb-2">
-        <a
-          className="d-block mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
-          href="marketplace-single.html"
-          style={{ width: "12.5rem" }}
-        >
-          <img
-            className="rounded-3"
-            src="img/marketplace/products/th12.jpg"
-            alt="Product"
-          />
-        </a>
-        <div className="text-center text-sm-start">
-          <h3 className="h6 product-title mb-2">
-            <a href="marketplace-single.html">
-              Travel &amp; Landmark Icon Pack (AI)
-            </a>
-          </h3>
-          <div className="d-inline-block text-accent">
-            $17.<small>00</small>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Sales: <span className="fw-medium">21</span>
-          </div>
-          <div className="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-            Earnings:{" "}
-            <span className="fw-medium">
-              $249.<small>90</small>
-            </span>
-          </div>
-          <div className="d-flex justify-content-center justify-content-sm-start pt-3">
-            <button
-              className="btn bg-faded-accent btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Download"
-            >
-              <i className="ci-download text-accent" />
-            </button>
-            <button
-              className="btn bg-faded-info btn-icon me-2"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Edit"
-            >
-              <i className="ci-edit text-info" />
-            </button>
-            <button
-              className="btn bg-faded-danger btn-icon"
-              type="button"
-              data-bs-toggle="tooltip"
-              title="Delete"
-            >
-              <i className="ci-trash text-danger" />
-            </button>
-          </div>
-        </div>
-      </div>
+        ))
+      }
     </div>
   )
 }

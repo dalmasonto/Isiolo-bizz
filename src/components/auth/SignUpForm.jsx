@@ -31,9 +31,10 @@ const SignUpForm = () => {
   })
 
   const handleSignUp = (values) => {
-    console.log(values)
+    values['role'] = "merchant"
     setLoading(true)
     makeRequestOne(URLS.SIGNUP + "/", 'POST', {}, { ...values, name: values['first_name'] }, {}).then(res => {
+      console.log("singup", res)
       if (res?.status === 200) {
         showNotification({
           title: 'Sign Up Success',

@@ -3,15 +3,22 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { Rating } from '@mantine/core'
 import AdminSidebar from '../components/account/AdminSidebar'
 import { useSelector } from 'react-redux'
-import { selectLoggedIn } from '../providers/app/appSlice'
+import { selectLoggedIn, selectUser } from '../providers/app/appSlice'
 import { ADMIN_BASE_URL } from '../config/constants'
 
 const AdminLayout = () => {
     const loggedIn = useSelector(selectLoggedIn)
+    const user = useSelector(selectUser)
     const navigate = useNavigate()
     useEffect(() => {
         if (!loggedIn) {
             navigate(`/account/auth?redirect=/${ADMIN_BASE_URL}/`)
+        }
+        else{
+            console.log("Admin: ", user?.user?.isAdministrator)
+            if(user?.user?.isAdministrator === false){
+                navigate(`/merchant/`)
+            }
         }
     }, [loggedIn])
     return (

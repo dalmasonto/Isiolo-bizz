@@ -1,6 +1,54 @@
+import { Grid, Loader, NumberInput, Select, Stack, TextInput, Textarea } from '@mantine/core'
+import { useForm } from '@mantine/form'
 import React from 'react'
+import slugify from 'slugify'
+import { makeRequestOne } from '../../config/config'
+import { URLS } from '../../config/constants'
+import useSwr from 'swr';
+import { useSelector } from 'react-redux'
+import { selectToken, selectUser } from '../../providers/app/appSlice';
+import { displayErrors } from '../../config/functions'
 
 const AddProduct = () => {
+    const [loading, setLoading] = React.useState(false)
+    const user = useSelector(selectUser)
+    const token = user?.token
+    const merchant = user?.user?.merchant
+    const categoriesQuery = useSwr([URLS.CATEGORIES + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const categoriesData = categoriesQuery?.data?.data?.data
+    
+    const productForm = useForm({
+        initialValues: {
+            "category_id": "",
+            "name": "",
+            "description": "",
+            "allocated_items": "",
+            "assigned_items": "",
+            "available_items": "",
+            "price": "",
+            "discount": "",
+            "configuration": ""
+        }
+    })
+
+    const handleCreate = (values) => {
+        values['merchant_id'] = merchant?.id
+        values['slug'] = slugify(values['name'])
+        values['category_id'] = parseInt(values['category_id'])
+
+        setLoading(true)
+        makeRequestOne(URLS.PRODUCTS + "/", 'POST', { 'Authorization': `Bearer ${token}` }, values, {})
+            .then((res) => {
+                console.log(res)
+            }).catch((err) => {
+                console.log(err)
+                const errors = err?.response?.data?.errors
+                displayErrors(productForm, errors)
+            }).finally(() => {
+                setLoading(false)
+            })
+    }
+
     return (
         <>
             {/* Title*/}
@@ -9,133 +57,85 @@ const AddProduct = () => {
                     Add New Product
                 </h2>
             </div>
-            <form>
-                <div className="mb-3 pb-2">
-                    <label className="form-label" htmlFor="unp-product-name">
-                        Product name
-                    </label>
-                    <input
-                        className="form-control"
-                        type="text"
-                        id="unp-product-name"
+            <form onSubmit={productForm.onSubmit((values) => handleCreate(values))}>
+                <Stack>
+                    <TextInput
+                        label={`Product name ${merchant?.id}`}
+                        placeholder="Enter product name max 50 characters"
+                        required
+                        {...productForm.getInputProps('name')}
                     />
-                    <div className="form-text">
-                        Maximum 100 characters. No HTML or emoji allowed.
-                    </div>
-                </div>
-                <div className="file-drop-area mb-3">
-                    <div className="file-drop-icon ci-cloud-upload" />
-                    <span className="file-drop-message">
-                        Drag and drop here to upload product screenshot
-                    </span>
-                    <input className="file-drop-input" type="file" />
-                    <button
-                        className="file-drop-btn btn btn-primary btn-sm mb-2"
-                        type="button"
-                    >
-                        Or select file
+                    <Textarea
+                        label="Product description"
+                        minRows={7}
+                        required
+                        {...productForm.getInputProps('description')}
+                        placeholder='Enter product description max 500 characters'
+                    />
+                    <Select
+                        label="Category"
+                        searchable
+                        data={categoriesData ? categoriesData.map((category) => ({
+                            value: category.id + "",
+                            label: category?.name
+                        })) : []}
+                        required
+                        nothingFound="Category not found"
+                        {...productForm.getInputProps('category_id')}
+                    />
+                    <Grid>
+                        <Grid.Col xs={6} md={4}>
+                            <NumberInput
+                                label="Allocated Items"
+                                placeholder="4000"
+                                required
+                                {...productForm.getInputProps('allocated_items')}
+                            />
+                        </Grid.Col>
+                        <Grid.Col xs={6} md={4}>
+                            <NumberInput
+                                label="Assigned Items"
+                                placeholder="2000"
+                                required
+                                {...productForm.getInputProps('assigned_items')}
+                            />
+                        </Grid.Col>
+                        <Grid.Col xs={6} md={4}>
+                            <NumberInput
+                                label="Available Items"
+                                placeholder="2000"
+                                required
+                                {...productForm.getInputProps('available_items')}
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <Grid>
+                        <Grid.Col xs={6} md={6}>
+                            <NumberInput
+                                label="Price"
+                                placeholder="4000"
+                                required
+                                {...productForm.getInputProps('price')}
+                            />
+                        </Grid.Col>
+                        <Grid.Col xs={6} md={6}>
+                            <NumberInput
+                                label="Discount (%)"
+                                placeholder="10"
+                                {...productForm.getInputProps('discount')}
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <button className="btn btn-primary d-block w-100" type="submit">
+                        <i className="ci-cloud-upload fs-lg me-2" />
+                        Upload Product
+                        {
+                            loading ?
+                                <Loader color='white' ml="sm" size="sm" />
+                                : null
+                        }
                     </button>
-                    <div className="form-text">
-                        1000 x 800px ideal size for hi-res displays
-                    </div>
-                </div>
-                <div className="mb-3 py-2">
-                    <label className="form-label" htmlFor="unp-product-description">
-                        Product description
-                    </label>
-                    <textarea
-                        className="form-control"
-                        rows={6}
-                        id="unp-product-description"
-                        defaultValue={""}
-                    />
-                    <div className="bg-secondary p-3 fs-ms rounded-bottom">
-                        <span className="d-inline-block fw-medium me-2 my-1">
-                            Markdown supported:
-                        </span>
-                        <em className="d-inline-block border-end pe-2 me-2 my-1">
-                            *Italic*
-                        </em>
-                        <strong className="d-inline-block border-end pe-2 me-2 my-1">
-                            **Bold**
-                        </strong>
-                        <span className="d-inline-block border-end pe-2 me-2 my-1">
-                            - List item
-                        </span>
-                        <span className="d-inline-block border-end pe-2 me-2 my-1">
-                            ##Heading##
-                        </span>
-                        <span className="d-inline-block">--- Horizontal rule</span>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-6 mb-3">
-                        <label className="form-label" htmlFor="unp-standard-price">
-                            Standard license price
-                        </label>
-                        <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="ci-dollar" />
-                            </span>
-                            <input
-                                className="form-control"
-                                type="text"
-                                id="unp-standard-price"
-                            />
-                        </div>
-                        <div className="form-text">
-                            Average marketplace price for this category is $15.
-                        </div>
-                    </div>
-                    <div className="col-sm-6 mb-3">
-                        <label className="form-label" htmlFor="unp-extended-price">
-                            Extended license price
-                        </label>
-                        <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="ci-dollar" />
-                            </span>
-                            <input
-                                className="form-control"
-                                type="text"
-                                id="unp-extended-price"
-                            />
-                        </div>
-                        <div className="form-text">
-                            Typically 10x of the Standard license price.
-                        </div>
-                    </div>
-                </div>
-                <div className="mb-3 py-2">
-                    <label className="form-label" htmlFor="unp-product-tags">
-                        Product tags
-                    </label>
-                    <textarea
-                        className="form-control"
-                        rows={4}
-                        id="unp-product-tags"
-                        defaultValue={""}
-                    />
-                    <div className="form-text">
-                        Up to 10 keywords that describe your item. Tags should all be in
-                        lowercase and separated by commas.
-                    </div>
-                </div>
-                <div className="mb-3 pb-2">
-                    <label className="form-label" htmlFor="unp-product-files">
-                        Product files for sale
-                    </label>
-                    <input
-                        className="form-control"
-                        type="file"
-                        id="unp-product-files"
-                    />
-                    <div className="form-text">Maximum file size is 1GB</div>
-                </div>
-                <button className="btn btn-primary d-block w-100" type="submit">
-                    <i className="ci-cloud-upload fs-lg me-2" />
-                    Upload Product
-                </button>
+                </Stack>
             </form>
         </>
     )

@@ -7,6 +7,7 @@ const Provider = ({ children }) => {
     return (
         <MantineProvider withGlobalStyles withNormalizeCSS theme={{
             primaryColor: 'pink',
+            // focusRing: 'always',
             // focusRingStyles: {
             //     inputStyles: (theme) => ({
             //         '&:focus': {

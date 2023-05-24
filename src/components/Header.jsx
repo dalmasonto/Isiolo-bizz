@@ -241,7 +241,7 @@ const Header = () => {
             </Text>
         ),
         labels: { confirm: 'Confirm', cancel: 'Cancel' },
-        onCancel: () => {},
+        onCancel: () => { },
         onConfirm: () => dispatch(logout()),
     });
 
@@ -366,7 +366,7 @@ const Header = () => {
                                 {
                                     loggedIn ? (
                                         <div className="navbar-tool-text ms-n3" onClick={handleLogout}>
-                                            <small>Hello {limitChars(user?.user?.account?.first_name, 6)}, Sign out </small>My Account
+                                            <small>Hello {limitChars(user?.user?.name, 6)}, Sign out </small>My Account
                                         </div>
                                     ) : (
                                         <Link to='/account/auth'>
@@ -406,7 +406,7 @@ const Header = () => {
                                         data-bs-toggle="dropdown"
                                     >
                                         <i className="ci-view-grid me-2" />
-                                        Departments
+                                        Shops
                                     </a>
                                     <div className="dropdown-menu px-2 pb-4" style={{ width: "800px", maxWidth: '90vw' }}>
                                         <Grid>
@@ -437,9 +437,28 @@ const Header = () => {
                                     ))
                                 }
                                 {
-                                    loggedIn && navlinks.filter(item => item?.logInRequired).map((link, index) => (
-                                        <NavItem key={index} {...link} click={() => setNavbarOPen(false)} loggedIn={loggedIn} />
-                                    ))
+                                    loggedIn && user?.user?.isMerchant && (
+                                        <NavItem {...{
+                                            id: 'f',
+                                            label: 'Merchant',
+                                            to: '/merchant',
+                                            icon: '',
+                                            children: [],
+                                            logInRequired: true
+                                        }} click={() => setNavbarOPen(false)} loggedIn={loggedIn} />
+                                    )
+                                }
+                                {
+                                    loggedIn && (user?.user?.isAdministrator || user?.user?.isManager ) && (
+                                        <NavItem {...{
+                                            id: 'f',
+                                            label: 'Admin',
+                                            to: ADMIN_BASE_URL,
+                                            icon: '',
+                                            children: [],
+                                            logInRequired: true
+                                        }} click={() => setNavbarOPen(false)} loggedIn={loggedIn} />
+                                    )
                                 }
                             </ul>
                         </div>

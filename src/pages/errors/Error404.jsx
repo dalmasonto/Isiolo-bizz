@@ -21,9 +21,9 @@ const Error404 = () => {
                                 width={340}
                                 alt="404 Error"
                             />
-                            <Text>
+                            {/* <Text>
                                 {JSON.stringify(user)}
-                            </Text>
+                            </Text> */}
                             <h1 className="h3">404 error</h1>
                             <h3 className="h5 fw-normal mb-4">
                                 We can't seem to find the page you are looking for.

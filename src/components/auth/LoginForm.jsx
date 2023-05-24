@@ -7,7 +7,7 @@ import { showNotification } from '@mantine/notifications'
 import { useForm } from '@mantine/form'
 import { useDispatch } from 'react-redux'
 import { makeRequestOne } from '../../config/config'
-import { URLS } from '../../config/constants'
+import { ADMIN_BASE_URL, URLS } from '../../config/constants'
 import { login } from '../../providers/app/appSlice'
 
 const LoginForm = () => {
@@ -31,9 +31,10 @@ const LoginForm = () => {
     const handleLogin = (values) => {
         setLoading(true)
         makeRequestOne(URLS.LOGIN + "/", 'POST', {}, values, {}).then(res => {
-            const data = res?.data
+            const data = res?.data?.data
+            console.log("Data: ", data)
             if (data && data !== "") {
-                dispatch(login({ token: data?.data?.accessToken, user: data?.data?.user }))
+                dispatch(login({ token: data?.accessToken, user: data?.user }))
                 showNotification({
                     title: 'Login Success',
                     message: 'You have successfully logged in',
@@ -41,11 +42,18 @@ const LoginForm = () => {
                     icon: <IconAlertCircle />,
                 })
                 const redirectTo = searchParams.get('redirect')
+                console.log(redirectTo)
                 if (redirectTo) {
                     navigate(redirectTo)
                 }
                 else {
-                    navigate('/merchant')
+                    console.log(data?.user)
+                    if(data?.user?.isAdministrator){
+                        navigate(`/${ADMIN_BASE_URL}/`)
+                    }
+                    else{
+                        navigate('/merchant/')
+                    }
                 }
             }
             else {
