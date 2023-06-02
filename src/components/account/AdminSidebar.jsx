@@ -70,14 +70,14 @@ const AdminSidebar = () => {
             <div className="h-100 border-end mb-2">
                 <div className="d-lg-block collapse" id="account-menu">
                     {
-                        sidebarLinkgs.map((group, j) => (
+                        sidebarLinkgs?.map((group, j) => (
                             <div key={`group_${group.group}`}>
                                 <div className="bg-secondary p-4">
                                     <h3 className="fs-sm mb-0 text-muted">{group.group}</h3>
                                 </div>
                                 <ul className="list-unstyled mb-0">
                                     {
-                                        group.links.map((link, i) => (
+                                        group?.links?.map((link, i) => (
                                             <li key={`${group.group}_${i}`} className="border-bottom mb-0">
                                                 <NavLink
                                                     className={({ isActive, isPending }) =>

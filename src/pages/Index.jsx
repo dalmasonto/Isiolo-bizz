@@ -50,7 +50,7 @@ const Index = () => {
                 </Carousel>
             </section>
             {
-                SHOPS.map((shop, i) => (
+                SHOPS?.map((shop, i) => (
                     <HomeShopCategory key={`home_shop_${i}`} shop={shop} barnerOrder={i % 2 === 0 ? '' : 'order-md-2'} />
                 ))
             }

@@ -121,7 +121,7 @@ const AddProductForm = ({ updating, product }) => {
                             <Select
                                 label="Category"
                                 searchable
-                                data={categoriesData ? categoriesData.map((category) => ({
+                                data={categoriesData ? categoriesData?.map((category) => ({
                                     value: category.id + "",
                                     label: category?.name
                                 })) : []}

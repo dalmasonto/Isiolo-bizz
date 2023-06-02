@@ -15,7 +15,7 @@ const SingleMerchant = () => {
   const merchantQuery = useSwr([`${URLS.MERCHANTS}/${id}/`, 'GET', { }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
   const merchant = merchantQuery?.data?.data?.data
 
-  const productsQuery = useSwr([URLS.PRODUCTS, 'GET', { }, {}, {'filter[category_id]': id}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const productsQuery = useSwr([URLS.PRODUCTS, 'GET', { }, {}, {'filter[merchant]': id}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
   const productsData = productsQuery?.data?.data?.data
 
   console.log("products: ", productsData)

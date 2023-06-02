@@ -101,7 +101,7 @@ const HeaderCart = () => {
                     }} scrollbarSize={4}>
                         <Box p="sm">
                             {
-                                cartItems.map((item, i) => (
+                                cartItems?.map((item, i) => (
                                     <CartItem key={`nav_cart_item_${i}`} item={item} />
                                 ))
                             }
@@ -197,7 +197,7 @@ const NavItem = ({ id, label, to, icon, children, click }) => {
                 </a>
                 <ul className="dropdown-menu">
                     {
-                        children.map((child, index) => (
+                        children?.map((child, index) => (
                             <NavItem key={`${id}_${child?.id}`} {...child} />
                         ))
                     }
@@ -437,7 +437,7 @@ const Header = () => {
                             {/* Primary menu*/}
                             <ul className="navbar-nav">
                                 {
-                                    navlinks.filter(item => !item?.logInRequired).map((link, index) => (
+                                    navlinks?.filter(item => !item?.logInRequired)?.map((link, index) => (
                                         <NavItem key={index} {...link} click={() => setNavbarOPen(false)} loggedIn={loggedIn} />
                                     ))
                                 }

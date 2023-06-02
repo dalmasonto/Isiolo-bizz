@@ -294,7 +294,7 @@ const Checkout = () => {
                                     <h2 className="widget-title text-center">Order summary</h2>
 
                                     {
-                                        items.map((item, i) => (
+                                        items?.map((item, i) => (
                                             <ItemSummary key={`summary_item_${i}`} item={item} />
                                         ))
                                     }

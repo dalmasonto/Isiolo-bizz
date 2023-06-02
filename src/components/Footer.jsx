@@ -17,7 +17,7 @@ const Footer = () => {
                             <h3 className="widget-title text-light">Shop departments</h3>
                             <ul className="widget-list">
                                 {
-                                    categoriesData.map((category, index) => (
+                                    categoriesData?.map((category, index) => (
                                         <li key={`category_${category.id}`} className="widget-list-item">
                                             <Link
                                                 className="widget-list-link"

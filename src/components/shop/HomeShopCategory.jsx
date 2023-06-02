@@ -40,7 +40,7 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
                     <div className="col-md-7 pt-4 pt-md-0">
                         <Carousel slideSize={"33.33%"} slideGap={10} align={'start'} controlSize={42}>
                             {
-                                products.map((product) => (
+                                products?.map((product) => (
                                     <Carousel.Slide key={`_product_ks_${product.id}`} pt={20} pb={100} style={{ overflow: "auto !important" }}>
                                         <ProductCard product={product} />
                                     </Carousel.Slide>
