@@ -1,20 +1,47 @@
-import { Group, Image, NumberInput, Rating, Text } from '@mantine/core'
+import { Center, Group, Image, NumberInput, Rating, Text } from '@mantine/core'
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { CURRENCY, URLS } from '../../config/constants'
 import useSwr from 'swr';
 import { formatCurrency, makeRequestOne } from '../../config/config';
 import { Carousel } from '@mantine/carousel';
+import { useForm } from '@mantine/form';
+import { useDispatch } from 'react-redux';
+import { showNotification } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons';
+import { addToCart } from '../../providers/app/appSlice';
+import ProductCard from '../../components/shop/ProductCard';
 
 const SingleProduct = () => {
     const { id, slug } = useParams()
+
+    const dispatch = useDispatch()
+
     const productQuery = useSwr([`${URLS.PRODUCTS}/${id}/`, 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const product = productQuery?.data?.data?.data
     const images = JSON.parse(product?.images ? product?.images : "[]")
 
-    const similarProductsQuery = useSwr([`${URLS.PRODUCTS}/`, 'GET', {}, {}, {'filter[category]': product?.category, 'exclude[id]': id}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const similarProductsQuery = useSwr([`${URLS.PRODUCTS}/`, 'GET', {}, {}, { 'filter[category]': product?.category, 'exclude[id]': id }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const products = similarProductsQuery?.data?.data?.data
-    console.log("Products: ", products)
+
+    const productForm = useForm({
+        initialValues: {
+            qty: 1
+        }
+    })
+
+    const addProductToCart = () => {
+        const qty = productForm.values['qty']
+        dispatch(addToCart({ product, qty }))
+        showNotification({
+            title: 'Added to cart',
+            message: `${product?.name} added to cart`,
+            color: 'green',
+            icon: <IconCheck stroke={1.5} />
+        })
+    }
+
+
 
     return (
         <>
@@ -55,56 +82,15 @@ const SingleProduct = () => {
                             {/* Product gallery*/}
                             <div className="col-lg-7 pe-lg-0 pt-lg-4">
                                 <div>
-                                    <Carousel mx="auto" withIndicators dragFree align="start" loop color='red'>
+                                    <Carousel mx="auto" withIndicators align="center" loop color='red'>
                                         {
                                             images?.map((image, i) => (
-                                                <Carousel.Slide key={`product_${product?.id}_image_${i}`} >
-                                                    <Image src={image ? "/assets/img/shop/single/gallery/01.jpg" : "/assets/img/shop/single/gallery/01.jpg"} radius="lg" />
+                                                <Carousel.Slide key={`product_${product?.id}_image_${i}`}>
+                                                    <Image src={image ? image : "/assets/img/shop/single/gallery/01.jpg"} mx="auto" width={"70%"} radius="lg" />
                                                 </Carousel.Slide>
                                             ))
                                         }
                                     </Carousel>
-                                </div>
-                                <div className="product-gallery d-none">
-
-                                    <div className="product-gallery-preview order-sm-2">
-                                        <div className="product-gallery-preview-item active" id="first">
-                                            <img
-                                                className="image-zoom"
-                                                src="/assets/img/shop/single/gallery/01.jpg"
-                                                data-zoom="/assets/img/shop/single/gallery/01.jpg"
-                                                alt="Product image"
-                                            />
-                                            <div className="image-zoom-pane" />
-                                        </div>
-                                        <div className="product-gallery-preview-item" id="second">
-                                            <img
-                                                className="image-zoom"
-                                                src="/assets/img/shop/single/gallery/02.jpg"
-                                                data-zoom="/assets/img/shop/single/gallery/02.jpg"
-                                                alt="Product image"
-                                            />
-                                            <div className="image-zoom-pane" />
-                                        </div>
-                                        <div className="product-gallery-preview-item" id="third">
-                                            <img
-                                                className="image-zoom"
-                                                src="/assets/img/shop/single/gallery/03.jpg"
-                                                data-zoom="/assets/img/shop/single/gallery/03.jpg"
-                                                alt="Product image"
-                                            />
-                                            <div className="image-zoom-pane" />
-                                        </div>
-                                        <div className="product-gallery-preview-item" id="fourth">
-                                            <img
-                                                className="image-zoom"
-                                                src="/assets/img/shop/single/gallery/04.jpg"
-                                                data-zoom="/assets/img/shop/single/gallery/04.jpg"
-                                                alt="Product image"
-                                            />
-                                            <div className="image-zoom-pane" />
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             {/* Product details*/}
@@ -144,13 +130,13 @@ const SingleProduct = () => {
                                             Product available
                                         </div>
                                     </div>
-                                    <form className="mb-grid-gutter" method="post">
+                                    <form className="mb-grid-gutter" onSubmit={productForm.onSubmit((values) => addProductToCart())}>
 
                                         <Group mb={"md"}>
                                             <NumberInput
                                                 style={{ width: "5rem" }}
                                                 min={1}
-                                                value={1}
+                                                {...productForm.getInputProps('qty')}
                                             />
                                             <button
                                                 className="btn btn-primary btn-shadow d-block flex-1"
@@ -232,231 +218,16 @@ const SingleProduct = () => {
             {/* Product carousel (You may also like)*/}
             <div className="container py-5 my-md-3">
                 <h2 className="h3 text-center pb-4">You may also like</h2>
-                <div className="tns-carousel tns-controls-static tns-controls-outside">
-                    <div
-                        className="tns-carousel-inner"
-                        data-carousel-options='{"items": 2, "controls": true, "nav": false, "responsive": {"0":{"items":1},"500":{"items":2, "gutter": 18},"768":{"items":3, "gutter": 20}, "1100":{"items":4, "gutter": 30}}}'
-                    >
-
-                        {/* Product*/}
-                        <div>
-                            <div className="card product-card card-static">
-                                <button
-                                    className="btn-wishlist btn-sm"
-                                    type="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="left"
-                                    title="Add to wishlist"
-                                >
-                                    <i className="ci-heart" />
-                                </button>
-                                <a
-                                    className="card-img-top d-block overflow-hidden"
-                                    href="shop-single-v1.html#"
-                                >
-                                    <img src="/assets/img/shop/catalog/20.jpg" alt="Product" />
-                                </a>
-                                <div className="card-body py-2">
-                                    <a
-                                        className="product-meta d-block fs-xs pb-1"
-                                        href="shop-single-v1.html#"
-                                    >
-                                        Men’s Hoodie
-                                    </a>
-                                    <h3 className="product-title fs-sm">
-                                        <a href="shop-single-v1.html#">Block-colored Hooded Top</a>
-                                    </h3>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="product-price">
-                                            <span className="text-accent">
-                                                $24.<small>99</small>
-                                            </span>
-                                        </div>
-                                        <div className="star-rating">
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-half active" />
-                                            <i className="star-rating-icon ci-star" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* Product*/}
-                        <div>
-                            <div className="card product-card card-static">
-                                <button
-                                    className="btn-wishlist btn-sm"
-                                    type="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="left"
-                                    title="Add to wishlist"
-                                >
-                                    <i className="ci-heart" />
-                                </button>
-                                <a
-                                    className="card-img-top d-block overflow-hidden"
-                                    href="shop-single-v1.html#"
-                                >
-                                    <img src="/assets/img/shop/catalog/21.jpg" alt="Product" />
-                                </a>
-                                <div className="card-body py-2">
-                                    <a
-                                        className="product-meta d-block fs-xs pb-1"
-                                        href="shop-single-v1.html#"
-                                    >
-                                        Men’s Hoodie
-                                    </a>
-                                    <h3 className="product-title fs-sm">
-                                        <a href="shop-single-v1.html#">Block-colored Hooded Top</a>
-                                    </h3>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="product-price text-accent">
-                                            $26.<small>99</small>
-                                        </div>
-                                        <div className="star-rating">
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* Product*/}
-                        <div>
-                            <div className="card product-card card-static">
-                                <button
-                                    className="btn-wishlist btn-sm"
-                                    type="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="left"
-                                    title="Add to wishlist"
-                                >
-                                    <i className="ci-heart" />
-                                </button>
-                                <a
-                                    className="card-img-top d-block overflow-hidden"
-                                    href="shop-single-v1.html#"
-                                >
-                                    <img src="/assets/img/shop/catalog/22.jpg" alt="Product" />
-                                </a>
-                                <div className="card-body py-2">
-                                    <a
-                                        className="product-meta d-block fs-xs pb-1"
-                                        href="shop-single-v1.html#"
-                                    >
-                                        Men’s Hoodie
-                                    </a>
-                                    <h3 className="product-title fs-sm">
-                                        <a href="shop-single-v1.html#">Block-colored Hooded Top</a>
-                                    </h3>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="product-price text-accent">
-                                            $24.<small>99</small>
-                                        </div>
-                                        <div className="star-rating">
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-half active" />
-                                            <i className="star-rating-icon ci-star" />
-                                            <i className="star-rating-icon ci-star" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* Product*/}
-                        <div>
-                            <div className="card product-card card-static">
-                                <button
-                                    className="btn-wishlist btn-sm"
-                                    type="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="left"
-                                    title="Add to wishlist"
-                                >
-                                    <i className="ci-heart" />
-                                </button>
-                                <a
-                                    className="card-img-top d-block overflow-hidden"
-                                    href="shop-single-v1.html#"
-                                >
-                                    <img src="/assets/img/shop/catalog/23.jpg" alt="Product" />
-                                </a>
-                                <div className="card-body py-2">
-                                    <a
-                                        className="product-meta d-block fs-xs pb-1"
-                                        href="shop-single-v1.html#"
-                                    >
-                                        Men’s Hoodie
-                                    </a>
-                                    <h3 className="product-title fs-sm">
-                                        <a href="shop-single-v1.html#">Block-colored Hooded Top</a>
-                                    </h3>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="product-price text-accent">
-                                            $24.<small>99</small>
-                                        </div>
-                                        <div className="star-rating">
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* Product*/}
-                        <div>
-                            <div className="card product-card card-static">
-                                <button
-                                    className="btn-wishlist btn-sm"
-                                    type="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="left"
-                                    title="Add to wishlist"
-                                >
-                                    <i className="ci-heart" />
-                                </button>
-                                <a
-                                    className="card-img-top d-block overflow-hidden"
-                                    href="shop-single-v1.html#"
-                                >
-                                    <img src="/assets/img/shop/catalog/24.jpg" alt="Product" />
-                                </a>
-                                <div className="card-body py-2">
-                                    <a
-                                        className="product-meta d-block fs-xs pb-1"
-                                        href="shop-single-v1.html#"
-                                    >
-                                        Men’s Hoodie
-                                    </a>
-                                    <h3 className="product-title fs-sm">
-                                        <a href="shop-single-v1.html#">Block-colored Hooded Top</a>
-                                    </h3>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="product-price text-accent">
-                                            $25.<small>00</small>
-                                        </div>
-                                        <div className="star-rating">
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star-filled active" />
-                                            <i className="star-rating-icon ci-star" />
-                                            <i className="star-rating-icon ci-star" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                <div className="">
+                    <Carousel slideSize={"25%"}>
+                        {
+                            products?.map((product) => (
+                                <Carousel.Slide key={`_product_${product.id}`} >
+                                    <ProductCard product={product} />
+                                </Carousel.Slide>
+                            ))
+                        }
+                    </Carousel>
                 </div>
             </div>
         </>

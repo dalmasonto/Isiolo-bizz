@@ -68,7 +68,9 @@ const Products = () => {
       </div>
       {/* Product*/}
       {
-        products?.map((product, i) => (
+        products?.map((product, i) => {
+          const images = JSON.parse(product?.images ? product?.images : "[]")
+          return (
           <div key={`product_${product?.id}_${i}`} className="d-block d-sm-flex align-items-center py-4 border-bottom">
             <Box
               className="d-block mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
@@ -76,7 +78,7 @@ const Products = () => {
             >
               <img
                 className="rounded-3"
-                src={`${product?.poster ? product?.poster : '/assets/images/products/Fresh-Camel-Milk.jpg'}`}
+                src={`${images?.length > 0 ? images[0] : '/assets/images/products/Fresh-Camel-Milk.jpg'}`}
                 alt="Product"
               />
             </Box>
@@ -109,7 +111,7 @@ const Products = () => {
               </div>
             </div>
           </div>
-        ))
+        )})
       }
     </div>
   )

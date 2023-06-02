@@ -10,6 +10,7 @@ import { formatCurrency } from '../../config/config'
 const ProductCard = ({ product }) => {
 
     const dispatch = useDispatch()
+    const images = JSON.parse(product?.images ? product?.images : "[]")
 
     const addProductToCart = (product, qty) => {
         dispatch(addToCart({ product, qty }))
@@ -36,7 +37,7 @@ const ProductCard = ({ product }) => {
                 className="card-img-top d-block overflow-hidden"
                 to={`/shop/products/${product.id}`}
             >
-                <img src={product?.poster ? product?.poster : "/assets/images/products/Fresh-Camel-Milk.jpg"} alt="Product" />
+                <img src={images?.length > 0 ? images[0] : "/assets/images/products/Fresh-Camel-Milk.jpg"} alt="Product" />
             </Link>
             <div className="card-body py-2">
                 <Link
