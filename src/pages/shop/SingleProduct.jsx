@@ -1,7 +1,21 @@
-import { Group, NumberInput, Rating } from '@mantine/core'
+import { Group, Image, NumberInput, Rating, Text } from '@mantine/core'
 import React from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { CURRENCY, URLS } from '../../config/constants'
+import useSwr from 'swr';
+import { formatCurrency, makeRequestOne } from '../../config/config';
+import { Carousel } from '@mantine/carousel';
 
 const SingleProduct = () => {
+    const { id, slug } = useParams()
+    const productQuery = useSwr([`${URLS.PRODUCTS}/${id}/`, 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const product = productQuery?.data?.data?.data
+    const images = JSON.parse(product?.images ? product?.images : "[]")
+
+    const similarProductsQuery = useSwr([`${URLS.PRODUCTS}/`, 'GET', {}, {}, {'filter[category]': product?.category, 'exclude[id]': id}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const products = similarProductsQuery?.data?.data?.data
+    console.log("Products: ", products)
+
     return (
         <>
             {/* Page Title*/}
@@ -11,25 +25,25 @@ const SingleProduct = () => {
                         <nav aria-label="breadcrumb">
                             <ol className="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
                                 <li className="breadcrumb-item">
-                                    <a className="text-nowrap" href="index.html">
+                                    <Link className="text-nowrap" to={'/'}>
                                         <i className="ci-home" />
                                         Home
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="breadcrumb-item text-nowrap">
-                                    <a href="shop-single-v1.html#">Shop</a>
+                                    <Link to={'/shop'}>Shop</Link>
                                 </li>
                                 <li
                                     className="breadcrumb-item text-nowrap active"
                                     aria-current="page"
                                 >
-                                    Product Page v.1
+                                    {product?.name}
                                 </li>
                             </ol>
                         </nav>
                     </div>
                     <div className="order-lg-1 pe-lg-4 text-center text-lg-start">
-                        <h1 className="h3 text-light mb-0">Sports Hooded Sweatshirt</h1>
+                        <h1 className="h3 text-light mb-0">{product?.name}</h1>
                     </div>
                 </div>
             </div>
@@ -40,7 +54,19 @@ const SingleProduct = () => {
                         <div className="row">
                             {/* Product gallery*/}
                             <div className="col-lg-7 pe-lg-0 pt-lg-4">
-                                <div className="product-gallery">
+                                <div>
+                                    <Carousel mx="auto" withIndicators dragFree align="start" loop color='red'>
+                                        {
+                                            images?.map((image, i) => (
+                                                <Carousel.Slide key={`product_${product?.id}_image_${i}`} >
+                                                    <Image src={image ? "/assets/img/shop/single/gallery/01.jpg" : "/assets/img/shop/single/gallery/01.jpg"} radius="lg" />
+                                                </Carousel.Slide>
+                                            ))
+                                        }
+                                    </Carousel>
+                                </div>
+                                <div className="product-gallery d-none">
+
                                     <div className="product-gallery-preview order-sm-2">
                                         <div className="product-gallery-preview-item active" id="first">
                                             <img
@@ -104,11 +130,8 @@ const SingleProduct = () => {
                                     </div>
                                     <div className="mb-3">
                                         <span className="h3 fw-normal text-accent me-1">
-                                            $18.<small>99</small>
+                                            {CURRENCY} {formatCurrency(product?.price)}
                                         </span>
-                                        <del className="text-muted fs-lg me-3">
-                                            $25.<small>00</small>
-                                        </del>
                                         <span className="badge bg-danger badge-shadow align-middle mt-n2">
                                             Sale
                                         </span>
@@ -122,7 +145,7 @@ const SingleProduct = () => {
                                         </div>
                                     </div>
                                     <form className="mb-grid-gutter" method="post">
-                                        
+
                                         <Group mb={"md"}>
                                             <NumberInput
                                                 style={{ width: "5rem" }}
@@ -144,7 +167,7 @@ const SingleProduct = () => {
                                             <h3 className="accordion-header">
                                                 <a
                                                     className="accordion-button"
-                                                    href="shop-single-v1.html#productInfo"
+                                                    href="#productInfo"
                                                     role="button"
                                                     data-bs-toggle="collapse"
                                                     aria-expanded="true"
@@ -160,113 +183,17 @@ const SingleProduct = () => {
                                                 data-bs-parent="#productPanels"
                                             >
                                                 <div className="accordion-body">
-                                                    <h6 className="fs-sm mb-2">Composition</h6>
+                                                    <h6 className="fs-sm mb-2">Name</h6>
+                                                    <Text>
+                                                        {product?.name}
+                                                    </Text>
                                                     <ul className="fs-sm ps-4">
-                                                        <li>Elastic rib: Cotton 95%, Elastane 5%</li>
-                                                        <li>Lining: Cotton 100%</li>
-                                                        <li>Cotton 80%, Polyester 20%</li>
+                                                        {/* <li></li> */}
                                                     </ul>
-                                                    <h6 className="fs-sm mb-2">Art. No.</h6>
-                                                    <ul className="fs-sm ps-4 mb-0">
-                                                        <li>183260098</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="accordion-item">
-                                            <h3 className="accordion-header">
-                                                <a
-                                                    className="accordion-button collapsed"
-                                                    href="shop-single-v1.html#shippingOptions"
-                                                    role="button"
-                                                    data-bs-toggle="collapse"
-                                                    aria-expanded="true"
-                                                    aria-controls="shippingOptions"
-                                                >
-                                                    <i className="ci-delivery text-muted lead align-middle mt-n1 me-2" />
-                                                    Shipping options
-                                                </a>
-                                            </h3>
-                                            <div
-                                                className="accordion-collapse collapse"
-                                                id="shippingOptions"
-                                                data-bs-parent="#productPanels"
-                                            >
-                                                <div className="accordion-body fs-sm">
-                                                    <div className="d-flex justify-content-between border-bottom pb-2">
-                                                        <div>
-                                                            <div className="fw-semibold text-dark">Courier</div>
-                                                            <div className="fs-sm text-muted">2 - 4 days</div>
-                                                        </div>
-                                                        <div>$26.50</div>
-                                                    </div>
-                                                    <div className="d-flex justify-content-between border-bottom py-2">
-                                                        <div>
-                                                            <div className="fw-semibold text-dark">
-                                                                Local shipping
-                                                            </div>
-                                                            <div className="fs-sm text-muted">up to one week</div>
-                                                        </div>
-                                                        <div>$10.00</div>
-                                                    </div>
-                                                    <div className="d-flex justify-content-between border-bottom py-2">
-                                                        <div>
-                                                            <div className="fw-semibold text-dark">Flat rate</div>
-                                                            <div className="fs-sm text-muted">5 - 7 days</div>
-                                                        </div>
-                                                        <div>$33.85</div>
-                                                    </div>
-                                                    <div className="d-flex justify-content-between border-bottom py-2">
-                                                        <div>
-                                                            <div className="fw-semibold text-dark">
-                                                                UPS ground shipping
-                                                            </div>
-                                                            <div className="fs-sm text-muted">4 - 6 days</div>
-                                                        </div>
-                                                        <div>$18.00</div>
-                                                    </div>
-                                                    <div className="d-flex justify-content-between pt-2">
-                                                        <div>
-                                                            <div className="fw-semibold text-dark">
-                                                                Local pickup from store
-                                                            </div>
-                                                            <div className="fs-sm text-muted">—</div>
-                                                        </div>
-                                                        <div>$0.00</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="accordion-item">
-                                            <h3 className="accordion-header">
-                                                <a
-                                                    className="accordion-button collapsed"
-                                                    href="shop-single-v1.html#localStore"
-                                                    role="button"
-                                                    data-bs-toggle="collapse"
-                                                    aria-expanded="true"
-                                                    aria-controls="localStore"
-                                                >
-                                                    <i className="ci-location text-muted fs-lg align-middle mt-n1 me-2" />
-                                                    Find in local store
-                                                </a>
-                                            </h3>
-                                            <div
-                                                className="accordion-collapse collapse"
-                                                id="localStore"
-                                                data-bs-parent="#productPanels"
-                                            >
-                                                <div className="accordion-body">
-                                                    <select className="form-select">
-                                                        <option value="">Select your country</option>
-                                                        <option value="Argentina">Argentina</option>
-                                                        <option value="Belgium">Belgium</option>
-                                                        <option value="France">France</option>
-                                                        <option value="Germany">Germany</option>
-                                                        <option value="Spain">Spain</option>
-                                                        <option value="UK">United Kingdom</option>
-                                                        <option value="USA">USA</option>
-                                                    </select>
+                                                    <h6 className="fs-sm mb-2">Description</h6>
+                                                    <Text>
+                                                        {product?.description}
+                                                    </Text>
                                                 </div>
                                             </div>
                                         </div>
@@ -277,21 +204,21 @@ const SingleProduct = () => {
                                     </label>
                                     <a
                                         className="btn-share btn-twitter me-2 my-2"
-                                        href="shop-single-v1.html#"
+                                        href="#"
                                     >
                                         <i className="ci-twitter" />
                                         Twitter
                                     </a>
                                     <a
                                         className="btn-share btn-instagram me-2 my-2"
-                                        href="shop-single-v1.html#"
+                                        href="#"
                                     >
                                         <i className="ci-instagram" />
                                         Instagram
                                     </a>
                                     <a
                                         className="btn-share btn-facebook my-2"
-                                        href="shop-single-v1.html#"
+                                        href="#"
                                     >
                                         <i className="ci-facebook" />
                                         Facebook
@@ -310,6 +237,7 @@ const SingleProduct = () => {
                         className="tns-carousel-inner"
                         data-carousel-options='{"items": 2, "controls": true, "nav": false, "responsive": {"0":{"items":1},"500":{"items":2, "gutter": 18},"768":{"items":3, "gutter": 20}, "1100":{"items":4, "gutter": 30}}}'
                     >
+
                         {/* Product*/}
                         <div>
                             <div className="card product-card card-static">
@@ -527,6 +455,7 @@ const SingleProduct = () => {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

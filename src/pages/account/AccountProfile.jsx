@@ -12,7 +12,7 @@ import { displayErrors } from '../../config/functions';
 const AccountProfile = () => {
     const [loading, setLoading] = useState(false)
     const user = useSelector(selectUser)
-    console.log(user)
+
     const token = useSelector(selectToken)
     const account = user?.user?.account
     const dispatch = useDispatch()
@@ -31,16 +31,23 @@ const AccountProfile = () => {
             "city": account?.city,
             "state": account?.state,
             "country": account?.country,
+            "user_id": account?.user_id,
         },
     })
 
     const handleUpdate = (values) => {
-        values['user_id'] = account.user_id
+        
         setLoading(true)
-        makeRequestOne(URLS.ACCOUNT + `/${account?.id}`, 'PUT', {
+        let URL = URLS.ACCOUNT + `/${account?.id}`
+        let METHOD = 'PUT'
+        if (!account){
+            METHOD = 'POST'
+            URL = URLS.ACCOUNT
+            values['user_id'] = user?.user?.id
+        }
+        makeRequestOne(URL, METHOD, {
             Authorization: `Bearer ${token}`
         }, values, {}).then(res => {
-            console.log(res)
             const accountData = res?.data?.data
             dispatch(updateUserAccount(accountData))
             showNotification({

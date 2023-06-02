@@ -2,13 +2,15 @@ import React, { useEffect } from 'react'
 import MerchantSidebar from '../components/account/MerchantSidebar'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectLoggedIn, selectUser } from '../providers/app/appSlice'
+import { selectLoggedIn, selectMerchant, selectUser } from '../providers/app/appSlice'
 import { Center, Container, Title } from '@mantine/core'
+import { toDate } from '../config/config'
 
 const MerchantLayout = () => {
     const loggedIn = useSelector(selectLoggedIn)
     const user = useSelector(selectUser)
-    console.log(user)
+    const merchant = useSelector(selectMerchant)
+    console.log("merchant: ", merchant)
     const navigate = useNavigate()
     useEffect(() => {
         if (!loggedIn) {
@@ -29,14 +31,14 @@ const MerchantLayout = () => {
                                     >
                                         <img
                                             className="rounded-circle"
-                                            src="/assets/img/marketplace/account/avatar.png"
-                                            alt="Createx Studio"
+                                            src={merchant?.logo}
+                                            alt={merchant?.name}
                                         />
                                     </div>
                                     <div className="ps-3">
-                                        <h3 className="text-light fs-lg mb-0">Createx Studio</h3>
+                                        <h3 className="text-light fs-lg mb-0 text-capitalize">{merchant?.name}</h3>
                                         <span className="d-block text-light fs-ms opacity-60 py-1">
-                                            Member since November 2019
+                                            Member since {toDate(merchant?.created_at)}
                                         </span>
                                     </div>
                                 </div>
@@ -45,7 +47,7 @@ const MerchantLayout = () => {
                                         <div className="text-light fs-base">Total sales</div>
                                         <h3 className="text-light">426</h3>
                                     </div>
-                                    <div className="text-sm-end">
+                                    <div className="text-sm-end d-none">
                                         <div className="text-light fs-base">Seller rating</div>
                                         <div className="star-rating">
                                             <i className="star-rating-icon ci-star-filled active" />

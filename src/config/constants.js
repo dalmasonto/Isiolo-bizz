@@ -34,6 +34,8 @@ export const URLS = {
     STATEMENT: `${BASE_API_URL}/statement`,
     // TRANSACTION
     TRANSACTION: `${BASE_API_URL}/transaction`,
+    // MEDIA
+    MEDIA: `${BASE_API_URL}/media`
 }
 
 export const CATEOGORIES = [

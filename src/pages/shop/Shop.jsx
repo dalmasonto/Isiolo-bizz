@@ -98,9 +98,9 @@ export const products = [
 
 const Shop = () => {
   const token = useSelector(selectToken)
-  const productsQuery = useSwr([URLS.PRODUCTS + "/", 'GET', { Authorization: `Bearer ${token}` }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const productsQuery = useSwr([URLS.PRODUCTS + "/", 'GET', { }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
   const productsData = productsQuery?.data?.data?.data
-
+  console.log(productsData)
   return (
     <>
       <QuickView />
@@ -141,15 +141,8 @@ const Shop = () => {
             {/* Products grid*/}
             <div className="row mx-n2">
               {
-                products.map((product) => (
+                productsData?.map((product) => (
                   <div key={`_product_${product.id}`} className="col-md-4 col-sm-6 px-2 mb-4">
-                    <ProductCard product={product} />
-                  </div>
-                ))
-              }
-              {
-                products.map((product) => (
-                  <div key={`_produdct_${product.id}`} className="col-md-4 col-sm-6 px-2 mb-4">
                     <ProductCard product={product} />
                   </div>
                 ))

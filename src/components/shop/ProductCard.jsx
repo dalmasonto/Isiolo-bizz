@@ -5,6 +5,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart } from '../../providers/app/appSlice'
+import { formatCurrency } from '../../config/config'
 
 const ProductCard = ({ product }) => {
 
@@ -35,7 +36,7 @@ const ProductCard = ({ product }) => {
                 className="card-img-top d-block overflow-hidden"
                 to={`/shop/products/${product.id}`}
             >
-                <img src={product?.image} alt="Product" />
+                <img src={product?.poster ? product?.poster : "/assets/images/products/Fresh-Camel-Milk.jpg"} alt="Product" />
             </Link>
             <div className="card-body py-2">
                 <Link
@@ -45,15 +46,15 @@ const ProductCard = ({ product }) => {
                     {product?.category?.title}
                 </Link>
                 <h3 className="product-title fs-sm">
-                    <Link to={`/shop/products/${product?.id}`}>{product?.title}</Link>
+                    <Link to={`/shop/products/${product?.id}/${product?.slug}`}>{product?.name}</Link>
                 </h3>
                 <div className="d-flex justify-content-between">
                     <div className="product-price">
                         <span className="text-accent">
-                            KES {product?.price}
+                            KES {formatCurrency(product?.price)}
                         </span>
                     </div>
-                    <Rating value={product.rating} readOnly size='sm' fractions={2} />
+                    <Rating value={product?.rating ?? 4.5} readOnly size='sm' fractions={2} />
                 </div>
             </div>
             <div className="card-body card-body-hidden">
@@ -73,7 +74,7 @@ const ProductCard = ({ product }) => {
                     >
                         <i className="ci-eye align-middle me-1" />
                         Quick view
-                    </a>
+                    </a> 
                 </div>
             </div>
         </div>

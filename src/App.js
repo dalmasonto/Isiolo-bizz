@@ -25,6 +25,8 @@ import ContactForm from './pages/admin/ContactForm';
 import Reviews from './pages/admin/Reviews';
 import Users from './pages/admin/Users';
 import OrderHistory from './pages/merchant/OrderHistory';
+import ShopProfile from './pages/account/ShopSettings';
+import UpdateProduct from './pages/merchant/UpdateProduct';
 
 const router = createBrowserRouter([
   {
@@ -49,7 +51,7 @@ const router = createBrowserRouter([
         element: <Shop />,
       },
       {
-        path: '/shop/products/:slug',
+        path: '/shop/products/:id/:slug',
         element: <SingleProduct />,
       },
       {
@@ -81,6 +83,10 @@ const router = createBrowserRouter([
             element: <AccountProfile />,
           },
           {
+            path: "settings",
+            element: <ShopProfile />,
+          },
+          {
             path: "dashboard",
             element: <MerchantDashboard />,
           },
@@ -95,6 +101,10 @@ const router = createBrowserRouter([
           {
             path: "add-product",
             element: <AddProduct />,
+          },
+          {
+            path: "products/:id/edit",
+            element: <UpdateProduct />,
           },
         ]
       },

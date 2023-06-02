@@ -11,6 +11,11 @@ const sidebarLinkgs = [
                 icon: 'ci-settings',
                 to: '/merchant/',
             },
+            {
+                title: 'Shop Settings',
+                icon: 'ci-settings',
+                to: '/merchant/settings/',
+            },
         ]
     },
     {

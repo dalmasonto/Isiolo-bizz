@@ -5,9 +5,10 @@ import useSwr from 'swr';
 import { CURRENCY, URLS } from '../../config/constants';
 import { formatCurrency, makeRequestOne } from '../../config/config';
 import { modals } from '@mantine/modals';
-import { Text } from '@mantine/core';
+import { Box, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconAlertCircle, IconAlertTriangle } from '@tabler/icons';
+import { Link } from 'react-router-dom';
 
 const Products = () => {
 
@@ -21,7 +22,7 @@ const Products = () => {
 
     makeRequestOne(`${URLS.PRODUCTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {}).then(res => {
       showNotification({
-        title: 'Product Deleted', 
+        title: 'Product Deleted',
         message: 'Product has been deleted successfully',
         color: 'green',
         icon: <IconAlertCircle />,
@@ -69,17 +70,16 @@ const Products = () => {
       {
         products?.map((product, i) => (
           <div key={`product_${product?.id}_${i}`} className="d-block d-sm-flex align-items-center py-4 border-bottom">
-            <a
+            <Box
               className="d-block mb-3 mb-sm-0 me-sm-4 ms-sm-0 mx-auto"
-              href="marketplace-single.html"
               style={{ width: "12.5rem" }}
             >
               <img
                 className="rounded-3"
-                src="/assets/images/products/Fresh-Camel-Milk.jpg"
+                src={`${product?.poster ? product?.poster : '/assets/images/products/Fresh-Camel-Milk.jpg'}`}
                 alt="Product"
               />
-            </a>
+            </Box>
             <div className="text-center text-sm-start">
               <h3 className="h6 product-title mb-2">
                 <Text>{product?.name}</Text>
@@ -88,14 +88,15 @@ const Products = () => {
                 {CURRENCY} {formatCurrency(product?.price)}
               </div>
               <div className="d-flex justify-content-center justify-content-sm-start pt-3">
-                <button
+                <Link
+                  to={`/merchant/products/${product?.id}/edit/`}
                   className="btn bg-faded-info btn-icon me-2"
                   type="button"
                   data-bs-toggle="tooltip"
                   title="Edit"
                 >
                   <i className="ci-edit text-info" />
-                </button>
+                </Link>
                 <button
                   className="btn bg-faded-danger btn-icon"
                   type="button"

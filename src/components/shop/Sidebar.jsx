@@ -15,7 +15,7 @@ const Sidebar = () => {
 
     const merchantsQuery = useSwr([URLS.MERCHANTS + "/", 'GET', { Authorization: `Bearer ${token}` }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const merchantsData = merchantsQuery?.data?.data?.data
-
+    console.log(merchantsData)
     return (
         <aside className="col-lg-4">
             {/* Sidebar*/}
@@ -47,7 +47,9 @@ const Sidebar = () => {
                                     <Text className="widget-filter-item-text" size="md">
                                         {category?.name}
                                     </Text>
-                                    <span className="fs-xs text-muted ms-3">{Math.ceil(Math.random() * 300)}</span>
+                                    <span className="fs-xs text-muted ms-3">
+                                        {/* {Math.ceil(Math.random() * 300)} */}
+                                    </span>
                                 </Link>
                             ))
                         }
@@ -75,15 +77,16 @@ const Sidebar = () => {
                                     merchantsData?.map((merchant) => (
                                         <li key={`shop_brand_${merchant?.id}`} className="widget-filter-item d-flex justify-content-between align-items-center mb-1">
                                             <div >
-                                                <Checkbox
+                                                {/* <Checkbox
                                                     value={merchant?.id + ""}
                                                     label={merchant?.name}
                                                     labelPosition='right'
                                                     ml={0}
-                                                />
+                                                /> */}
+                                                {merchant?.name}
                                             </div>
                                             <span className="fs-xs text-muted">
-                                                {Math.ceil(Math.random() * 600)}
+                                                {/* {Math.ceil(Math.random() * 600)} */}
                                             </span>
                                         </li>
                                     ))

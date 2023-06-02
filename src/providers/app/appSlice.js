@@ -29,6 +29,9 @@ export const appSlice = createSlice({
     updateUserAccount: (state, action) => {
       state.user.user.account = action.payload;
     },
+    updateMerchantAccount: (state, action) => {
+      state.user.user.merchant = action.payload;
+    },
     logout: (state) => {
       state.user = null;
       state.loggedIn = false;
@@ -81,9 +84,11 @@ export const appSlice = createSlice({
   }
 });
 
-export const { login, updateUserAccount, logout, addToCart, addItemQuantity, removeItemQuantity, removeCartItem, clearCart } = appSlice.actions;
+export const { login, updateUserAccount, updateMerchantAccount, logout, addToCart, addItemQuantity, removeItemQuantity, removeCartItem, clearCart } = appSlice.actions;
 
 export const selectUser = (state) => state.isiolo_marketplace.user;
+export const selectMerchant = (state) => state.isiolo_marketplace.user?.user?.merchant;
+export const selectAccount = (state) => state.isiolo_marketplace.user?.user?.account;
 export const selectToken = (state) => state.isiolo_marketplace.token;
 export const selectLoggedIn = (state) => state.isiolo_marketplace.loggedIn;
 export const selectCartItems = (state) => state.isiolo_marketplace.cart.items;
@@ -92,3 +97,5 @@ export const selectCartTotal = (state) => state.isiolo_marketplace.cart.items.re
 
 
 export default appSlice.reducer;
+
+

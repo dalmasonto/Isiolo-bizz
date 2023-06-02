@@ -42,7 +42,7 @@ const SignUpForm = () => {
           color: 'green',
           icon: <IconAlertCircle />,
         })
-        signUpForm.reset()
+        // signUpForm.reset()
       }
       else {
         showNotification({
@@ -97,7 +97,7 @@ const SignUpForm = () => {
             <TextInput
               label="Email"
               type="email"
-              required=""
+              required
               {...signUpForm.getInputProps('email')}
             />
           </div>
