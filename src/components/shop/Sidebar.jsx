@@ -1,20 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { URLS } from '../../config/constants';
-import { Link } from 'react-router-dom';
-import { Checkbox, Text } from '@mantine/core';
+import { NavLink } from 'react-router-dom';
+import { Text, TextInput } from '@mantine/core';
 import useSwr from 'swr';
 import { makeRequestOne } from '../../config/config';
-import { useSelector } from 'react-redux';
-import { selectToken } from '../../providers/app/appSlice';
 
 const Sidebar = () => {
-    const [selectedMerchants, setSelectedMerchants] = React.useState([])
-    const token = useSelector(selectToken)
+
+    const [merchantSearch, setMerchantSearch] = useState("")
+
     const categoriesQuery = useSwr([URLS.CATEGORIES + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const categoriesData = categoriesQuery?.data?.data?.data
 
     const merchantsQuery = useSwr([URLS.MERCHANTS + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const merchantsData = merchantsQuery?.data?.data?.data
+
+    const filteredMerchants = () => {
+        const res = merchantsData?.filter(merchant => {
+            const searchTerm = merchantSearch
+            const regex = new RegExp(searchTerm, "gi")
+            return merchant?.name?.match(regex)
+        })
+        return res
+    }
+
+    const linkClasses = "widget-list-link d-flex justify-content-between align-items-center"
 
     return (
         <aside className="col-lg-4">
@@ -39,78 +49,60 @@ const Sidebar = () => {
                         <h3 className="widget-title">Categories</h3>
                         {
                             categoriesData?.map((category) => (
-                                <Link
+                                <NavLink
+
                                     key={`_category_${category?.id}`}
-                                    className="widget-list-link d-flex justify-content-between align-items-center"
                                     to={`/shop/categories/${category?.id}/${category?.slug}`}
+                                    className={({ isActive, isPending }) =>
+                                        isActive
+                                            ? `${linkClasses} sidebar-active-link` : linkClasses
+                                    }
                                 >
-                                    <Text className="widget-filter-item-text" size="md">
+                                    <Text className="widget-filter-item-text" size="sm">
                                         {category?.name}
                                     </Text>
                                     <span className="fs-xs text-muted ms-3">
                                         {/* {Math.ceil(Math.random() * 300)} */}
                                     </span>
-                                </Link>
+                                </NavLink>
                             ))
                         }
                     </div>
 
                     {/* Filter by Brand*/}
-                    <div className="widget widget-filter mb-4 pb-4 border-bottom">
+                    <div className="widget  mb-4 pb-4 border-bottom">
                         <h3 className="widget-title">Brand</h3>
-                        <div className="input-group input-group-sm mb-2">
-                            <input
-                                className="widget-filter-search form-control rounded-end pe-5"
+                        <div className=" mb-2">
+                            <TextInput
                                 type="text"
+                                radius="md"
                                 placeholder="Search"
+                                value={merchantSearch}
+                                onChange={e => setMerchantSearch(e.currentTarget.value)}
+                                rightSection={<i className="ci-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3" />}
                             />
-                            <i className="ci-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3" />
                         </div>
-                        <div className="widget widget-categories mb-4 pb-4 border-bottom">
+                        <div className="widge widget-categorie mb-4 pb-4 border-bottom">
                             {
-                                merchantsData?.map((merchant) => (
-                                    <Link
+                                filteredMerchants()?.map((merchant) => (
+                                    <NavLink
                                         key={`_merchant_${merchant?.id}`}
-                                        className="widget-list-link d-flex justify-content-between align-items-center"
                                         to={`/shop/merchants/${merchant?.id}/${merchant?.slug}`}
+                                        className={({ isActive, isPending }) =>
+                                            isActive
+                                                ? `${linkClasses} sidebar-active-link` : linkClasses
+                                        }
                                     >
-                                        <Text className="widget-filter-item-text" size="md">
+                                        <Text className="widget-filter-item-text" size="sm">
                                             {merchant?.name ? merchant?.name : "Another merchant"}
                                         </Text>
                                         <span className="fs-xs text-muted ms-3">
                                             {/* {Math.ceil(Math.random() * 300)} */}
                                         </span>
-                                    </Link>
+                                    </NavLink>
                                 ))
                             }
                         </div>
-                        <ul
-                            className="widget-list widget-filter-list list-unstyled pt-1 d-none"
-                            style={{ maxHeight: "25rem" }}
-                            data-simplebar=""
-                            data-simplebar-auto-hide="false"
-                        >
-                            <Checkbox.Group value={selectedMerchants} onChange={setSelectedMerchants}>
-                                {
-                                    merchantsData?.map((merchant) => (
-                                        <li key={`shop_brand_${merchant?.id}`} className="widget-filter-item d-flex justify-content-between align-items-center mb-1">
-                                            <div >
-                                                {/* <Checkbox
-                                                    value={merchant?.id + ""}
-                                                    label={merchant?.name}
-                                                    labelPosition='right'
-                                                    ml={0}
-                                                /> */}
-                                                {merchant?.name}
-                                            </div>
-                                            <span className="fs-xs text-muted">
-                                                {/* {Math.ceil(Math.random() * 600)} */}
-                                            </span>
-                                        </li>
-                                    ))
-                                }
-                            </Checkbox.Group>
-                        </ul>
                     </div>
                 </div>
             </div>

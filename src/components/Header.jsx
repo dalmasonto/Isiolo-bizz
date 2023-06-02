@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { logout, removeCartItem, selectCartItems, selectCartTotal, selectLoggedIn, selectUser } from '../providers/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { Anchor, Box, Grid, Group, HoverCard, Image, ScrollArea, Text } from '@mantine/core'
+import { Anchor, Avatar, Box, Grid, Group, HoverCard, Image, ScrollArea, Stack, Text } from '@mantine/core'
 import { ADMIN_BASE_URL, CURRENCY, SHOPS, URLS } from '../config/constants'
 import { formatCurrency, limitChars, makeRequestOne } from '../config/config';
 import { modals } from '@mantine/modals'
@@ -418,15 +418,15 @@ const Header = () => {
                                             {
                                                 merchantsData?.map((shop, index) => (
                                                     <Grid.Col key={`shop_${shop?.id}`} span={4} sm={2}>
-                                                        <div className="widget widget-links" onClick={() => setNavbarOPen(false)}>
+                                                        <Stack onClick={() => setNavbarOPen(false)} spacing={0} align='center'>
                                                             <Link
-                                                                className="d-block overflow-hidden rounded-3 mb-3"
+                                                                className="d-block overflow-hidden rounded-3"
                                                                 to={`/shop/merchants/${shop?.id}/${shop?.slug}/`}
                                                             >
-                                                                <Image src={shop?.logo ? shop?.logo : "/logos/Bidii-farmers-self--help-group-Reviewed-Logo.jpg"} alt={shop?.name} radius="md" height={100} />
+                                                                <Avatar src={shop?.logo ? shop?.logo : "/logos/Bidii-farmers-self--help-group-Reviewed-Logo.jpg"} alt={shop?.name} radius="md" size={72} />
                                                             </Link>
-                                                            <h6 className="fs-base mb-2">{shop?.name}</h6>
-                                                        </div>
+                                                            <h6 className="fs-base mb-2 text-center">{shop?.name}</h6>
+                                                        </Stack>
                                                     </Grid.Col>
                                                 ))
                                             }

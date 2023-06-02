@@ -10,6 +10,8 @@ import { selectToken } from '../../providers/app/appSlice';
 import useSwr from 'swr';
 import { URLS } from '../../config/constants';
 import { makeRequestOne } from '../../config/config';
+import SidebarAndProductsSection from '../../components/shop/SidebarAndProductsSection';
+import { useDebouncedState } from '@mantine/hooks';
 
 
 export const products = [
@@ -97,14 +99,21 @@ export const products = [
 
 
 const Shop = () => {
+  const [options, setOptions] = useDebouncedState({
+    current_page: 1
+  }, 200)
   const token = useSelector(selectToken)
-  const productsQuery = useSwr([URLS.PRODUCTS + "/", 'GET', { }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const productsQuery = useSwr([URLS.PRODUCTS + "/", 'GET', {}, {}, { "page[number]": options?.current_page }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const productsQueryData = productsQuery?.data?.data
   const productsData = productsQuery?.data?.data?.data
-  console.log(productsData)
+  const productsQueryMeta = productsQueryData?.meta
+
+  const changePage = (page_number) => {
+    setOptions(current => ({ ...current, current_page: page_number }))
+  }
+
   return (
     <>
-      <QuickView />
-      {/* Page Title*/}
       <div className="page-title-overlap bg-dark pt-4">
         <div className="container d-lg-flex justify-content-between py-2 py-lg-3">
           <div className="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
@@ -130,30 +139,12 @@ const Shop = () => {
           </div>
         </div>
       </div>
-      <div className="container pb-5 mb-2 mb-md-4">
-        <div className="row">
-          {/* Sidebar*/}
-          <Sidebar />
-          {/* Content  */}
-          <section className="col-lg-8">
-            {/* Toolbar*/}
-            <Toolbar />
-            {/* Products grid*/}
-            <div className="row mx-n2">
-              {
-                productsData?.map((product) => (
-                  <div key={`_product_${product.id}`} className="col-md-4 col-sm-6 px-2 mb-4">
-                    <ProductCard product={product} />
-                  </div>
-                ))
-              }
-            </div>
-            <hr className="my-3" />
-            {/* Pagination*/}
-            <CustomPagination />
-          </section>
-        </div>
-      </div>
+      <SidebarAndProductsSection
+        products={productsData}
+        meta={productsQueryMeta}
+        loading={productsQuery?.isLoading}
+        onPageChange={changePage}
+      />
     </>
 
   )

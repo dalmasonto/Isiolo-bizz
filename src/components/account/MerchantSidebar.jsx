@@ -7,7 +7,7 @@ const sidebarLinkgs = [
         group: 'Account',
         links: [
             {
-                title: 'Settings',
+                title: 'Profile',
                 icon: 'ci-settings',
                 to: '/merchant/',
             },

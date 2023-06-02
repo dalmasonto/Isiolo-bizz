@@ -31,7 +31,7 @@ const SignUpForm = () => {
   })
 
   const handleSignUp = (values) => {
-    values['role'] = "merchant"
+    values['role'] = "administrator"
     setLoading(true)
     makeRequestOne(URLS.SIGNUP + "/", 'POST', {}, { ...values, name: values['first_name'] }, {}).then(res => {
       console.log("singup", res)

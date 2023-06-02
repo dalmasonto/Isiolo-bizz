@@ -2,11 +2,11 @@ import { useForm } from '@mantine/form'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectToken, selectUser, updateUserAccount } from '../../providers/app/appSlice';
-import { Loader, Select, TextInput } from '@mantine/core';
+import { ActionIcon, FileInput, Group, Loader, Select, TextInput } from '@mantine/core';
 import { makeRequestOne } from '../../config/config';
 import { URLS } from '../../config/constants';
 import { showNotification } from '@mantine/notifications';
-import { IconAlertCircle } from '@tabler/icons';
+import { IconAlertCircle, IconUpload } from '@tabler/icons';
 import { displayErrors } from '../../config/functions';
 
 const AccountProfile = () => {
@@ -16,6 +16,16 @@ const AccountProfile = () => {
     const token = useSelector(selectToken)
     const account = user?.user?.account
     const dispatch = useDispatch()
+
+    const avatarForm = useForm({
+        initialValues: {
+            avatar: null
+        },
+        validate: {
+            avatar: value => value === null ? "Profile photo is required" : null
+        }
+    })
+
     const userForm = useForm({
         initialValues: {
             "telephone": account?.telephone,
@@ -35,12 +45,28 @@ const AccountProfile = () => {
         },
     })
 
+    const handleUploadAvatar = () => {
+        const files = avatarForm.values['avatar']
+        setLoading(true)
+        makeRequestOne(URLS.MEDIA, 'POST', { 'CONTENT-TYPE': 'multipart/form-data' }, { 'files[]': files }, {})
+            .then((res) => {
+                const images_ = res?.data?.data
+                const avatar = images_[0].path
+                userForm.setFieldValue('avatar', avatar)
+                handleUpdate({ avatar: avatar, first_name: "None" })
+            }).catch((err) => {
+                console.log(err)
+                const errors = err?.response?.data?.errors
+
+            })
+    }
+
     const handleUpdate = (values) => {
-        
+
         setLoading(true)
         let URL = URLS.ACCOUNT + `/${account?.id}`
         let METHOD = 'PUT'
-        if (!account){
+        if (!account) {
             METHOD = 'POST'
             URL = URLS.ACCOUNT
             values['user_id'] = user?.user?.id
@@ -122,13 +148,24 @@ const AccountProfile = () => {
                                 alt={account?.first_name}
                             />
                             <div className="ps-3">
-                                <button
-                                    className="btn btn-light btn-shadow btn-sm mb-2"
-                                    type="button"
-                                >
-                                    <i className="ci-loading me-2" />
-                                    Change <span className="d-none d-sm-inline">avatar</span>
-                                </button>
+                                <form onSubmit={avatarForm.onSubmit((values) => handleUploadAvatar())}>
+                                    <Group>
+                                        <FileInput
+                                            radius="xl"
+                                            color='red'
+                                            label=''
+                                            placeholder='Select Avatar'
+                                            type="text"
+                                            {...avatarForm.getInputProps('avatar')}
+                                            style={{
+                                                width: "150px"
+                                            }}
+                                        />
+                                        <ActionIcon type='submit' size={32} color='red' radius={"xl"} variant='filled'>
+                                            <IconUpload size={18} />
+                                        </ActionIcon>
+                                    </Group>
+                                </form>
                                 <div className="p mb-0 fs-ms text-muted">
                                     Upload JPG, GIF or PNG image. 300 x 300 required.
                                 </div>

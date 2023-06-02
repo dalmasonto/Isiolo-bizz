@@ -2,7 +2,26 @@ import { ActionIcon, Group } from '@mantine/core'
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons'
 import React from 'react'
 
-const Toolbar = () => {
+const Toolbar = ({ current_page, total, onPageChange }) => {
+
+    function hasPreviousPage(currentPage, total) {
+        return currentPage > 1 && currentPage <= total;
+    }
+
+    function goPrev() {
+        if(current_page > 1){
+            const prevPage = current_page - 1
+            onPageChange(prevPage)
+        }
+    }
+
+    function goNext() {
+        if(current_page < total){
+            const nextPage = current_page + 1
+            onPageChange(nextPage)
+        }
+    }
+
     return (
         <div className="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
             <div className="d-flex flex-wrap">
@@ -27,11 +46,11 @@ const Toolbar = () => {
                 </div>
             </div>
             <Group className="d-flex pb-3" align='center'>
-                <ActionIcon>
+                <ActionIcon disabled={current_page >= total} onClick={goPrev}>
                     <IconArrowLeft />
                 </ActionIcon>
-                <span className="fs-md text-light">1 / 5</span>
-                <ActionIcon>
+                <span className="fs-md text-light">{current_page} / {total}</span>
+                <ActionIcon disabled={current_page <= total} onClick={goNext}>
                     <IconArrowRight />
                 </ActionIcon>
             </Group>

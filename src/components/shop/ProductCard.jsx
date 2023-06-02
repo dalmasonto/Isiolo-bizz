@@ -16,7 +16,7 @@ const ProductCard = ({ product }) => {
         dispatch(addToCart({ product, qty }))
         showNotification({
             title: 'Added to cart',
-            message: `${product.title} added to cart`,
+            message: `${product?.name} added to cart`,
             color: 'green',
             icon: <IconCheck stroke={1.5} />
         })

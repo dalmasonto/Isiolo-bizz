@@ -22,6 +22,7 @@
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^7.1.0",
     "localforage": "^1.10.0",
+    "mantine-datatable": "^2.5.5",
     "match-sorter": "^6.3.1",
     "nanoid": "^4.0.2",
     "react": "^18.2.0",

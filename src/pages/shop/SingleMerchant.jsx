@@ -9,16 +9,27 @@ import ProductCard from '../../components/shop/ProductCard';
 import CustomPagination from '../../components/shop/CustomPagination';
 import { Title } from '@mantine/core';
 import LoadingProducts from '../../components/common/LoadingProducts';
+import SidebarAndProductsSection from '../../components/shop/SidebarAndProductsSection';
+import { useDebouncedState } from '@mantine/hooks';
 
 const SingleMerchant = () => {
-  const {id, slug} = useParams()
-  const merchantQuery = useSwr([`${URLS.MERCHANTS}/${id}/`, 'GET', { }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+
+  const [options, setOptions] = useDebouncedState({
+    current_page: 1
+  }, 200)
+
+  const { id, slug } = useParams()
+  const merchantQuery = useSwr([`${URLS.MERCHANTS}/${id}/`, 'GET', {}, {}, {"page[number]": options?.current_page}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
   const merchant = merchantQuery?.data?.data?.data
 
-  const productsQuery = useSwr([URLS.PRODUCTS, 'GET', { }, {}, {'filter[merchant]': id}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const productsQuery = useSwr([URLS.PRODUCTS, 'GET', {}, {}, { 'filter[merchant_id]': id }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const productsQueryData = productsQuery?.data?.data
   const productsData = productsQuery?.data?.data?.data
+  const productsQueryMeta = productsQueryData?.meta
 
-  console.log("products: ", productsData)
+  const changePage = (page_number) => {
+    setOptions(current => ({ ...current, current_page: page_number }))
+  }
 
   return (
     <>
@@ -51,36 +62,17 @@ const SingleMerchant = () => {
           </div>
           <div className="order-lg-1 pe-lg-4 text-center text-lg-start">
             <h1 className="h3 text-light mb-0 text-capitalize">
-                Merchant: {merchant?.name}
+              Merchant: {merchant?.name}
             </h1>
           </div>
         </div>
       </div>
-      <div className="container pb-5 mb-2 mb-md-4">
-        <div className="row">
-          {/* Sidebar*/}
-          <Sidebar />
-          {/* Content  */}
-          <section className="col-lg-8">
-            {/* Toolbar*/}
-            <Toolbar />
-            {/* Products grid*/}
-            <LoadingProducts loading={productsQuery?.isLoading} productsLen={productsData ? productsData?.length : 0} />
-            <div className="row mx-n2">
-              {
-                productsData?.map((product) => (
-                  <div key={`_product_${product.id}`} className="col-md-4 col-sm-6 px-2 mb-4">
-                    <ProductCard product={product} />
-                  </div>
-                ))
-              }
-            </div>
-            <hr className="my-3" />
-            {/* Pagination*/}
-            <CustomPagination />
-          </section>
-        </div>
-      </div>
+      <SidebarAndProductsSection
+        products={productsData}
+        meta={productsQueryMeta}
+        loading={productsQuery?.isLoading}
+        onPageChange={changePage} 
+        />
     </>
 
   )

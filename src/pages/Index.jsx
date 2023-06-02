@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {  BackgroundImage } from '@mantine/core'
+import { BackgroundImage } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
 import HomeShopCategory from '../components/shop/HomeShopCategory'
 import Social from '../components/home/Social'
 import { SHOPS } from '../config/constants'
+import Shops from '../components/home/Shops'
 
 const Index = () => {
     return (
@@ -49,12 +50,8 @@ const Index = () => {
                     </Carousel.Slide>
                 </Carousel>
             </section>
-            {
-                SHOPS?.map((shop, i) => (
-                    <HomeShopCategory key={`home_shop_${i}`} shop={shop} barnerOrder={i % 2 === 0 ? '' : 'order-md-2'} />
-                ))
-            }
 
+            <Shops />
             <Social />
         </>
     )
