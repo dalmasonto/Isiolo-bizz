@@ -10,12 +10,12 @@ import { selectToken } from '../../providers/app/appSlice';
 const Sidebar = () => {
     const [selectedMerchants, setSelectedMerchants] = React.useState([])
     const token = useSelector(selectToken)
-    const categoriesQuery = useSwr([URLS.CATEGORIES + "/", 'GET', { Authorization: `Bearer ${token}` }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const categoriesQuery = useSwr([URLS.CATEGORIES + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const categoriesData = categoriesQuery?.data?.data?.data
 
-    const merchantsQuery = useSwr([URLS.MERCHANTS + "/", 'GET', { Authorization: `Bearer ${token}` }, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const merchantsQuery = useSwr([URLS.MERCHANTS + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const merchantsData = merchantsQuery?.data?.data?.data
-    console.log(merchantsData)
+
     return (
         <aside className="col-lg-4">
             {/* Sidebar*/}
@@ -42,7 +42,7 @@ const Sidebar = () => {
                                 <Link
                                     key={`_category_${category?.id}`}
                                     className="widget-list-link d-flex justify-content-between align-items-center"
-                                    to={`/shop/categories/${category?.id}`}
+                                    to={`/shop/categories/${category?.id}/${category?.slug}`}
                                 >
                                     <Text className="widget-filter-item-text" size="md">
                                         {category?.name}
@@ -66,8 +66,26 @@ const Sidebar = () => {
                             />
                             <i className="ci-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3" />
                         </div>
+                        <div className="widget widget-categories mb-4 pb-4 border-bottom">
+                            {
+                                merchantsData?.map((merchant) => (
+                                    <Link
+                                        key={`_merchant_${merchant?.id}`}
+                                        className="widget-list-link d-flex justify-content-between align-items-center"
+                                        to={`/shop/merchants/${merchant?.id}/${merchant?.slug}`}
+                                    >
+                                        <Text className="widget-filter-item-text" size="md">
+                                            {merchant?.name ? merchant?.name : "Another merchant"}
+                                        </Text>
+                                        <span className="fs-xs text-muted ms-3">
+                                            {/* {Math.ceil(Math.random() * 300)} */}
+                                        </span>
+                                    </Link>
+                                ))
+                            }
+                        </div>
                         <ul
-                            className="widget-list widget-filter-list list-unstyled pt-1"
+                            className="widget-list widget-filter-list list-unstyled pt-1 d-none"
                             style={{ maxHeight: "25rem" }}
                             data-simplebar=""
                             data-simplebar-auto-hide="false"

@@ -3,9 +3,10 @@ import { Link, NavLink } from 'react-router-dom'
 import { logout, removeCartItem, selectCartItems, selectCartTotal, selectLoggedIn, selectUser } from '../providers/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Anchor, Box, Grid, Group, HoverCard, Image, ScrollArea, Text } from '@mantine/core'
-import { ADMIN_BASE_URL, CURRENCY, SHOPS } from '../config/constants'
-import { limitChars } from '../config/config';
+import { ADMIN_BASE_URL, CURRENCY, SHOPS, URLS } from '../config/constants'
+import { formatCurrency, limitChars, makeRequestOne } from '../config/config';
 import { modals } from '@mantine/modals'
+import useSwr from 'swr';
 
 
 const navlinks = [
@@ -87,7 +88,7 @@ const HeaderCart = () => {
                         <i className="navbar-tool-icon ci-cart" />
                     </a>
                     <a className="navbar-tool-text" href="javascript:void(0)">
-                        <small>My Cart</small>Kes {cartTotal}
+                        <small>My Cart</small>Kes {formatCurrency(cartTotal)}
                     </a>
                 </Group>
             </HoverCard.Target>
@@ -140,6 +141,7 @@ const HeaderCart = () => {
 
 const CartItem = ({ item }) => {
     const dispatch = useDispatch()
+    const images = JSON.parse(item?.product?.images ? item?.product?.images : "[]")
 
     const removeItemFromCart = () => {
         dispatch(removeCartItem({ id: item.product.id }))
@@ -158,20 +160,20 @@ const CartItem = ({ item }) => {
             <div className="d-flex align-items-center">
                 <a className="flex-shrink-0" href="shop-single-v1.html">
                     <img
-                        src={item?.product?.image}
+                        src={images?.length > 0 ? images[0] : ''}
                         width={64}
-                        alt="Product"
+                        alt={item?.product?.name}
                     />
                 </a>
                 <div className="ps-2">
                     <h6 className="widget-product-title">
                         <a href={`/shop/products/${item?.product.id}`}>
-                            {item?.product?.title}
+                            {item?.product?.name}
                         </a>
                     </h6>
                     <div className="widget-product-meta">
                         <span className="text-accent me-2">
-                            {CURRENCY} {item.product.price}
+                            {CURRENCY} {item?.product?.price}
                         </span>
                         <span className="text-muted">x {item?.qty}</span>
                     </div>
@@ -224,6 +226,9 @@ const Header = () => {
     const loggedIn = useSelector(selectLoggedIn)
     const user = useSelector(selectUser)
     const dispatch = useDispatch()
+
+    const merchantsQuery = useSwr([URLS.MERCHANTS + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const merchantsData = merchantsQuery?.data?.data?.data
 
     const otherLinkClasses = "nav-item"
 
@@ -411,14 +416,14 @@ const Header = () => {
                                     <div className="dropdown-menu px-2 pb-4" style={{ width: "800px", maxWidth: '90vw' }}>
                                         <Grid>
                                             {
-                                                SHOPS?.map((shop, index) => (
+                                                merchantsData?.map((shop, index) => (
                                                     <Grid.Col key={`shop_${shop?.id}`} span={4} sm={2}>
                                                         <div className="widget widget-links" onClick={() => setNavbarOPen(false)}>
                                                             <Link
                                                                 className="d-block overflow-hidden rounded-3 mb-3"
-                                                                to={`/shop/${shop?.id}`}
+                                                                to={`/shop/merchants/${shop?.id}/${shop?.slug}/`}
                                                             >
-                                                                <Image src={shop?.logo} alt="Clothing" height={100} />
+                                                                <Image src={shop?.logo ? shop?.logo : "/logos/Bidii-farmers-self--help-group-Reviewed-Logo.jpg"} alt={shop?.name} radius="md" height={100} />
                                                             </Link>
                                                             <h6 className="fs-base mb-2">{shop?.name}</h6>
                                                         </div>

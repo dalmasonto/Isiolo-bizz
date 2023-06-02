@@ -1,4 +1,4 @@
-import { Center, Group, Image, NumberInput, Rating, Text } from '@mantine/core'
+import { Center, Group, Image, NumberInput, Rating, Stack, Text } from '@mantine/core'
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { CURRENCY, URLS } from '../../config/constants'
@@ -17,11 +17,11 @@ const SingleProduct = () => {
 
     const dispatch = useDispatch()
 
-    const productQuery = useSwr([`${URLS.PRODUCTS}/${id}/`, 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const productQuery = useSwr([`${URLS.PRODUCTS}/${id}/`, 'GET', {}, {}, { include: 'category,merchant' }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const product = productQuery?.data?.data?.data
     const images = JSON.parse(product?.images ? product?.images : "[]")
-
-    const similarProductsQuery = useSwr([`${URLS.PRODUCTS}/`, 'GET', {}, {}, { 'filter[category]': product?.category, 'exclude[id]': id }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    console.log(product)
+    const similarProductsQuery = useSwr([`${URLS.PRODUCTS}`, 'GET', {}, {}, { 'filter[category_id]': product?.category_id, 'exclude[id]': id }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const products = similarProductsQuery?.data?.data?.data
 
     const productForm = useForm({
@@ -169,17 +169,32 @@ const SingleProduct = () => {
                                                 data-bs-parent="#productPanels"
                                             >
                                                 <div className="accordion-body">
-                                                    <h6 className="fs-sm mb-2">Name</h6>
-                                                    <Text>
-                                                        {product?.name}
-                                                    </Text>
-                                                    <ul className="fs-sm ps-4">
-                                                        {/* <li></li> */}
-                                                    </ul>
-                                                    <h6 className="fs-sm mb-2">Description</h6>
-                                                    <Text>
-                                                        {product?.description}
-                                                    </Text>
+                                                    <Stack>
+                                                        <div>
+                                                            <h6 className="fs-sm mb-2">Name</h6>
+                                                            <Text>
+                                                                {product?.name}
+                                                            </Text>
+                                                        </div>
+                                                        <div>
+                                                            <h6 className="fs-sm mb-2">Seller</h6>
+                                                            <Text>
+                                                                {product?.merchant?.name}
+                                                            </Text>
+                                                        </div>
+                                                        <div>
+                                                            <h6 className="fs-sm mb-2">Product Category</h6>
+                                                            <Text>
+                                                                {product?.category?.name}
+                                                            </Text>
+                                                        </div>
+                                                        <div>
+                                                            <h6 className="fs-sm mb-2">Description</h6>
+                                                            <Text>
+                                                                {product?.description}
+                                                            </Text>
+                                                        </div>
+                                                    </Stack>
                                                 </div>
                                             </div>
                                         </div>

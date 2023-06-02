@@ -1,11 +1,14 @@
-import { Image } from '@mantine/core'
+import { Button, Image } from '@mantine/core'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { CURRENCY } from '../../config/constants'
 import { useSelector } from 'react-redux'
 import { selectCartItems, selectCartTotal } from '../../providers/app/appSlice'
+import { formatCurrency } from '../../config/config';
 
 const ItemSummary = ({ item }) => {
+    const images = JSON.parse(item?.product?.images ? item?.product?.images : "[]")
+
     return (
         <div className="d-flex align-items-center pb-2 border-bottom">
             <Link
@@ -14,26 +17,26 @@ const ItemSummary = ({ item }) => {
             >
                 <Image
                     radius="md"
-                    src={item?.product?.image}
+                    src={images?.length > 0 ? images[0] : ''}
                     width={64}
-                    alt="Product"
+                    alt={item.product?.name}
                 />
             </Link>
             <div className="ps-1">
                 <h6 className="widget-product-title">
                     <a href="marketplace-single.html">
-                        {item?.product?.title}
+                        {item?.product?.name}
                     </a>
                 </h6>
                 <div className="widget-product-meta">
                     <span className="text-accent border-end pe-2 me-2">
-                        {CURRENCY} {item?.product?.price}
+                        {CURRENCY} {formatCurrency(item?.product?.price)}
                     </span>
                     <span className="fs-xs text-muted border-end pe-2 me-2">
                         qty: {item?.qty}
                     </span>
                     <span className='fs-xs text-muted' >
-                        {CURRENCY} {item?.qty * item?.product?.price}
+                        {CURRENCY} {formatCurrency(item?.qty * item?.product?.price)}
                     </span>
                 </div>
             </div>
@@ -141,110 +144,8 @@ const Checkout = () => {
                                         </select>
                                     </div>
                                 </div>
-                                {/* Order preview on mobile (screens small than 991px)*/}
-                                <div className="widget mb-3 d-lg-none">
-                                    <h2 className="widget-title">Order summary</h2>
-                                    <div className="d-flex align-items-center pb-2 border-bottom">
-                                        <a
-                                            className="d-block flex-shrink-0 me-2"
-                                            href="marketplace-single.html"
-                                        >
-                                            <img
-                                                className="rounded-1"
-                                                src="img/marketplace/products/widget/01.jpg"
-                                                width={64}
-                                                alt="Product"
-                                            />
-                                        </a>
-                                        <div className="ps-1">
-                                            <h6 className="widget-product-title">
-                                                <a href="marketplace-single.html">
-                                                    UI Isometric Devices Pack
-                                                </a>
-                                            </h6>
-                                            <div className="widget-product-meta">
-                                                <span className="text-accent border-end pe-2 me-2">
-                                                    $23.<small>99</small>
-                                                </span>
-                                                <span className="fs-xs text-muted">Standard license</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex align-items-center py-2 border-bottom">
-                                        <a
-                                            className="d-block flex-shrink-0 me-2"
-                                            href="marketplace-single.html"
-                                        >
-                                            <img
-                                                className="rounded-1"
-                                                src="img/marketplace/products/widget/02.jpg"
-                                                width={64}
-                                                alt="Product"
-                                            />
-                                        </a>
-                                        <div className="ps-1">
-                                            <h6 className="widget-product-title">
-                                                <a href="marketplace-single.html">
-                                                    Project Devices Showcase
-                                                </a>
-                                            </h6>
-                                            <div className="widget-product-meta">
-                                                <span className="text-accent border-end pe-2 me-2">
-                                                    $18.<small>99</small>
-                                                </span>
-                                                <span className="fs-xs text-muted">Standard license</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex align-items-center py-2 border-bottom">
-                                        <a
-                                            className="d-block flex-shrink-0 me-2"
-                                            href="marketplace-single.html"
-                                        >
-                                            <img
-                                                className="rounded-1"
-                                                src="img/marketplace/products/widget/03.jpg"
-                                                width={64}
-                                                alt="Product"
-                                            />
-                                        </a>
-                                        <div className="ps-1">
-                                            <h6 className="widget-product-title">
-                                                <a href="marketplace-single.html">
-                                                    Gravity Devices UI Mockup
-                                                </a>
-                                            </h6>
-                                            <div className="widget-product-meta">
-                                                <span className="text-accent border-end pe-2 me-2">
-                                                    $15.<small>99</small>
-                                                </span>
-                                                <span className="fs-xs text-muted">Standard license</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <ul className="list-unstyled fs-sm py-3">
-                                        <li className="d-flex justify-content-between align-items-center">
-                                            <span className="me-2">Subtotal:</span>
-                                            <span className="text-end">
-                                                $58.<small>97</small>
-                                            </span>
-                                        </li>
-                                        <li className="d-flex justify-content-between align-items-center">
-                                            <span className="me-2">Taxes:</span>
-                                            <span className="text-end">
-                                                $10.<small>45</small>
-                                            </span>
-                                        </li>
-                                        <li className="d-flex justify-content-between align-items-center fs-base">
-                                            <span className="me-2">Total:</span>
-                                            <span className="text-end">
-                                                $69.<small>42</small>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
                                 {/* Payment methods accordion*/}
-                                <div className="accordion mb-2" id="payment-method" role="tablist">
+                                <div className="accordion mb-2 d-none" id="payment-method" role="tablist">
                                     <div className="accordion-item">
                                         <h3 className="accordion-header">
                                             <a
@@ -402,13 +303,14 @@ const Checkout = () => {
                                         <li className="d-flex justify-content-between align-items-center">
                                             <span className="me-2">Subtotal:</span>
                                             <span className="text-end">
-                                                {CURRENCY} {cartTotal}
+                                                {CURRENCY} {formatCurrency(cartTotal)}
                                             </span>
                                         </li>
                                     </ul>
                                     <h3 className="fw-normal text-center my-4">
-                                        {CURRENCY} {cartTotal}
+                                        {CURRENCY} {formatCurrency(cartTotal)}
                                     </h3>
+                                    <button className='btn btn-primary btn-shadow d-block w-100 mt-4'>Place Order</button>
                                 </div>
                             </div>
                         </aside>

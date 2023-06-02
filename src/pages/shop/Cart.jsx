@@ -6,9 +6,11 @@ import { clearCart, removeCartItem, selectCartItems, selectCartTotal } from '../
 import { showNotification } from '@mantine/notifications'
 import { CURRENCY } from '../../config/constants'
 import { IconAlertCircle } from '@tabler/icons'
+import { formatCurrency } from '../../config/config'
 
 const CartItem = ({ item }) => {
     const dispatch = useDispatch()
+    const images = JSON.parse(item?.product?.images ? item?.product?.images : "[]")
 
     const handleDeleteItemFromCart = () => {
         dispatch(removeCartItem({ id: item?.product?.id }))
@@ -22,9 +24,10 @@ const CartItem = ({ item }) => {
             >
                 <Image
                     width={100}
+                    mx={'auto'}
                     radius="md"
-                    src={item?.product?.image}
-                    alt={item?.product?.title}
+                    src={images?.length > 0 ? images[0] : ''}
+                    alt={item?.product?.name}
                 />
                 <span
                     className="btn btn-icon btn-danger position-absolute top-0 end-0 py-0 px-1 m-2"
@@ -38,11 +41,11 @@ const CartItem = ({ item }) => {
             <div className="text-center text-sm-start">
                 <h3 className="h6 product-title mb-2">
                     <Link to={`/shop`}>
-                        {item?.product?.title}
+                        {item?.product?.name}
                     </Link>
                 </h3>
                 <div className="d-inline-block text-accent">
-                    {CURRENCY} {item?.product?.price}
+                    {CURRENCY} {formatCurrency(item?.product?.price)}
                 </div>
                 <Text
                     className="d-inline-block text-accent fs-ms border-start ms-2 ps-2"
@@ -155,10 +158,10 @@ const Cart = () => {
                                     <div className="text-center mb-4 py-3 border-bottom">
                                         <h2 className="h6 mb-3 pb-1">Cart total</h2>
                                         <h3 className="fw-normal">
-                                            {CURRENCY} {cartTotal}
+                                            {CURRENCY} {formatCurrency(cartTotal)}
                                         </h3>
                                     </div>
-                                    <div className="text-center mb-4 pb-3 border-bottom">
+                                    <div className="text-center mb-4 pb-3 border-bottom d-none">
                                         <h2 className="h6 mb-3 pb-1">Promo code</h2>
                                         <form
                                             className="needs-validation pb-2"

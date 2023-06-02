@@ -27,6 +27,8 @@ import Users from './pages/admin/Users';
 import OrderHistory from './pages/merchant/OrderHistory';
 import ShopProfile from './pages/account/ShopSettings';
 import UpdateProduct from './pages/merchant/UpdateProduct';
+import SingleCategory from './pages/shop/categories/SingleCategory';
+import SingleMerchant from './pages/shop/SingleMerchant';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: "/shop",
         element: <Shop />,
+      },
+      {
+        path: "/shop/merchants/:id/:slug",
+        element: <SingleMerchant />,
+      },
+      {
+        path: '/shop/categories/:id/:slug',
+        element: <SingleCategory />,
       },
       {
         path: '/shop/products/:id/:slug',

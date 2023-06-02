@@ -1,9 +1,13 @@
 import { Image } from '@mantine/core'
 import React from 'react'
-import { CATEOGORIES } from '../config/constants'
+import { CATEOGORIES, URLS } from '../config/constants'
 import { Link } from 'react-router-dom'
+import useSwr from 'swr';
+import { makeRequestOne } from '../config/config';
 
 const Footer = () => {
+    const categoriesQuery = useSwr([URLS.CATEGORIES + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const categoriesData = categoriesQuery?.data?.data?.data
     return (
         <footer className="footer bg-dark pt-5">
             <div className="container">
@@ -13,13 +17,13 @@ const Footer = () => {
                             <h3 className="widget-title text-light">Shop departments</h3>
                             <ul className="widget-list">
                                 {
-                                    CATEOGORIES.map((category, index) => (
+                                    categoriesData.map((category, index) => (
                                         <li key={`category_${category.id}`} className="widget-list-item">
                                             <Link
                                                 className="widget-list-link"
-                                                to="/shop"
+                                                to={`/shop/categories/${category?.id}/${category?.slug}`}
                                             >
-                                                {category.name}
+                                                {category?.name}
                                             </Link>
                                         </li>
                                     ))
@@ -32,36 +36,36 @@ const Footer = () => {
                             <h3 className="widget-title text-light">About us</h3>
                             <ul className="widget-list">
                                 <li className="widget-list-item">
-                                    <a
+                                    <Link
                                         className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
+                                        to="/"
                                     >
                                         About company
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="widget-list-item">
-                                    <a
+                                <Link
                                         className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
+                                        to="/"
                                     >
-                                        Our team
-                                    </a>
+                                        Our Team
+                                    </Link>
                                 </li>
                                 <li className="widget-list-item">
-                                    <a
+                                <Link
                                         className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
+                                        to="/"
                                     >
                                         Careers
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="widget-list-item">
-                                    <a
+                                <Link
                                         className="widget-list-link"
-                                        href="home-fashion-store-v2.html#"
+                                        to="/"
                                     >
                                         News
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </div>
