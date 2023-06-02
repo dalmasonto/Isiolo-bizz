@@ -94,7 +94,7 @@ const Categories = () => {
       </Drawer>
       <Stack>
         <Group position='apart'>
-          <Title weight={500}>ProductCategories</Title>
+          <Title weight={500}>Product Categories</Title>
           <Button onClick={addNew} radius="md" size='sm' leftIcon={<IconPlus />}>Add New</Button>
         </Group>
 

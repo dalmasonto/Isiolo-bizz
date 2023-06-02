@@ -35,7 +35,7 @@ const ProductCard = ({ product }) => {
             </button>
             <Link
                 className="card-img-top d-block overflow-hidden"
-                to={`/shop/products/${product.id}`}
+                to={`/shop/products/${product?.id}/${product?.slug}/`}
             >
                 <img src={images?.length > 0 ? images[0] : "/assets/images/products/Fresh-Camel-Milk.jpg"} alt="Product" />
             </Link>

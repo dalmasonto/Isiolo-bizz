@@ -85,7 +85,7 @@ const SingleProduct = () => {
                                     <Carousel mx="auto" withIndicators align="center" loop color='red'>
                                         {
                                             images?.map((image, i) => (
-                                                <Carousel.Slide key={`product_${product?.id}_image_${i}`}>
+                                                <Carousel.Slide key={`product_${product?.id}_image_${i}`} >
                                                     <Image src={image ? image : "/assets/img/shop/single/gallery/01.jpg"} mx="auto" width={"70%"} radius="lg" />
                                                 </Carousel.Slide>
                                             ))
@@ -237,7 +237,7 @@ const SingleProduct = () => {
                     <Carousel slideSize={"25%"}>
                         {
                             products?.map((product) => (
-                                <Carousel.Slide key={`_product_${product.id}`} >
+                                <Carousel.Slide key={`_product_${product.id}`} pt={20} pb={100}>
                                     <ProductCard product={product} />
                                 </Carousel.Slide>
                             ))
