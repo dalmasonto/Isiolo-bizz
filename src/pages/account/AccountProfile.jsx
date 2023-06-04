@@ -9,12 +9,12 @@ import { showNotification } from '@mantine/notifications';
 import { IconAlertCircle, IconUpload } from '@tabler/icons';
 import { displayErrors } from '../../config/functions';
 
-const AccountProfile = () => {
+const AccountProfile = ({isAdmin, accountFromAdmin, onUpdate}) => {
     const [loading, setLoading] = useState(false)
     const user = useSelector(selectUser)
 
     const token = useSelector(selectToken)
-    const account = user?.user?.account
+    const account = isAdmin ? accountFromAdmin : user?.user?.account
     const dispatch = useDispatch()
 
     const avatarForm = useForm({
@@ -53,7 +53,11 @@ const AccountProfile = () => {
                 const images_ = res?.data?.data
                 const avatar = images_[0].path
                 userForm.setFieldValue('avatar', avatar)
-                handleUpdate({ avatar: avatar, first_name: "None" })
+                const obj = { avatar: avatar}
+                if (!isAdmin){
+                    obj['first_name'] = "No name"
+                }
+                handleUpdate(obj)
             }).catch((err) => {
                 console.log(err)
                 const errors = err?.response?.data?.errors
@@ -69,16 +73,21 @@ const AccountProfile = () => {
         if (!account) {
             METHOD = 'POST'
             URL = URLS.ACCOUNT
-            values['user_id'] = user?.user?.id
+            // values['user_id'] = user?.user?.id
         }
         makeRequestOne(URL, METHOD, {
             Authorization: `Bearer ${token}`
         }, values, {}).then(res => {
             const accountData = res?.data?.data
-            dispatch(updateUserAccount(accountData))
+            if(isAdmin){
+                onUpdate && onUpdate()
+            }
+            else{
+                dispatch(updateUserAccount(accountData))
+            }
             showNotification({
                 title: 'Update Success',
-                message: 'You have successfully updated your profile.',
+                message: 'You have successfully updated the profile.',
                 color: 'green',
                 icon: <IconAlertCircle />,
             })
@@ -117,23 +126,6 @@ const AccountProfile = () => {
                         </div>
                     </a>
                 </li>
-                {/* <li className="nav-item">
-                    <a
-                        className="nav-link px-0"
-                        href="dashboard-settings.html#notifications"
-                        data-bs-toggle="tab"
-                        role="tab"
-                    >
-                        <div className="d-none d-lg-block">
-                            <i className="ci-bell opacity-60 me-2" />
-                            Notifications
-                        </div>
-                        <div className="d-lg-none text-center">
-                            <i className="ci-bell opacity-60 d-block fs-xl mb-2" />
-                            <span className="fs-ms">Notifications</span>
-                        </div>
-                    </a>
-                </li> */}
             </ul>
             {/* Tab content*/}
             <div className="tab-content">
@@ -155,6 +147,7 @@ const AccountProfile = () => {
                                             color='red'
                                             label=''
                                             placeholder='Select Avatar'
+                                            accept='image/*'
                                             type="text"
                                             {...avatarForm.getInputProps('avatar')}
                                             style={{
@@ -203,7 +196,7 @@ const AccountProfile = () => {
                                     label='Email'
                                     placeholder="example@gmail.com"
                                     type="text"
-                                    value={user?.user?.email}
+                                    value={isAdmin ? accountFromAdmin?.user?.email : user?.user?.email}
                                     disabled
                                 />
                             </div>
@@ -292,111 +285,6 @@ const AccountProfile = () => {
                         </div>
                     </form>
                 </div>
-                {/* Notifications*/}
-                {/* <div className="tab-pane fade" id="notifications" role="tabpanel">
-                    <div className="bg-secondary rounded-3 p-4">
-                        <div className="form-check form-switch">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                id="nf-disable-all"
-                                data-master-checkbox-for="#notifocation-settings"
-                            />
-                            <label
-                                className="form-check-label fw-medium"
-                                htmlFor="nf-disable-all"
-                            >
-                                Enable/disable all notifications
-                            </label>
-                        </div>
-                    </div>
-                    <div id="notifocation-settings">
-                        <div className="border-bottom p-4">
-                            <div className="form-check form-switch">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="nf-product-sold"
-                                    defaultChecked=""
-                                />
-                                <label className="form-check-label" htmlFor="nf-product-sold">
-                                    Product sold notifications
-                                </label>
-                            </div>
-                            <div className="form-text">
-                                Send an email when someone purchased one of my products
-                            </div>
-                        </div>
-                        <div className="border-bottom p-4">
-                            <div className="form-check form-switch">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="nf-product-updated"
-                                    defaultChecked=""
-                                />
-                                <label className="form-check-label" htmlFor="nf-product-updated">
-                                    Product update notifications
-                                </label>
-                            </div>
-                            <div className="form-text">
-                                Send an email when a product I've purchased is updated
-                            </div>
-                        </div>
-                        <div className="border-bottom p-4">
-                            <div className="form-check form-switch">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="nf-product-comment"
-                                    defaultChecked=""
-                                />
-                                <label className="form-check-label" htmlFor="nf-product-comment">
-                                    Product comment notifications
-                                </label>
-                            </div>
-                            <div className="form-text">
-                                Send an email when someone comments on one of my products
-                            </div>
-                        </div>
-                        <div className="border-bottom p-4">
-                            <div className="form-check form-switch">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="nf-product-review"
-                                    defaultChecked=""
-                                />
-                                <label className="form-check-label" htmlFor="nf-product-review">
-                                    Product review notification
-                                </label>
-                            </div>
-                            <div className="form-text">
-                                Send an email when someone leaves a review with their rating
-                            </div>
-                        </div>
-                        <div className="border-bottom p-4">
-                            <div className="form-check form-switch">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="nf-daily-summary"
-                                />
-                                <label className="form-check-label" htmlFor="nf-daily-summary">
-                                    Daily summary emails
-                                </label>
-                            </div>
-                            <div className="form-text">
-                                Send me a daily summary of all products sold, commented or reviewed
-                            </div>
-                        </div>
-                    </div>
-                    <div className="text-sm-end mt-4">
-                        <button className="btn btn-primary" type="button">
-                            Save changes
-                        </button>
-                    </div>
-                </div> */}
             </div>
         </>
     )

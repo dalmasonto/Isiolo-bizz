@@ -3,51 +3,76 @@ import React from 'react'
 import { URLS } from '../../config/constants'
 import { showNotification } from '@mantine/notifications'
 import { IconAlertCircle } from '@tabler/icons'
-import { displayErrors } from '../../config/functions'
-import { Loader, PasswordInput, TextInput } from '@mantine/core'
+import { displayErrors, getFullName } from '../../config/functions'
+import { Loader, PasswordInput, Select, TextInput } from '@mantine/core'
 import { makeRequestOne } from '../../config/config'
+import { useSelector } from 'react-redux'
+import { selectToken } from '../../providers/app/appSlice'
 
-const SignUpForm = () => {
+const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
 
   const [loading, setLoading] = React.useState(false)
-
+  const token = useSelector(selectToken)
   const signUpForm = useForm({
     initialValues: {
+      name: updating ? user.name : '',
       first_name: '',
-      last_name: '',
-      email: '',
+      middle_name: '',
       telephone: '',
+      email: updating ? user.email : '',
       password: '',
       password_confirmation: '',
+      role: ''
     },
     validate: {
+      // name: value => value === '' ? 'Name is required' : null,
       first_name: value => value === '' ? 'First name is required' : null,
+      middle_name: value => value === '' ? 'Middle name is required' : null,
       last_name: value => value === '' ? 'Last name is required' : null,
       email: value => value === '' ? 'Email is required' : null,
-      telephone: value => value === '' ? 'Phone number is required' : null,
+      telephone: value => value === '' ? 'Provide phone number' : null,
       password: value => value === '' ? 'Password is required' : null,
       password_confirmation: value => value !== signUpForm.values['password'] ? 'Passwords do not match' : null,
     }
   })
 
   const handleSignUp = (values) => {
-    values['role'] = "administrator"
+    let data = { ...values, name: getFullName(values) }
+    let METHOD = 'POST'
+    let URL = `${URLS.SIGNUP}/`
+    let HEADERS = {}
+    if (!isAdmin) {
+      values['role'] = "merchant"
+    }
+    if (updating) {
+      data = {
+        name: values['name'],
+        email: values['email']
+      }
+      METHOD = 'PUT'
+      URL = `${URLS.SIGNUP}/${user?.id}/`
+      HEADERS = {
+        'Authorization': `Bearer ${token}`
+      }
+    }
     setLoading(true)
-    makeRequestOne(URLS.SIGNUP + "/", 'POST', {}, { ...values, name: values['first_name'] }, {}).then(res => {
-      console.log("singup", res)
+    makeRequestOne(URL, METHOD, HEADERS, { ...data }, {}).then(res => {
       if (res?.status === 200) {
         showNotification({
-          title: 'Sign Up Success',
-          message: 'You have successfully signed up',
+          title: `${updating ? 'Update' : 'Sign Up'} Success`,
+          message: `You have successfully ${updating ? 'updated the user' : 'signed up'}`,
           color: 'green',
           icon: <IconAlertCircle />,
         })
-        // signUpForm.reset()
+
+        onUpdate && onUpdate()
+
+        signUpForm.reset()
       }
       else {
         showNotification({
-          title: 'Sign Up Failed!',
-          message: 'Sign Up failed. Please try again later!',
+          title: `${updating ? 'Update' : 'Sign Up'} Failed!`,
+          message: `${updating ? 'Update' : 'Sign Up'} failed. Please try again later!`,
           color: 'red',
           icon: <IconAlertCircle />,
         })
@@ -55,7 +80,7 @@ const SignUpForm = () => {
     }).catch(err => {
       displayErrors(signUpForm, err?.response?.data?.errors)
       showNotification({
-        title: 'Sign Up Failed!',
+        title: `${updating ? 'Update' : 'Sign Up'} Failed!`,
         message: 'There has been an error, please try again later!',
         color: 'red',
         icon: <IconAlertCircle />,
@@ -77,8 +102,9 @@ const SignUpForm = () => {
         <div className="row gx-4 gy-3">
           <div className="col-sm-6">
             <TextInput
-              label="First Name"
+              label="First name"
               type="text"
+              placeholder='Enter Your First Name'
               required=""
               id="reg-fn"
               {...signUpForm.getInputProps('first_name')}
@@ -86,12 +112,23 @@ const SignUpForm = () => {
           </div>
           <div className="col-sm-6">
             <TextInput
-              label="Last Name"
+              label="Middle name"
               type="text"
+              placeholder='Enter Your Middle Name'
               required=""
+              id="reg-fn"
+              {...signUpForm.getInputProps('middle_name')}
+            />
+          </div>
+          <div className="col-sm-6">
+            <TextInput
+              label="Last name"
+              type="text"
+              placeholder='Enter Your Last Name'
+              required=""
+              id="reg-fn"
               {...signUpForm.getInputProps('last_name')}
             />
-            <div className="invalid-feedback">Please enter your last name!</div>
           </div>
           <div className="col-sm-6">
             <TextInput
@@ -103,30 +140,51 @@ const SignUpForm = () => {
           </div>
           <div className="col-sm-6">
             <TextInput
-              label="Phone Number"
-              type="text"
-              required=""
+              label="Phone No."
+              type='tel'
+              required
               {...signUpForm.getInputProps('telephone')}
             />
           </div>
-          <div className="col-sm-6">
-            <PasswordInput
-              label="Password"
-              required=""
-              {...signUpForm.getInputProps('password')}
-            />
-          </div>
-          <div className="col-sm-6">
-            <PasswordInput
-              label="Confirm Password"
-              required=""
-              {...signUpForm.getInputProps('password_confirmation')}
-            />
-          </div>
+          {
+            isAdmin && (
+              <div className="col-sm-6">
+                <Select
+                  label="Role"
+                  type="text"
+                  required=""
+                  {...signUpForm.getInputProps('role')}
+                  data={[
+                    { value: 'merchant', label: 'Merchant' },
+                    { value: 'administrator', label: 'Administrator' },
+                  ]}
+                />
+              </div>)
+          }
+          {
+            !updating && (
+              <>
+                <div className="col-sm-6">
+                  <PasswordInput
+                    label="Password"
+                    required=""
+                    {...signUpForm.getInputProps('password')}
+                  />
+                </div>
+                <div className="col-sm-6">
+                  <PasswordInput
+                    label="Confirm Password"
+                    required=""
+                    {...signUpForm.getInputProps('password_confirmation')}
+                  />
+                </div>
+              </>
+            )
+          }
           <div className="col-12 text-end">
             <button className="btn btn-primary" type="submit">
               <i className="ci-user me-2 ms-n1" />
-              Sign Up
+              {updating ? 'Update' : 'Sign Up'}
               {
                 loading ?
                   <Loader color='white' ml="sm" size="sm" />

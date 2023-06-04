@@ -1,10 +1,11 @@
-import { Button, Image } from '@mantine/core'
-import React from 'react'
+import { Image } from '@mantine/core'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CURRENCY } from '../../config/constants'
 import { useSelector } from 'react-redux'
 import { selectCartItems, selectCartTotal } from '../../providers/app/appSlice'
 import { formatCurrency } from '../../config/config';
+import ClientForm from '../../components/clients/ClientForm'
 
 const ItemSummary = ({ item }) => {
     const images = JSON.parse(item?.product?.images ? item?.product?.images : "[]")
@@ -13,7 +14,7 @@ const ItemSummary = ({ item }) => {
         <div className="d-flex align-items-center pb-2 border-bottom">
             <Link
                 className="d-block flex-shrink-0 me-2"
-                to={`/shop/product/${item.id}`}
+                to={`/shop/product/${item?.product?.id}/${item?.product?.slug}`}
             >
                 <Image
                     radius="md"
@@ -24,9 +25,9 @@ const ItemSummary = ({ item }) => {
             </Link>
             <div className="ps-1">
                 <h6 className="widget-product-title">
-                    <a href="marketplace-single.html">
+                    <Link to={`/shop/product/${item?.product?.id}/${item?.product?.slug}`}>
                         {item?.product?.name}
-                    </a>
+                    </Link>
                 </h6>
                 <div className="widget-product-meta">
                     <span className="text-accent border-end pe-2 me-2">
@@ -45,9 +46,10 @@ const ItemSummary = ({ item }) => {
 }
 
 const Checkout = () => {
-
+    const [loading, setLoading] = useState(false)
     const items = useSelector(selectCartItems)
     const cartTotal = useSelector(selectCartTotal)
+    
 
     return (
         <>
@@ -80,7 +82,7 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
-            <div className="container mb-5 pb-3">
+            <div className="container mb-5 pb-3 position-relative">
                 <div className="bg-light shadow-lg rounded-3 overflow-hidden">
                     <div className="row">
                         {/* Content*/}
@@ -89,200 +91,7 @@ const Checkout = () => {
                                 {/* Title*/}
                                 <h2 className="h6 border-bottom pb-3 mb-3">Billing details</h2>
                                 {/* Billing detail*/}
-                                <div className="row pb-4 gx-4 gy-3">
-                                    <div className="col-sm-6">
-                                        <label className="form-label" htmlFor="mc-fn">
-                                            First name <span className="text-danger">*</span>
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            defaultValue="Jonathan"
-                                            id="mc-fn"
-                                        />
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <label className="form-label" htmlFor="mc-ln">
-                                            Last name <span className="text-danger">*</span>
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            defaultValue="Doe"
-                                            id="mc-ln"
-                                        />
-                                    </div>
-                                    <div className="col-12">
-                                        <label className="form-label" htmlFor="mc-email">
-                                            Email address <span className="text-danger">*</span>
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="email"
-                                            defaultValue="contact@createx.studio"
-                                            id="mc-email"
-                                        />
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <label className="form-label" htmlFor="mc-company">
-                                            Company
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            defaultValue="Createx Studio"
-                                            id="mc-company"
-                                        />
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <label className="form-label" htmlFor="mc-country">
-                                            Country <span className="text-danger">*</span>
-                                        </label>
-                                        <select className="form-select" id="mc-country">
-                                            <option value="">Select country</option>
-                                            <option value="Kenya" selected>Kenya</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                {/* Payment methods accordion*/}
-                                <div className="accordion mb-2 d-none" id="payment-method" role="tablist">
-                                    <div className="accordion-item">
-                                        <h3 className="accordion-header">
-                                            <a
-                                                className="accordion-button"
-                                                href="marketplace-checkout.html#card"
-                                                data-bs-toggle="collapse"
-                                            >
-                                                <i className="ci-card fs-lg me-2 mt-n1 align-middle" />
-                                                Pay with Credit Card
-                                            </a>
-                                        </h3>
-                                        <div
-                                            className="accordion-collapse collapse show"
-                                            id="card"
-                                            data-bs-parent="#payment-method"
-                                            role="tabpanel"
-                                        >
-                                            <div className="accordion-body">
-                                                <p className="fs-sm">
-                                                    We accept following credit cards:&nbsp;&nbsp;
-                                                    <img
-                                                        className="d-inline-block align-middle"
-                                                        src="img/cards.png"
-                                                        style={{ width: 187 }}
-                                                        alt="Cerdit Cards"
-                                                    />
-                                                </p>
-                                                <div className="credit-card-wrapper" />
-                                                <form className="credit-card-form row g-3">
-                                                    <div className="col-sm-6">
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            name="number"
-                                                            placeholder="Card Number"
-                                                            required=""
-                                                        />
-                                                    </div>
-                                                    <div className="col-sm-6">
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            name="name"
-                                                            placeholder="Full Name"
-                                                            required=""
-                                                        />
-                                                    </div>
-                                                    <div className="col-sm-3">
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            name="expiry"
-                                                            placeholder="MM/YY"
-                                                            required=""
-                                                        />
-                                                    </div>
-                                                    <div className="col-sm-3">
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            name="cvc"
-                                                            placeholder="CVC"
-                                                            required=""
-                                                        />
-                                                    </div>
-                                                    <div className="col-sm-6">
-                                                        <button
-                                                            className="btn btn-primary d-block w-100"
-                                                            type="submit"
-                                                        >
-                                                            Place order
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="accordion-item">
-                                        <h3 className="accordion-header">
-                                            <a
-                                                className="accordion-button collapsed"
-                                                href="marketplace-checkout.html#paypal"
-                                                data-bs-toggle="collapse"
-                                            >
-                                                <i className="ci-paypal me-2 align-middle" />
-                                                Pay with PayPal
-                                            </a>
-                                        </h3>
-                                        <div
-                                            className="accordion-collapse collapse"
-                                            id="paypal"
-                                            data-bs-parent="#payment-method"
-                                            role="tabpanel"
-                                        >
-                                            <div className="accordion-body fs-sm">
-                                                <p>
-                                                    <span className="fw-medium">PayPal</span> - the safer,
-                                                    easier way to pay
-                                                </p>
-                                                <button className="btn btn-primary" type="button">
-                                                    Checkout with PayPal
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="accordion-item">
-                                        <h3 className="accordion-header">
-                                            <a
-                                                className="accordion-button collapsed"
-                                                href="marketplace-checkout.html#points"
-                                                data-bs-toggle="collapse"
-                                            >
-                                                <i className="ci-money-bag me-2" />
-                                                Pay with my account balance
-                                            </a>
-                                        </h3>
-                                        <div
-                                            className="accordion-collapse collapse"
-                                            id="points"
-                                            data-bs-parent="#payment-method"
-                                            role="tabpanel"
-                                        >
-                                            <div className="accordion-body">
-                                                <p>
-                                                    You currently have
-                                                    <span className="fw-medium">
-                                                        &nbsp;$1,375.<small>00</small>
-                                                    </span>
-                                                    &nbsp;on your account balance.
-                                                </p>
-                                                <button className="btn btn-primary" type="submit">
-                                                    Pay with account balance
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <ClientForm />
                             </div>
                         </section>
                         {/* Sidebar*/}
@@ -310,7 +119,7 @@ const Checkout = () => {
                                     <h3 className="fw-normal text-center my-4">
                                         {CURRENCY} {formatCurrency(cartTotal)}
                                     </h3>
-                                    <button className='btn btn-primary btn-shadow d-block w-100 mt-4'>Place Order</button>
+
                                 </div>
                             </div>
                         </aside>

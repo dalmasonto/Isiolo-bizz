@@ -37,18 +37,18 @@ export const appSlice = createSlice({
       state.loggedIn = false;
     },
     addToCart: (state, action) => {
-      const item = action.payload
-      const itemExists = state.cart.items.find(item => item.product.id === action.payload.product.id);
+      const newItem = action.payload
+      const itemExists = state.cart.items.find(item => item.product.id === newItem.product.id);
       if(itemExists){
         state.cart.items = state.cart.items.map(item => {
-          if(item.product.id === action.payload.product.id){
+          if(item.product.id === newItem.product.id){
             item.qty += 1;
           }
           return item;
         });
         return;
       }
-      state.cart.items.push(action.payload);
+      state.cart.items.push(newItem);
     },
     addItemQuantity: (state, action) => {
       state.cart.items = state.cart.items.map(item => {

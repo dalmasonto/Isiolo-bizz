@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { DataTable } from 'mantine-datatable';
 import useSwr from 'swr';
 import { URLS } from '../../config/constants';
-import { makeRequestOne } from '../../config/config';
+import { limitChars, makeRequestOne } from '../../config/config';
 import { ActionIcon, Avatar, Box, Drawer, Group, ScrollArea, Stack, Text, Title } from '@mantine/core';
 import { IconAlertCircle, IconAlertTriangle, IconEdit, IconEye, IconTrash } from '@tabler/icons';
 import { modals } from '@mantine/modals';
@@ -10,10 +10,11 @@ import { useSelector } from 'react-redux';
 import { selectToken } from '../../providers/app/appSlice';
 import { showNotification } from '@mantine/notifications';
 import { useDebouncedState, useDisclosure } from '@mantine/hooks';
-import MerchantUpdateForm from '../../components/merchant/MerchantUpdateForm';
 import CustomPagination from '../../components/shop/CustomPagination';
+import ClientForm from '../../components/clients/ClientForm';
+import { getFullName } from '../../config/functions';
 
-const Merchants = () => {
+const Clients = () => {
   const [options, setOptions] = useDebouncedState({
     current_page: 1
   }, 200)
@@ -21,7 +22,7 @@ const Merchants = () => {
   const [activeObject, setActiveObject] = useState(null)
   const token = useSelector(selectToken)
 
-  const query = useSwr([URLS.MERCHANTS + "/", 'GET', {}, {}, { "page[number]": options?.current_page }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
+  const query = useSwr([URLS.CLIENTS + "/", 'GET', {}, {}, { "page[number]": options?.current_page }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
     refreshInterval: 36000
   })
   const queryData = query?.data?.data
@@ -29,7 +30,8 @@ const Merchants = () => {
   const queryMeta = queryData?.meta
 
   const showInfo = (item) => {
-    alert(JSON.stringify(item))
+    setActiveObject(item)
+    open()
   }
 
   const editInfo = (item) => {
@@ -40,7 +42,7 @@ const Merchants = () => {
 
   const deleteItem = (id) => {
 
-    makeRequestOne(`${URLS.MERCHANTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {}).then(res => {
+    makeRequestOne(`${URLS.CLIENTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {}).then(res => {
       showNotification({
         title: 'Merchant Deleted',
         message: 'Merchant has been deleted successfully',
@@ -65,7 +67,7 @@ const Merchants = () => {
     radius: "lg",
     children: (
       <Text size="sm">
-        Are you sure you want to delete {item?.name}?
+        Are you sure you want to delete {getFullName(item?.name)}?
       </Text>
     ),
     labels: { confirm: 'Confirm', cancel: 'Cancel' },
@@ -83,19 +85,19 @@ const Merchants = () => {
         opened={opened}
         onClose={close}
         position='right'
-        size="xl" 
-        title={`${activeObject?.name ?? "Update Merchant"}`}
+        size="lg" 
+        title={`Client - ${getFullName(activeObject)}`}
         scrollAreaComponent={ScrollArea.Autosize}
         zIndex={5000}
       >
         {
           activeObject && (
-            <MerchantUpdateForm isAdmin={true} merchant={activeObject} onUpdate={query.mutate} />
+            <ClientForm isAdmin={true} client={activeObject} />
           )
         }
       </Drawer>
       <Stack spacing={10} align='start'>
-        <Title weight={500}>Merchants</Title>
+        <Title weight={500}>Clients</Title>
         <CustomPagination {...queryMeta} onPageChange={changePage} noPadding={true} />
         <Box className="w-100">
         {
@@ -104,10 +106,10 @@ const Merchants = () => {
               columns={
                 [
                   {
-                    accessor: 'name', sortable: true, render: ({ name, logo }) => (
+                    accessor: 'first_name', sortable: true, render: (item) => (
                       <Group>
-                        <Avatar src={logo} size="lg" />
-                        <Text>{name}</Text>
+                        <Avatar src={item?.avatar} size="sm" />
+                        <Text>{limitChars(getFullName(item), 16)}</Text>
                       </Group>
                     )
                   },
@@ -120,15 +122,15 @@ const Merchants = () => {
                     textAlignment: 'right',
                     render: (item) => (
                       <Group spacing={4} position="right" noWrap>
-                        {/* <ActionIcon color="green" onClick={() => showInfo(item)}>
+                        <ActionIcon color="green" onClick={() => showInfo(item)}>
                         <IconEye size={16} />
-                      </ActionIcon> */}
-                        <ActionIcon color="blue" onClick={() => editInfo(item)}>
+                      </ActionIcon>
+                        {/* <ActionIcon color="blue" onClick={() => editInfo(item)}>
                           <IconEdit size={16} />
-                        </ActionIcon>
-                        <ActionIcon color="red" onClick={() => deleteRow(item)}>
+                        </ActionIcon> */}
+                        {/* <ActionIcon color="red" onClick={() => deleteRow(item)}>
                           <IconTrash size={16} />
-                        </ActionIcon>
+                        </ActionIcon> */}
                       </Group>
                     ),
                   },
@@ -147,4 +149,4 @@ const Merchants = () => {
   )
 }
 
-export default Merchants
+export default Clients

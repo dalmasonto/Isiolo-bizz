@@ -28,12 +28,12 @@ const AdminLayout = () => {
                 <div className="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
                     <div className="d-flex align-items-center pb-3">
                         <div
-                            className="img-thumbnail rounded-circle position-relative flex-shrink-0"
+                            className="img-thumbnail rounded-circle position-relative flex-shrink-0 d-flex align-items-center justify-content-center"
                             style={{ width: "6.375rem", height: "6.375rem" }}
                         >
                             <img
                                 className="rounded-circle"
-                                src="/assets/img/marketplace/account/avatar.png"
+                                src="/assets/images/esiolo-logo.jpg"
                                 alt="Createx Studio"
                             />
                         </div>

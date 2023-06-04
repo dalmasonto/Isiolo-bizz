@@ -29,6 +29,7 @@ import ShopProfile from './pages/account/ShopSettings';
 import UpdateProduct from './pages/merchant/UpdateProduct';
 import SingleCategory from './pages/shop/categories/SingleCategory';
 import SingleMerchant from './pages/shop/SingleMerchant';
+import Clients from './pages/admin/Clients';
 
 const router = createBrowserRouter([
   {
@@ -137,6 +138,10 @@ const router = createBrowserRouter([
           {
             path: "merchants",
             element: <Merchants />,
+          },
+          {
+            path: "clients",
+            element: <Clients />,
           },
           {
             path: "categories",

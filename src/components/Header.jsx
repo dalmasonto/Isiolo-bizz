@@ -2,11 +2,12 @@ import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { logout, removeCartItem, selectCartItems, selectCartTotal, selectLoggedIn, selectUser } from '../providers/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { Anchor, Avatar, Box, Grid, Group, HoverCard, Image, ScrollArea, Stack, Text } from '@mantine/core'
+import { Alert, Anchor, Avatar, Box, Grid, Group, HoverCard, Image, ScrollArea, Stack, Text } from '@mantine/core'
 import { ADMIN_BASE_URL, CURRENCY, SHOPS, URLS } from '../config/constants'
 import { formatCurrency, limitChars, makeRequestOne } from '../config/config';
 import { modals } from '@mantine/modals'
 import useSwr from 'swr';
+import { IconAlertCircle } from '@tabler/icons'
 
 
 const navlinks = [
@@ -104,6 +105,13 @@ const HeaderCart = () => {
                                 cartItems?.map((item, i) => (
                                     <CartItem key={`nav_cart_item_${i}`} item={item} />
                                 ))
+                            }
+                            {
+                                cartItems?.length === 0 ? (
+                                    <Alert icon={<IconAlertCircle size="1rem" />} my={20} title="Cart Empty!">
+                                        Your cart is empty. <Link to={"/shop"}>Click here to continue shopping</Link>
+                                    </Alert>
+                                ) : null
                             }
                         </Box>
                     </ScrollArea>
@@ -454,7 +462,7 @@ const Header = () => {
                                     )
                                 }
                                 {
-                                    loggedIn && (user?.user?.isAdministrator || user?.user?.isManager ) && (
+                                    loggedIn && (user?.user?.isAdministrator || user?.user?.isManager) && (
                                         <NavItem {...{
                                             id: 'f',
                                             label: 'Admin',

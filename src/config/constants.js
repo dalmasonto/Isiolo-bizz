@@ -2,6 +2,8 @@
 
 export const BASE_API_URL = "https://api.esiolo.biz/api"
 
+export const ITEMS_PER_PAGE = 30
+
 export const URLS = {
     // Auth
     LOGIN: `${BASE_API_URL}/auth/sign-in`,
