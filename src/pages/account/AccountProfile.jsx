@@ -73,7 +73,7 @@ const AccountProfile = ({isAdmin, accountFromAdmin, onUpdate}) => {
         if (!account) {
             METHOD = 'POST'
             URL = URLS.ACCOUNT
-            // values['user_id'] = user?.user?.id
+            values['user_id'] = user?.user?.id
         }
         makeRequestOne(URL, METHOD, {
             Authorization: `Bearer ${token}`
