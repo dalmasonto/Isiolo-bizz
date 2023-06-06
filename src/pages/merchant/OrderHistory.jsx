@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { DataTable } from 'mantine-datatable';
 import useSwr from 'swr';
-import { ORDER_STATUS, URLS } from '../../config/constants';
-import { limitChars, makeRequestOne } from '../../config/config';
+import { CURRENCY, ORDER_STATUS, URLS } from '../../config/constants';
+import { formatCurrency, limitChars, makeRequestOne } from '../../config/config';
 import { ActionIcon, Avatar, Box, Drawer, Group, ScrollArea, Stack, Text, Title } from '@mantine/core';
 import { IconAlertCircle, IconAlertTriangle, IconEdit, IconEye, IconTrash } from '@tabler/icons';
 import { modals } from '@mantine/modals';
@@ -26,7 +26,7 @@ const OrderHistory = () => {
     const token = useSelector(selectToken)
     const merchant = useSelector(selectMerchant)
 
-    const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, "filter[merchant_id]": merchant?.id }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
+    const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, "filter[merchant_id]": merchant?.id, include: "merchant,client" }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
         refreshInterval: 36000
     })
     const queryData = query?.data?.data
@@ -83,6 +83,8 @@ const OrderHistory = () => {
         setOptions(current => ({ ...current, current_page: page_number }))
     }
 
+    console.log("ORDERS: ", data)
+
     return (
         <div>
             <Drawer
@@ -113,16 +115,17 @@ const OrderHistory = () => {
                                             columns={
                                                 [
                                                     {
-                                                        accessor: 'merchant.name', sortable: true, render: (order) => (
-                                                            <Group>
-                                                                <Avatar src={order?.merchant?.logo} size="sm" />
-                                                                <Text>{limitChars(order?.merchant?.name, 16)}</Text>
-                                                            </Group>
+                                                        accessor: 'client.name', sortable: true, render: (order) => (
+                                                            <Text>{limitChars(getFullName(order?.client), 16)}</Text>
                                                         )
                                                     },
                                                     { accessor: 'client.telephone' },
                                                     { accessor: 'client.email', sortable: true },
-                                                    { accessor: 'payable' },
+                                                    {
+                                                        accessor: 'payable', render: ({ payable }) => (
+                                                            <Text>{CURRENCY} {formatCurrency(payable)}</Text>
+                                                        )
+                                                    },
                                                     {
                                                         accessor: '_status', render: ({ _status }) => (
                                                             <Text>{ORDER_STATUS[`${_status}`]}</Text>
@@ -134,9 +137,9 @@ const OrderHistory = () => {
                                                         textAlignment: 'right',
                                                         render: (item) => (
                                                             <Group spacing={4} position="right" noWrap>
-                                                                <ActionIcon color="green" onClick={() => showInfo(item)}>
+                                                                {/* <ActionIcon color="green" onClick={() => showInfo(item)}>
                                                                     <IconEye size={16} />
-                                                                </ActionIcon>
+                                                                </ActionIcon> */}
                                                                 {/* <ActionIcon color="blue" onClick={() => editInfo(item)}>
                           <IconEdit size={16} />
                         </ActionIcon> */}

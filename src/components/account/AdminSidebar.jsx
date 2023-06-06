@@ -38,6 +38,11 @@ const sidebarLinkgs = [
                 to: `/${ADMIN_BASE_URL}/clients/`,
             },
             {
+                title: 'Orders',
+                icon: 'ci-store',
+                to: `/${ADMIN_BASE_URL}/orders/`,
+            },
+            {
                 title: 'Categories',
                 icon: 'ci-package',
                 to: `/${ADMIN_BASE_URL}/categories/`,

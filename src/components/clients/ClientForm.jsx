@@ -106,12 +106,7 @@ const ClientForm = ({ client, isAdmin }) => {
 
     const handleCreateOrder = (order) => {
         makeRequestOne(URLS.ORDERS, 'POST', {}, order, {}).then(res => {
-            showNotification({
-                title: `Order Successful`,
-                message: 'Your order has been succesffully placed!',
-                color: 'green',
-                icon: <IconAlertCircle />,
-            })
+            // Pass
         }).catch(err => {
             showNotification({
                 title: `Placing order Failed!`,
@@ -135,10 +130,10 @@ const ClientForm = ({ client, isAdmin }) => {
             .catch(error => {
                 console.error('Error:', error);
             }).finally(() => {
-                // clientForm.reset()
-                // dispatch(clearCart())
+                clientForm.reset()
+                dispatch(clearCart())
                 setLoading(false)
-                // openSuccessModal()
+                openSuccessModal()
             });
     }
 

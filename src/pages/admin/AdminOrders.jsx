@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { DataTable } from 'mantine-datatable';
 import useSwr from 'swr';
-import { ORDER_STATUS, URLS } from '../../config/constants';
-import { limitChars, makeRequestOne } from '../../config/config';
-import { ActionIcon, Avatar, Box, Drawer, Group, ScrollArea, Stack, Text, Title } from '@mantine/core';
+import { CURRENCY, ORDER_STATUS, URLS } from '../../config/constants';
+import { formatCurrency, limitChars, makeRequestOne } from '../../config/config';
+import { ActionIcon, Anchor, Avatar, Box, Drawer, Group, ScrollArea, Stack, Text, Title } from '@mantine/core';
 import { IconAlertCircle, IconAlertTriangle, IconEdit, IconEye, IconTrash } from '@tabler/icons';
 import { modals } from '@mantine/modals';
 import { useSelector } from 'react-redux';
@@ -22,7 +22,7 @@ const AdminOrders = () => {
   const [activeObject, setActiveObject] = useState(null)
   const token = useSelector(selectToken)
 
-  const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
+  const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, include: "merchant,client" }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
     refreshInterval: 36000
   })
   const queryData = query?.data?.data
@@ -42,7 +42,7 @@ const AdminOrders = () => {
 
   const deleteItem = (id) => {
 
-    makeRequestOne(`${URLS.CLIENTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, { include: "merchant, client" }).then(res => {
+    makeRequestOne(`${URLS.CLIENTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {  }).then(res => {
       showNotification({
         title: 'Order Deleted',
         message: 'Order has been deleted successfully',
@@ -78,6 +78,8 @@ const AdminOrders = () => {
   const changePage = (page_number) => {
     setOptions(current => ({ ...current, current_page: page_number }))
   }
+
+  console.log("ORDERS: ", data)
 
   return (
     <div>
@@ -116,9 +118,21 @@ const AdminOrders = () => {
                               </Group>
                             )
                           },
-                          { accessor: 'client.telephone' },
-                          { accessor: 'client.email', sortable: true },
-                          { accessor: 'payable' },
+                          { accessor: 'client.name', sortable: true, render: ({client}) => (
+                            <>
+                            <Text>{limitChars(getFullName(client), 16)}</Text>
+                            </>
+                          ) },
+                          { accessor: 'client.contact', render: ({client}) => (
+                            <>
+                            <Anchor href={`tel:${client?.telephone}`}>{client?.telephone}</Anchor>
+                            <br></br>
+                            <Anchor href={`mailto:${client?.email}`}>{limitChars(client?.email, 16)}</Anchor>
+                            </>
+                          ) },
+                          { accessor: 'payable', render: ({payable}) => (
+                            <Text>{CURRENCY} {formatCurrency(payable)}</Text>
+                          ) },
                           {
                             accessor: '_status', render: ({ _status }) => (
                               <Text>{ORDER_STATUS[`${_status}`]}</Text>
@@ -130,9 +144,9 @@ const AdminOrders = () => {
                             textAlignment: 'right',
                             render: (item) => (
                               <Group spacing={4} position="right" noWrap>
-                                <ActionIcon color="green" onClick={() => showInfo(item)}>
+                                {/* <ActionIcon color="green" onClick={() => showInfo(item)}>
                                   <IconEye size={16} />
-                                </ActionIcon>
+                                </ActionIcon> */}
                                 {/* <ActionIcon color="blue" onClick={() => editInfo(item)}>
                           <IconEdit size={16} />
                         </ActionIcon> */}

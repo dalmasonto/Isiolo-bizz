@@ -30,6 +30,7 @@ import UpdateProduct from './pages/merchant/UpdateProduct';
 import SingleCategory from './pages/shop/categories/SingleCategory';
 import SingleMerchant from './pages/shop/SingleMerchant';
 import Clients from './pages/admin/Clients';
+import AdminOrders from './pages/admin/AdminOrders';
 
 const router = createBrowserRouter([
   {
@@ -142,6 +143,10 @@ const router = createBrowserRouter([
           {
             path: "clients",
             element: <Clients />,
+          },
+          {
+            path: "orders",
+            element: <AdminOrders />,
           },
           {
             path: "categories",
