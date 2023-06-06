@@ -15,10 +15,10 @@ const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
   const token = useSelector(selectToken)
   const signUpForm = useForm({
     initialValues: {
-      name: updating ? user.name : '',
+      name: updating ? user?.name : '',
       first_name: '',
       middle_name: '',
-      telephone: '',
+      // telephone: '',
       email: updating ? user.email : '',
       password: '',
       password_confirmation: '',
@@ -30,7 +30,7 @@ const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
       middle_name: value => value === '' ? 'Middle name is required' : null,
       last_name: value => value === '' ? 'Last name is required' : null,
       email: value => value === '' ? 'Email is required' : null,
-      telephone: value => value === '' ? 'Provide phone number' : null,
+      // telephone: value => value === '' ? 'Provide phone number' : null,
       password: value => value === '' ? 'Password is required' : null,
       password_confirmation: value => value !== signUpForm.values['password'] ? 'Passwords do not match' : null,
     }
@@ -42,7 +42,7 @@ const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
     let URL = `${URLS.SIGNUP}/`
     let HEADERS = {}
     if (!isAdmin) {
-      values['role'] = "merchant"
+      data['role'] = "merchant"
     }
     if (updating) {
       data = {
@@ -138,14 +138,14 @@ const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
               {...signUpForm.getInputProps('email')}
             />
           </div>
-          <div className="col-sm-6">
+          {/* <div className="col-sm-6">
             <TextInput
               label="Phone No."
               type='tel'
               required
               {...signUpForm.getInputProps('telephone')}
             />
-          </div>
+          </div> */}
           {
             isAdmin && (
               <div className="col-sm-6">

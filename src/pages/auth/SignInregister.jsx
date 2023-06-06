@@ -22,7 +22,7 @@ const SignInregister = () => {
                         <LoginForm />
                     </div>
                     <div className="col-md-6 pt-4 mt-3 mt-md-0">
-                        <SignUpForm />
+                        <SignUpForm isAdmin={false} updating={false} />
                     </div>
                 </div>
             </div>

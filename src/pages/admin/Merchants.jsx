@@ -83,7 +83,7 @@ const Merchants = () => {
         opened={opened}
         onClose={close}
         position='right'
-        size="xl" 
+        size="xl"
         title={`${activeObject?.name ?? "Update Merchant"}`}
         scrollAreaComponent={ScrollArea.Autosize}
         zIndex={5000}
@@ -96,52 +96,60 @@ const Merchants = () => {
       </Drawer>
       <Stack spacing={10} align='start'>
         <Title weight={500}>Merchants</Title>
-        <CustomPagination {...queryMeta} onPageChange={changePage} noPadding={true} />
-        <Box className="w-100">
         {
-          data && (
-            <DataTable
-              columns={
-                [
-                  {
-                    accessor: 'name', sortable: true, render: ({ name, logo }) => (
-                      <Group>
-                        <Avatar src={logo} size="lg" />
-                        <Text>{name}</Text>
-                      </Group>
-                    )
-                  },
-                  { accessor: 'telephone' },
-                  { accessor: 'email', sortable: true },
-                  { accessor: 'state' },
-                  {
-                    accessor: 'actions',
-                    title: <Text mr="xs">Actions</Text>,
-                    textAlignment: 'right',
-                    render: (item) => (
-                      <Group spacing={4} position="right" noWrap>
-                        {/* <ActionIcon color="green" onClick={() => showInfo(item)}>
+          data?.length > 0 ? (
+            <>
+              <CustomPagination {...queryMeta} onPageChange={changePage} noPadding={true} />
+              <Box className="w-100">
+                {
+                  data && (
+                    <DataTable
+                      columns={
+                        [
+                          {
+                            accessor: 'name', sortable: true, render: ({ name, logo }) => (
+                              <Group>
+                                <Avatar src={logo} size="lg" />
+                                <Text>{name}</Text>
+                              </Group>
+                            )
+                          },
+                          { accessor: 'telephone' },
+                          { accessor: 'email', sortable: true },
+                          { accessor: 'state' },
+                          {
+                            accessor: 'actions',
+                            title: <Text mr="xs">Actions</Text>,
+                            textAlignment: 'right',
+                            render: (item) => (
+                              <Group spacing={4} position="right" noWrap>
+                                {/* <ActionIcon color="green" onClick={() => showInfo(item)}>
                         <IconEye size={16} />
                       </ActionIcon> */}
-                        <ActionIcon color="blue" onClick={() => editInfo(item)}>
-                          <IconEdit size={16} />
-                        </ActionIcon>
-                        <ActionIcon color="red" onClick={() => deleteRow(item)}>
-                          <IconTrash size={16} />
-                        </ActionIcon>
-                      </Group>
-                    ),
-                  },
-                ]}
-              records={data}
-              verticalSpacing={"md"}
-              withBorder={true}
-              withColumnBorders={true}
-            />
+                                <ActionIcon color="blue" onClick={() => editInfo(item)}>
+                                  <IconEdit size={16} />
+                                </ActionIcon>
+                                <ActionIcon color="red" onClick={() => deleteRow(item)}>
+                                  <IconTrash size={16} />
+                                </ActionIcon>
+                              </Group>
+                            ),
+                          },
+                        ]}
+                      records={data}
+                      verticalSpacing={"md"}
+                      withBorder={true}
+                      withColumnBorders={true}
+                    />
+                  )
+                }
+              </Box>
+              <CustomPagination {...queryMeta} onPageChange={changePage} noPadding={true} />
+            </>
+          ) : (
+            <Title order={3} weight={400}>No merchants found</Title>
           )
         }
-        </Box>
-        <CustomPagination {...queryMeta} onPageChange={changePage} noPadding={true} />
       </Stack>
     </div>
   )

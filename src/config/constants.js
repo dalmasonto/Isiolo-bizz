@@ -136,3 +136,13 @@ export const SHOPS = [
         logo: '/logos/Wiyukiririe-Self-Help-Group-Rewviewed-Logo.jpg',
     },
 ]
+
+
+export const ORDER_STATUS = {
+    // status
+    "0": 'PENDING',
+    "1": 'PROCESSING',
+    "2": 'PROCESSED',
+    "3": 'REJECTED', // after transaction is processed.
+    "4": 'ACCEPTED', // after transaction is processed.
+}

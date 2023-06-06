@@ -20,7 +20,7 @@ const SingleProduct = () => {
     const productQuery = useSwr([`${URLS.PRODUCTS}/${id}/`, 'GET', {}, {}, { include: 'category,merchant' }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const product = productQuery?.data?.data?.data
     const images = JSON.parse(product?.images ? product?.images : "[]")
-    console.log(product)
+    
     const similarProductsQuery = useSwr([`${URLS.PRODUCTS}`, 'GET', {}, {}, { 'filter[category_id]': product?.category_id, 'exclude[id]': id }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const products = similarProductsQuery?.data?.data?.data
 

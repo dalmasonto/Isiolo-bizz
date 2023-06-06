@@ -12,7 +12,7 @@ import { displayErrors } from '../../config/functions';
 const AccountProfile = ({isAdmin, accountFromAdmin, onUpdate}) => {
     const [loading, setLoading] = useState(false)
     const user = useSelector(selectUser)
-
+    console.log(user)
     const token = useSelector(selectToken)
     const account = isAdmin ? accountFromAdmin : user?.user?.account
     const dispatch = useDispatch()

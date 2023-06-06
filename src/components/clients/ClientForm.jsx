@@ -10,6 +10,30 @@ import { modals } from '@mantine/modals'
 import { showNotification } from '@mantine/notifications'
 import { displayErrors, getFullName } from '../../config/functions'
 
+
+const createOrderObjectsPerMerchant = (purchases) => {
+    const transformedData = purchases.reduce((result, element) => {
+        const existingElement = result.find(
+            item => item.client_id === element.client_id && item.merchant_id === element.merchant_id
+        );
+
+        if (existingElement) {
+            existingElement.payable += parseFloat(element.payable);
+            existingElement._purchases.push(element._pid);
+        } else {
+            result.push({
+                client_id: element.client_id,
+                merchant_id: element.merchant_id,
+                payable: parseFloat(element.payable),
+                _purchases: [element._pid]
+            });
+        }
+
+        return result;
+    }, []);
+    return transformedData
+}
+
 const ClientForm = ({ client, isAdmin }) => {
 
     const [loading, setLoading] = useState(false)
@@ -80,19 +104,8 @@ const ClientForm = ({ client, isAdmin }) => {
         )
     })
 
-    const handleCreateOrder = (PIDs, clientDetails) => {
-        const orderDetails = {
-            "client_id": 1,
-            "merchant_id": 1,
-            "payable": 4000,
-            "paid": "",
-            "balance": "",
-            "title": `Order for ${getFullName(clientDetails)}`,
-            "description": `Order for ${getFullName(clientDetails)}. ${clientDetails?.address_line_1} ${clientDetails?.address_line_2}`,
-            "_purchases": PIDs,
-            "_statement": ""
-        }
-        makeRequestOne(URLS.ORDERS, 'POST', {}, orderDetails, {}).then(res => {
+    const handleCreateOrder = (order) => {
+        makeRequestOne(URLS.ORDERS, 'POST', {}, order, {}).then(res => {
             showNotification({
                 title: `Order Successful`,
                 message: 'Your order has been succesffully placed!',
@@ -109,9 +122,29 @@ const ClientForm = ({ client, isAdmin }) => {
         })
     }
 
+    const placeAllOrders = (ordersToBePlaced) => {
+        Promise.all(ordersToBePlaced)
+            .then(responses => {
+                showNotification({
+                    title: `Order Successful`,
+                    message: 'Your order has been succesffully placed!',
+                    color: 'green',
+                    icon: <IconAlertCircle />,
+                })
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            }).finally(() => {
+                // clientForm.reset()
+                // dispatch(clearCart())
+                setLoading(false)
+                // openSuccessModal()
+            });
+    }
+
     const handlePostCartItem = async (item, client_id) => {
         const purchase = {
-            "category_id": item?.product?.category_id,
+            "merchant_id": item?.product?.merchant_id,
             "product_id": item?.product?.id,
             "client_id": client_id,
             "payable": item?.qty * item?.product?.price,
@@ -123,35 +156,26 @@ const ClientForm = ({ client, isAdmin }) => {
         return await makeRequestOne(URLS.PURCHASE + "/", 'POST', {}, purchase, {})
     }
 
+
     const postAllCartItems = (client_id, clientDetails) => {
 
         const allPurchasedItemsPostRequests = items?.map(item => handlePostCartItem(item, client_id))
 
         Promise.all(allPurchasedItemsPostRequests)
             .then(responses => {
-                const PIDs = responses.map(response => {
+                const PURCHASES = responses.map(response => {
                     const respData = response.data.data
-                    const pid = respData?._pid
-                    return pid
+                    return respData
                 });
-                // console.log("PIDs: ", PIDs)
-                // handleCreateOrder(PIDs, clientDetails)
-                showNotification({
-                    title: `Order Successful`,
-                    message: 'Your order has been succesffully placed!',
-                    color: 'green',
-                    icon: <IconAlertCircle />,
-                })
+
+                const ORDERS = createOrderObjectsPerMerchant(PURCHASES)
+
+                const allOrdersToBePlaced = ORDERS?.map(order => handleCreateOrder(order))
+                placeAllOrders(allOrdersToBePlaced)
             })
             .catch(error => {
-                // Handle errors
                 console.error('Error:', error);
-            }).finally(() => {
-                clientForm.reset()
-                dispatch(clearCart())
-                setLoading(false)
-                openSuccessModal()
-            });
+            })
     }
 
     const handleCheckout = () => {

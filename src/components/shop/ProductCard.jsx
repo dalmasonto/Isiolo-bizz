@@ -42,7 +42,7 @@ const ProductCard = ({ product }) => {
             <div className="card-body py-2">
                 <Link
                     className="product-meta d-block fs-xs pb-1"
-                    to={`/shop/categories/${product?.category?.id}`}
+                    to={`/shop/products/${product?.id}/${product?.slug}/`}
                 >
                     {product?.category?.title}
                 </Link>
