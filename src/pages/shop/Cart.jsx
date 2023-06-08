@@ -1,11 +1,11 @@
-import { Alert, Avatar, Box, Button, Image, Text } from '@mantine/core'
+import { ActionIcon, Alert, Avatar, Box, Button, Group, Image, Text } from '@mantine/core'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { clearCart, removeCartItem, selectCartItems, selectCartTotal } from '../../providers/app/appSlice'
+import { addItemQuantity, clearCart, removeCartItem, removeItemQuantity, selectCartItems, selectCartTotal } from '../../providers/app/appSlice'
 import { showNotification } from '@mantine/notifications'
 import { CURRENCY } from '../../config/constants'
-import { IconAlertCircle } from '@tabler/icons'
+import { IconAlertCircle, IconMinus, IconPlus } from '@tabler/icons'
 import { formatCurrency } from '../../config/config'
 
 const CartItem = ({ item }) => {
@@ -14,6 +14,22 @@ const CartItem = ({ item }) => {
 
     const handleDeleteItemFromCart = () => {
         dispatch(removeCartItem({ id: item?.product?.id }))
+    }
+
+    const handleUpdateQty = (prodID, add = true, qty) => {
+        if (add) {
+            dispatch(addItemQuantity({ id: prodID }))
+            return
+        }
+        else {
+            if(qty < 2){
+                dispatch(removeCartItem({ id: prodID }))
+            }
+            else{
+                dispatch(removeItemQuantity({ id: prodID }))
+            }
+            return
+        }
     }
 
     return (
@@ -47,11 +63,19 @@ const CartItem = ({ item }) => {
                 <div className="d-inline-block text-accent">
                     {CURRENCY} {formatCurrency(item?.product?.price)}
                 </div>
-                <Text
-                    className="d-inline-block text-accent fs-ms border-start ms-2 ps-2"
-                >
-                    qty: {item?.qty}
-                </Text>
+                <Group align='center'>
+                    <ActionIcon onClick={() => handleUpdateQty(item?.product?.id, false, item?.qty)} color='red' size="md" variant='light'>
+                        <IconMinus />
+                    </ActionIcon>
+                    <Text size="sm"
+                        className="d-inline-block text-accent"
+                    >
+                        qty: {item?.qty}
+                    </Text>
+                    <ActionIcon onClick={() => handleUpdateQty(item?.product?.id, true, item?.qty)} color='blue' size="md" variant='light'>
+                        <IconPlus />
+                    </ActionIcon>
+                </Group>
             </div>
         </div>
     )
@@ -128,6 +152,7 @@ const Cart = () => {
                                     <div className="py-1">
                                         <button
                                             className="btn btn-outline-danger btn-sm"
+                                            disabled={items?.length === 0}
                                             onClick={handleClearCart}
                                         >
                                             <i className="ci-close fs-xs me-1 ms-n1" />

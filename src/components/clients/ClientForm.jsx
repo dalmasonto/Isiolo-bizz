@@ -19,13 +19,13 @@ const createOrderObjectsPerMerchant = (purchases) => {
 
         if (existingElement) {
             existingElement.payable += parseFloat(element.payable);
-            existingElement._purchases.push(element._pid);
+            existingElement._purchases.push(element.id);
         } else {
             result.push({
                 client_id: element.client_id,
                 merchant_id: element.merchant_id,
                 payable: parseFloat(element.payable),
-                _purchases: [element._pid]
+                _purchases: [element.id]
             });
         }
 
@@ -105,16 +105,7 @@ const ClientForm = ({ client, isAdmin }) => {
     })
 
     const handleCreateOrder = (order) => {
-        makeRequestOne(URLS.ORDERS, 'POST', {}, order, {}).then(res => {
-            // Pass
-        }).catch(err => {
-            showNotification({
-                title: `Placing order Failed!`,
-                message: 'There has been an error, please try again later!',
-                color: 'red',
-                icon: <IconAlertTriangle />,
-            })
-        })
+        makeRequestOne(URLS.ORDERS, 'POST', {}, order, {})
     }
 
     const placeAllOrders = (ordersToBePlaced) => {
@@ -126,6 +117,9 @@ const ClientForm = ({ client, isAdmin }) => {
                     color: 'green',
                     icon: <IconAlertCircle />,
                 })
+
+                console.log("Orders: ", responses)
+
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -325,7 +319,7 @@ const ClientForm = ({ client, isAdmin }) => {
                     </Grid>
                     {
                         !isAdmin && (
-                            <button className='btn btn-primary btn-shadow d-block w-100 mt-4' type='submit'>
+                            <button className='btn btn-primary btn-shadow d-block w-100 mt-4' disabled={items?.length === 0} type='submit'>
                                 Place Order
                                 {
                                     loading ?

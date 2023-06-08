@@ -13,6 +13,7 @@ import { useDebouncedState, useDisclosure } from '@mantine/hooks';
 import CustomPagination from '../../components/shop/CustomPagination';
 import ClientForm from '../../components/clients/ClientForm';
 import { getFullName } from '../../config/functions';
+import SingleOrder from '../../components/shop/SingleOrder';
 
 const AdminOrders = () => {
   const [options, setOptions] = useDebouncedState({
@@ -22,7 +23,7 @@ const AdminOrders = () => {
   const [activeObject, setActiveObject] = useState(null)
   const token = useSelector(selectToken)
 
-  const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, include: "merchant,client" }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
+  const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, include: "merchant,client,purchases" }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
     refreshInterval: 36000
   })
   const queryData = query?.data?.data
@@ -42,7 +43,7 @@ const AdminOrders = () => {
 
   const deleteItem = (id) => {
 
-    makeRequestOne(`${URLS.CLIENTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {  }).then(res => {
+    makeRequestOne(`${URLS.CLIENTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {}).then(res => {
       showNotification({
         title: 'Order Deleted',
         message: 'Order has been deleted successfully',
@@ -79,24 +80,22 @@ const AdminOrders = () => {
     setOptions(current => ({ ...current, current_page: page_number }))
   }
 
-  console.log("ORDERS: ", data)
-
   return (
     <div>
       <Drawer
         opened={opened}
         onClose={close}
         position='right'
-        size="lg"
-        title={`Client - ${getFullName(activeObject)}`}
+        size="md"
+        title={`Order By - ${getFullName(activeObject?.client)}`}
         scrollAreaComponent={ScrollArea.Autosize}
         zIndex={5000}
       >
-        {/* {
+        {
           activeObject && (
-            <ClientForm isAdmin={true} client={activeObject} />
+            <SingleOrder order={activeObject} isAdmin={true} />
           )
-        } */}
+        }
       </Drawer>
       <Stack spacing={10} align='start'>
         <Title weight={500}>Orders</Title>
@@ -118,21 +117,27 @@ const AdminOrders = () => {
                               </Group>
                             )
                           },
-                          { accessor: 'client.name', sortable: true, render: ({client}) => (
-                            <>
-                            <Text>{limitChars(getFullName(client), 16)}</Text>
-                            </>
-                          ) },
-                          { accessor: 'client.contact', render: ({client}) => (
-                            <>
-                            <Anchor href={`tel:${client?.telephone}`}>{client?.telephone}</Anchor>
-                            <br></br>
-                            <Anchor href={`mailto:${client?.email}`}>{limitChars(client?.email, 16)}</Anchor>
-                            </>
-                          ) },
-                          { accessor: 'payable', render: ({payable}) => (
-                            <Text>{CURRENCY} {formatCurrency(payable)}</Text>
-                          ) },
+                          {
+                            accessor: 'client.name', sortable: true, render: ({ client }) => (
+                              <>
+                                <Text>{limitChars(getFullName(client), 16)}</Text>
+                              </>
+                            )
+                          },
+                          {
+                            accessor: 'client.contact', render: ({ client }) => (
+                              <>
+                                <Anchor href={`tel:${client?.telephone}`}>{client?.telephone}</Anchor>
+                                <br></br>
+                                <Anchor href={`mailto:${client?.email}`}>{limitChars(client?.email, 16)}</Anchor>
+                              </>
+                            )
+                          },
+                          {
+                            accessor: 'payable', render: ({ payable }) => (
+                              <Text>{CURRENCY} {formatCurrency(payable)}</Text>
+                            )
+                          },
                           {
                             accessor: '_status', render: ({ _status }) => (
                               <Text>{ORDER_STATUS[`${_status}`]}</Text>
@@ -144,9 +149,9 @@ const AdminOrders = () => {
                             textAlignment: 'right',
                             render: (item) => (
                               <Group spacing={4} position="right" noWrap>
-                                {/* <ActionIcon color="green" onClick={() => showInfo(item)}>
+                                <ActionIcon color="green" onClick={() => showInfo(item)}>
                                   <IconEye size={16} />
-                                </ActionIcon> */}
+                                </ActionIcon>
                                 {/* <ActionIcon color="blue" onClick={() => editInfo(item)}>
                           <IconEdit size={16} />
                         </ActionIcon> */}

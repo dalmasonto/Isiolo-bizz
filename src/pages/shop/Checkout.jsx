@@ -7,7 +7,7 @@ import { selectCartItems, selectCartTotal } from '../../providers/app/appSlice'
 import { formatCurrency } from '../../config/config';
 import ClientForm from '../../components/clients/ClientForm'
 
-const ItemSummary = ({ item }) => {
+export const ItemSummary = ({ item }) => {
     const images = JSON.parse(item?.product?.images ? item?.product?.images : "[]")
 
     return (

@@ -5,10 +5,10 @@ const initialState = {
   loggedIn: false,
   token: null,
   theme: 'dark',
-  cart:{
+  cart: {
     items: [
       {
-        product: {id: 1, title: "title", price: 123},
+        product: { id: 1, title: "title", price: 123 },
         qty: 1,
       }
     ],
@@ -39,9 +39,9 @@ export const appSlice = createSlice({
     addToCart: (state, action) => {
       const newItem = action.payload
       const itemExists = state.cart.items.find(item => item.product.id === newItem.product.id);
-      if(itemExists){
+      if (itemExists) {
         state.cart.items = state.cart.items.map(item => {
-          if(item.product.id === newItem.product.id){
+          if (item.product.id === newItem.product.id) {
             item.qty += 1;
           }
           return item;
@@ -52,7 +52,7 @@ export const appSlice = createSlice({
     },
     addItemQuantity: (state, action) => {
       state.cart.items = state.cart.items.map(item => {
-        if(item.id === action.payload.id){
+        if (item?.product?.id === action.payload?.id) {
           item.qty += 1;
         }
         return item;
@@ -60,16 +60,19 @@ export const appSlice = createSlice({
     },
     removeItemQuantity: (state, action) => {
       state.cart.items = state.cart.items.map(item => {
-        if(item.id === action.payload.id){
+        if (item?.product?.id === action.payload?.id) {
+          if (item?.qty < 2) {
+            state.cart.items = state.cart.items.filter(item => item?.product?.id !== action.payload?.id);
+            state.cart.itemsCount -= 1;
+          }
           item.qty -= 1;
         }
         return item;
       });
     },
     removeCartItem: (state, action) => {
-      state.cart.items = state.cart.items.filter(item => item.product.id !== action.payload.id);
+      state.cart.items = state.cart.items.filter(item => item?.product?.id !== action.payload.id);
       state.cart.itemsCount -= 1;
-      // state.cart.total -= action.payload.price;
     },
     clearCart: (state) => {
       state.cart.items = [];
@@ -78,7 +81,7 @@ export const appSlice = createSlice({
     },
 
     getCartTotal: (state) => {
-      state.cart.total = state.cart.items.reduce((total, item) => total + (item.product.price * item.qty), 0);
+      state.cart.total = state.cart.items.reduce((total, item) => total + (item?.product?.price * item.qty), 0);
     }
 
   }
@@ -92,7 +95,7 @@ export const selectAccount = (state) => state.isiolo_marketplace.user?.user?.acc
 export const selectToken = (state) => state.isiolo_marketplace.token;
 export const selectLoggedIn = (state) => state.isiolo_marketplace.loggedIn;
 export const selectCartItems = (state) => state.isiolo_marketplace.cart.items;
-export const selectCartTotal = (state) => state.isiolo_marketplace.cart.items.reduce((total, item) => total + (item.product.price * item.qty), 0);
+export const selectCartTotal = (state) => state.isiolo_marketplace.cart.items.reduce((total, item) => total + (item?.product?.price * item?.qty), 0);
 
 
 

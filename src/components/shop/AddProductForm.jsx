@@ -41,7 +41,14 @@ const AddProductForm = ({ updating, product }) => {
 
     const handleUploadFiles = () => {
         const files = productForm.values['files[]']
+        console.log(files)
         setLoading(true)
+        if(!files || files?.length === 0) {
+            console.log("check")
+            handleCreate([])
+            return
+        }
+        else{
         makeRequestOne(URLS.MEDIA, 'POST', { 'CONTENT-TYPE': 'multipart/form-data' }, {'files[]': files}, {})
             .then((res) => {
                 const images_ = res?.data?.data
@@ -52,15 +59,22 @@ const AddProductForm = ({ updating, product }) => {
                 const errors = err?.response?.data?.errors
                 
             })
+        }
     }
 
     const handleCreate = (images) => {
         let values = productForm.values
-        values['images'] = images.length > 0 ? images : JSON.parse(product?.images)
         values['merchant_id'] = merchant?.id
         values['slug'] = slugify(values['name'])
         values['category_id'] = parseInt(values['category_id'])
         values['configuration'] = "[]"
+        
+        if(updating){
+            values['images'] = images.length > 0 ? images : JSON.parse(product?.images)
+        }
+        else{
+            values['images'] = images?.length > 0 ? images : []
+        }
 
         setLoading(true)
         let URL = URLS.PRODUCTS + "/"
@@ -104,7 +118,7 @@ const AddProductForm = ({ updating, product }) => {
             <form onSubmit={productForm.onSubmit((values) => handleUploadFiles())}>
                 <Stack>
                     <TextInput
-                        label={`Product name ${merchant?.id}`}
+                        label={`Product name`}
                         placeholder="Enter product name max 50 characters"
                         required
                         {...productForm.getInputProps('name')}

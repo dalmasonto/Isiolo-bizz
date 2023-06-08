@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { logout, removeCartItem, selectCartItems, selectCartTotal, selectLoggedIn, selectUser } from '../providers/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { Alert, Anchor, Avatar, Box, Grid, Group, HoverCard, Image, ScrollArea, Stack, Text } from '@mantine/core'
+import { Alert, Anchor, Avatar, Box, Grid, Group, HoverCard, Image, ScrollArea, Stack, Text, Title } from '@mantine/core'
 import { ADMIN_BASE_URL, CURRENCY, SHOPS, URLS } from '../config/constants'
 import { formatCurrency, limitChars, makeRequestOne } from '../config/config';
 import { modals } from '@mantine/modals'
@@ -433,7 +433,7 @@ const Header = () => {
                                                             >
                                                                 <Avatar src={shop?.logo ? shop?.logo : "/logos/Bidii-farmers-self--help-group-Reviewed-Logo.jpg"} alt={shop?.name} radius="md" size={72} />
                                                             </Link>
-                                                            <h6 className="fs-base mb-2 text-center">{shop?.name}</h6>
+                                                            <Title order={6} weight={400} size={14} className="mb-2 text-center" mx={4}>{shop?.name}</Title>
                                                         </Stack>
                                                     </Grid.Col>
                                                 ))

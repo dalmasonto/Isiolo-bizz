@@ -14,6 +14,7 @@ import CustomPagination from '../../components/shop/CustomPagination';
 import ClientForm from '../../components/clients/ClientForm';
 import { getFullName } from '../../config/functions';
 import { selectMerchant } from '../../providers/app/appSlice';
+import SingleOrder from '../../components/shop/SingleOrder';
 
 const OrderHistory = () => {
 
@@ -26,7 +27,7 @@ const OrderHistory = () => {
     const token = useSelector(selectToken)
     const merchant = useSelector(selectMerchant)
 
-    const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, "filter[merchant_id]": merchant?.id, include: "merchant,client" }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
+    const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, "filter[merchant_id]": merchant?.id, include: "merchant,client,purchases" }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
         refreshInterval: 36000
     })
     const queryData = query?.data?.data
@@ -91,16 +92,16 @@ const OrderHistory = () => {
                 opened={opened}
                 onClose={close}
                 position='right'
-                size="lg"
-                title={`Client - ${getFullName(activeObject)}`}
+                size="md"
+                title={`Order By - ${getFullName(activeObject?.client)}`}
                 scrollAreaComponent={ScrollArea.Autosize}
                 zIndex={5000}
             >
-                {/* {
-          activeObject && (
-            <ClientForm isAdmin={true} client={activeObject} />
-          )
-        } */}
+                {
+                    activeObject && (
+                        <SingleOrder order={activeObject} isAdmin={false} />
+                    )
+                }
             </Drawer>
             <Stack spacing={10} align='start'>
                 <Title weight={500}>Orders</Title>
@@ -137,9 +138,9 @@ const OrderHistory = () => {
                                                         textAlignment: 'right',
                                                         render: (item) => (
                                                             <Group spacing={4} position="right" noWrap>
-                                                                {/* <ActionIcon color="green" onClick={() => showInfo(item)}>
+                                                                <ActionIcon color="green" onClick={() => showInfo(item)}>
                                                                     <IconEye size={16} />
-                                                                </ActionIcon> */}
+                                                                </ActionIcon>
                                                                 {/* <ActionIcon color="blue" onClick={() => editInfo(item)}>
                           <IconEdit size={16} />
                         </ActionIcon> */}
