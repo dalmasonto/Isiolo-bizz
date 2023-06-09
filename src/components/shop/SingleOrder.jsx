@@ -29,7 +29,7 @@ const SingleOrder = ({ order, isAdmin }) => {
     const token = useSelector(selectToken)
 
     const initiateSTKPush = () => {
-        makeRequestOne(`${URLS.INITIATE_STK_PUSH}`, 'POST', { 'Authorization': `Bearer ${token}` }, {order: order?._pid}, { include: "merchant, client" }).then(res => {
+        makeRequestOne(`${URLS.INITIATE_STK_PUSH}`, 'POST', { 'Authorization': `Bearer ${token}` }, {order: order?._pid}, { }).then(res => {
             showNotification({
                 title: 'STK Push Initiated',
                 message: 'You have succesffully sent a request to ask for payment.',
