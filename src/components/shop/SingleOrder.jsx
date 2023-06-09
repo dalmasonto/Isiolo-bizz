@@ -2,8 +2,12 @@ import { Anchor, Box, Button, Grid, Text, Title } from '@mantine/core'
 import React from 'react'
 import { getFullName } from '../../config/functions'
 import { ItemSummary } from '../../pages/shop/Checkout'
-import { CURRENCY } from '../../config/constants'
-import { formatCurrency } from '../../config/config'
+import { CURRENCY, URLS } from '../../config/constants'
+import { formatCurrency, makeRequestOne } from '../../config/config'
+import { IconAlertCircle, IconAlertTriangle } from '@tabler/icons'
+import { showNotification } from '@mantine/notifications'
+import { useSelector } from 'react-redux'
+import { selectToken } from '../../providers/app/appSlice'
 
 const ClientSummaryItem = ({ item }) => {
     return (
@@ -21,6 +25,27 @@ const ClientSummaryItem = ({ item }) => {
 }
 
 const SingleOrder = ({ order, isAdmin }) => {
+
+    const token = useSelector(selectToken)
+
+    const initiateSTKPush = () => {
+        makeRequestOne(`${URLS.INITIATE_STK_PUSH}`, 'POST', { 'Authorization': `Bearer ${token}` }, {order: order?._pid}, { include: "merchant, client" }).then(res => {
+            showNotification({
+                title: 'STK Push Initiated',
+                message: 'You have succesffully sent a request to ask for payment.',
+                color: 'green',
+                icon: <IconAlertCircle />,
+            })
+        }).catch(err => {
+            showNotification({
+                title: 'STK Push failed',
+                message: 'Unable to ask for funds from user',
+                color: 'red',
+                icon: <IconAlertTriangle />,
+            })
+        })
+    }
+
     return (
         <div>
 
@@ -30,7 +55,7 @@ const SingleOrder = ({ order, isAdmin }) => {
                 <ClientSummaryItem item={{label: 'Email', value: <Anchor size="sm" href={`mailto:${order?.client?.email}`}>{order?.client?.email}</Anchor>}} />
                 {
                     !isAdmin ? (
-                        <ClientSummaryItem item={{label: "Send STK Push", value: <Button radius="xl" size='xs'>Initiate Transaction</Button>}} />
+                        <ClientSummaryItem item={{label: "Send STK Push", value: <Button radius="xl" size='xs' onClick={initiateSTKPush}>Initiate Transaction</Button>}} />
                     ) : null
                 }
                 <Title mt={20} order={3} className="widget-title">Order summary</Title>

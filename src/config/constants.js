@@ -36,6 +36,7 @@ export const URLS = {
     STATEMENT: `${BASE_API_URL}/statement`,
     // TRANSACTION
     TRANSACTION: `${BASE_API_URL}/transaction`,
+    INITIATE_STK_PUSH: `${BASE_API_URL}/ipn/daraja/lnmo/transact`,
     // MEDIA
     MEDIA: `${BASE_API_URL}/media`
 }

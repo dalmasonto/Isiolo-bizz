@@ -34,10 +34,10 @@ export const ItemSummary = ({ item }) => {
                         {CURRENCY} {formatCurrency(item?.product?.price)}
                     </span>
                     <span className="fs-xs text-muted border-end pe-2 me-2">
-                        qty: {item?.qty}
+                        qty: {item?.quantity}
                     </span>
                     <span className='fs-xs text-muted' >
-                        {CURRENCY} {formatCurrency(item?.qty * item?.product?.price)}
+                        {CURRENCY} {formatCurrency(item?.quantity * item?.product?.price)}
                     </span>
                 </div>
             </div>

@@ -32,6 +32,11 @@ const sidebarLinkgs = [
                 to: '/merchant/orders/',
             },
             {
+                title: 'Statements',
+                icon: 'ci-package',
+                to: '/merchant/statements/',
+            },
+            {
                 title: 'Products',
                 icon: 'ci-package',
                 to: '/merchant/products/',

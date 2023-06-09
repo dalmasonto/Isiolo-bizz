@@ -31,6 +31,7 @@ import SingleCategory from './pages/shop/categories/SingleCategory';
 import SingleMerchant from './pages/shop/SingleMerchant';
 import Clients from './pages/admin/Clients';
 import AdminOrders from './pages/admin/AdminOrders';
+import Statements from './pages/merchant/Statements';
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
           {
             path: "orders",
             element: <OrderHistory />,
+          },
+          {
+            path: "statements",
+            element: <Statements />,
           },
           {
             path: "products",

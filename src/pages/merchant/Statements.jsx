@@ -16,7 +16,7 @@ import { getFullName } from '../../config/functions';
 import { selectMerchant } from '../../providers/app/appSlice';
 import SingleOrder from '../../components/shop/SingleOrder';
 
-const OrderHistory = () => {
+const Statements = () => {
 
     const [options, setOptions] = useDebouncedState({
         current_page: 1
@@ -27,7 +27,7 @@ const OrderHistory = () => {
     const token = useSelector(selectToken)
     const merchant = useSelector(selectMerchant)
 
-    const query = useSwr([URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, "filter[merchant_id]": merchant?.id, include: "merchant,client,purchases" }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
+    const query = useSwr([URLS.STATEMENT, 'GET', { Authorization: `Bearer ${token}` }, {}, { "page[number]": options?.current_page, "filter[merchant_id]": merchant?.id, include: "merchant,transaction" }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
         refreshInterval: 36000
     })
     const queryData = query?.data?.data
@@ -102,7 +102,7 @@ const OrderHistory = () => {
                 }
             </Drawer>
             <Stack spacing={10} align='start'>
-                <Title weight={500}>Orders</Title>
+                <Title weight={500}>Statements</Title>
                 {
                     data?.length > 0 ? (
                         <>
@@ -114,37 +114,27 @@ const OrderHistory = () => {
                                             columns={
                                                 [
                                                     {
-                                                        accessor: 'client.name', sortable: true, render: (order) => (
+                                                        accessor: 'debit', sortable: true, render: (order) => (
                                                             <Text>{limitChars(getFullName(order?.client), 16)}</Text>
                                                         )
                                                     },
-                                                    { accessor: 'client.telephone' },
-                                                    { accessor: 'client.email', sortable: true },
-                                                    {
-                                                        accessor: 'payable', render: ({ payable }) => (
-                                                            <Text>{CURRENCY} {formatCurrency(payable)}</Text>
-                                                        )
-                                                    },
-                                                    {
-                                                        accessor: '_status', render: ({ _status }) => (
-                                                            <Text>{ORDER_STATUS[`${_status}`]}</Text>
-                                                        )
-                                                    },
+                                                    { accessor: 'credit' },
+                                                    { accessor: 'balance', sortable: true },
                                                     {
                                                         accessor: 'actions',
                                                         title: <Text mr="xs">Actions</Text>,
                                                         textAlignment: 'right',
                                                         render: (item) => (
                                                             <Group spacing={4} position="right" noWrap>
-                                                                <ActionIcon color="green" onClick={() => showInfo(item)}>
+                                                                {/* <ActionIcon color="green" onClick={() => showInfo(item)}>
                                                                     <IconEye size={16} />
-                                                                </ActionIcon>
+                                                                </ActionIcon> */}
                                                                 {/* <ActionIcon color="blue" onClick={() => editInfo(item)}>
-                          <IconEdit size={16} />
-                        </ActionIcon> */}
+                                                                    <IconEdit size={16} />
+                                                                    </ActionIcon> */}
                                                                 {/* <ActionIcon color="red" onClick={() => deleteRow(item)}>
-                          <IconTrash size={16} />
-                        </ActionIcon> */}
+                                                                    <IconTrash size={16} />
+                                                                    </ActionIcon> */}
                                                             </Group>
                                                         ),
                                                     },
@@ -160,7 +150,7 @@ const OrderHistory = () => {
                             <CustomPagination {...queryMeta} onPageChange={changePage} noPadding={true} />
                         </>
                     ) : (
-                        <Title order={3} weight={400}>No orders found</Title>
+                        <Title order={3} weight={400}>No statements found</Title>
                     )
                 }
             </Stack>
@@ -168,4 +158,4 @@ const OrderHistory = () => {
     )
 }
 
-export default OrderHistory
+export default Statements
