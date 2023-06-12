@@ -70,7 +70,7 @@ const CartItem = ({ item }) => {
                     <Text size="sm"
                         className="d-inline-block text-accent"
                     >
-                        qty: {item?.qty}
+                        {item?.qty}
                     </Text>
                     <ActionIcon onClick={() => handleUpdateQty(item?.product?.id, true, item?.qty)} color='blue' size="md" variant='light'>
                         <IconPlus />

@@ -6,7 +6,7 @@ import CustomPagination from './CustomPagination'
 import LoadingProducts from '../common/LoadingProducts';
 
 const SidebarAndProductsSection = ({products, meta, loading, onPageChange}) => {
-    console.log(meta)
+  
     return (
         <div className="container pb-5 mb-2 mb-md-4">
             <div className="row">

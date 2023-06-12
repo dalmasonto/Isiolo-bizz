@@ -103,7 +103,7 @@ const Shop = () => {
     current_page: 1
   }, 200)
   const token = useSelector(selectToken)
-  const productsQuery = useSwr([URLS.PRODUCTS + "/", 'GET', {}, {}, { "page[number]": options?.current_page }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+  const productsQuery = useSwr([URLS.PRODUCTS + "/", 'GET', {}, {}, { "page[number]": options?.current_page, include: 'merchant' }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
   const productsQueryData = productsQuery?.data?.data
   const productsData = productsQuery?.data?.data?.data
   const productsQueryMeta = productsQueryData?.meta

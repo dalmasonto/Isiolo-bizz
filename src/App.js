@@ -32,6 +32,7 @@ import SingleMerchant from './pages/shop/SingleMerchant';
 import Clients from './pages/admin/Clients';
 import AdminOrders from './pages/admin/AdminOrders';
 import Statements from './pages/merchant/Statements';
+import ResetPassword from './pages/auth/ResetPassword';
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: "/account/auth/password-recovery",
         element: <RecoverPassword />,
+      },
+      {
+        path: "/account/auth/password-reset",
+        element: <ResetPassword />,
       },
       {
         path: "/account/profile",

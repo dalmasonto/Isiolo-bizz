@@ -1,11 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { selectMerchant } from '../../providers/app/appSlice'
-import { CURRENCY } from '../../config/constants'
-import { formatCurrency } from '../../config/config'
+import { selectMerchant, selectToken } from '../../providers/app/appSlice'
+import { CURRENCY, URLS } from '../../config/constants'
+import { formatCurrency, makeRequestOne } from '../../config/config'
 
 const MerchantDashboard = () => {
+    const [stats, setStats] = useState(null)
     const merchant = useSelector(selectMerchant)
+    const token = useSelector(selectToken)
+    const loadData = async() =>{
+        const stats_ = {}
+        makeRequestOne(URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "filter[merchant_id]": merchant?.id}).then(res=>{
+            console.log(res)
+            stats_.orders = res?.data?.data?.meta?.total
+        }).catch(()=>{})
+        makeRequestOne(URLS.STATEMENT, 'GET', { Authorization: `Bearer ${token}` }, {}, { "filter[merchant_id]": merchant?.id}).then(res => {
+            stats_.statements = res?.data?.data?.meta?.total
+        }).catch(()=>{})
+        makeRequestOne(URLS.PRODUCTS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "filter[merchant_id]": merchant?.id}).then(res => {
+            stats_.products = res?.data?.data?.meta?.total
+        }).catch(()=>{})
+        setStats(stats_)
+    }
+
+    useEffect(() => {
+        loadData()
+    }, [])
+
+    console.log("stats: ", stats)
+
     return (
         <div>
             <>

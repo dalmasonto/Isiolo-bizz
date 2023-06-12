@@ -330,12 +330,12 @@ const Header = () => {
                         >
                             <img src="/assets/images/esiolo-logo.jpg" width={142} alt="Esiolo" />
                         </NavLink>
-                        <a
-                            className="navbar-brand d-sm-none flex-shrink-0 me-2"
-                            href="/"
+                        <NavLink
+                            className="navbar-brand d-sm-none d-none flex-shrink-0 me-2"
+                            to={'/'}
                         >
                             <img src="/assets/images/esiolo-logo.jpg" width={74} alt="Esiolo" />
-                        </a>
+                        </NavLink>
                         <div className="input-group d-none d-lg-flex mx-4">
                             <input
                                 className="form-control rounded-end pe-5"
@@ -354,24 +354,6 @@ const Header = () => {
                             >
                                 <span className="navbar-toggler-icon" />
                             </button>
-                            {/* <a
-                                className="navbar-tool navbar-stuck-toggler"
-                                href="home-fashion-store-v2.html#"
-                            >
-                                <span className="navbar-tool-tooltip">Expand menu</span>
-                                <div className="navbar-tool-icon-box">
-                                    <i className="navbar-tool-icon ci-menu" />
-                                </div>
-                            </a> */}
-                            {/* <a
-                                className="navbar-tool d-none d-lg-flex"
-                                href="account-wishlist.html"
-                            >
-                                <span className="navbar-tool-tooltip">Wishlist</span>
-                                <div className="navbar-tool-icon-box">
-                                    <i className="navbar-tool-icon ci-heart" />
-                                </div>
-                            </a> */}
                             <div className="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" style={{ cursor: "pointer" }}>
                                 <div className="navbar-tool-icon-box">
                                     <i className="navbar-tool-icon ci-user" />

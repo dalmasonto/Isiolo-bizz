@@ -23,8 +23,8 @@ const Toolbar = ({ current_page, total, onPageChange }) => {
     }
 
     return (
-        <div className="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
-            <div className="d-flex flex-wrap">
+        <div className="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5 mb-5">
+            <div className="d-flex flex-wrap d-none">
                 <div className="d-flex align-items-center flex-nowrap me-3 me-sm-4 pb-3">
                     <label
                         className="text-light opacity-75 text-nowrap fs-sm me-2 d-none d-sm-block"
@@ -45,7 +45,7 @@ const Toolbar = ({ current_page, total, onPageChange }) => {
                     </span>
                 </div>
             </div>
-            <Group className="d-flex pb-3" align='center'>
+            <Group className="d-flex pb-3 d-none" align='center'>
                 <ActionIcon disabled={current_page >= total} onClick={goPrev}>
                     <IconArrowLeft />
                 </ActionIcon>

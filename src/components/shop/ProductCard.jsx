@@ -5,9 +5,10 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart } from '../../providers/app/appSlice'
-import { formatCurrency } from '../../config/config'
+import { formatCurrency, limitChars } from '../../config/config'
 
 const ProductCard = ({ product }) => {
+
     const theme = useMantineTheme()
     const dispatch = useDispatch()
     const images = JSON.parse(product?.images ? product?.images : "[]")
@@ -21,6 +22,8 @@ const ProductCard = ({ product }) => {
             icon: <IconCheck stroke={1.5} />
         })
     }
+
+    console.log("Product: ", product)
 
     return (
         <div className="card product-card">
@@ -48,9 +51,9 @@ const ProductCard = ({ product }) => {
             <div className="card-body py-2">
                 <Link
                     className="product-meta d-block fs-xs pb-1"
-                    to={`/shop/products/${product?.id}/${product?.slug}/`}
+                    to={`/shop/merchants/${product?.merchant?.id}/${product?.merchant?.slug}/`}
                 >
-                    {product?.category?.title}
+                    Seller: {limitChars(product?.merchant?.name ?? "Not provided", 16)}
                 </Link>
                 <h3 className="product-title fs-sm">
                     <Link to={`/shop/products/${product?.id}/${product?.slug}`}>{product?.name}</Link>

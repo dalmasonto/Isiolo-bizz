@@ -47,18 +47,18 @@ const Statements = () => {
 
     const deleteItem = (id) => {
 
-        makeRequestOne(`${URLS.CLIENTS}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, { include: "merchant, client" }).then(res => {
+        makeRequestOne(`${URLS.STATEMENT}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, { include: "merchant, client" }).then(res => {
             showNotification({
-                title: 'Order Deleted',
-                message: 'Order has been deleted successfully',
+                title: 'Statement Deleted',
+                message: 'Statement has been deleted successfully',
                 color: 'green',
                 icon: <IconAlertCircle />,
             })
             query.mutate()
         }).catch(err => {
             showNotification({
-                title: 'Order Deletion Failed',
-                message: 'Order could not be deleted. Please try again later',
+                title: 'Statement Deletion Failed',
+                message: 'Statement could not be deleted. Please try again later',
                 color: 'red',
                 icon: <IconAlertTriangle />,
             })

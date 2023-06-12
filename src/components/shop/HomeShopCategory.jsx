@@ -7,12 +7,15 @@ import { Link } from 'react-router-dom'
 import useSwr from 'swr'
 import { URLS } from '../../config/constants'
 import { makeRequestOne } from '../../config/config'
+import { useMediaQuery } from '@mantine/hooks'
 
 const HomeShopCategory = ({ shop, barnerOrder }) => {
 
-    const productsQuery = useSwr([URLS.PRODUCTS, 'GET', {}, {}, { 'filter[merchant_id]': shop?.id }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const productsQuery = useSwr([URLS.PRODUCTS, 'GET', {}, {}, { 'filter[merchant_id]': shop?.id, include: 'merchant' }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const productsQueryData = productsQuery?.data?.data
     const products = productsQueryData?.data
+
+    const matches = useMediaQuery('(max-width: 56.25em)');
 
     return (
         <>
@@ -54,7 +57,7 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
                         {
                             products?.length > 0 &&
                             (
-                                <Carousel slideSize={"33.33%"} slideGap={10} align={'start'} controlSize={42}>
+                                <Carousel slideSize={matches ? "50%" : "33.33%"} slideGap={10} align={'start'} controlSize={42}>
                                     {
                                         products?.slice(0, 6)?.map((product) => (
                                             <Carousel.Slide key={`_product_ks_${product.id}`} pt={20} pb={100} style={{ overflow: "auto !important" }}>

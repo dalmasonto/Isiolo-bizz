@@ -33,9 +33,6 @@ const Index = () => {
                                             <h2 className="text-light display-5 from-bottom delay-1">
                                                 Best New Deals
                                             </h2>
-                                            <p className="fs-lg text-light pb-3 from-bottom delay-2">
-                                                Sneakers, Keds, Sweatshirts, Hoodies &amp; much more...
-                                            </p>
                                             <div className="d-table scale-up delay-4 mx-auto mx-lg-0">
                                                 <Link className="btn btn-primary" to="/shop">
                                                     Shop Now
