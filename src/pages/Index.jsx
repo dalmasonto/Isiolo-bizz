@@ -6,6 +6,7 @@ import HomeShopCategory from '../components/shop/HomeShopCategory'
 import Social from '../components/home/Social'
 import { SHOPS } from '../config/constants'
 import Shops from '../components/home/Shops'
+import Partners from '../components/home/Partners'
 
 const Index = () => {
     return (
@@ -49,6 +50,7 @@ const Index = () => {
             </section>
 
             <Shops />
+            <Partners />
             <Social />
         </>
     )

@@ -12,10 +12,10 @@ const Footer = () => {
         <footer className="footer bg-dark pt-5">
             <div className="container">
                 <div className="row pb-2">
-                    <div className="col-md-4 col-sm-6">
+                    <div className="col-md-12 col-sm-12">
                         <div className="widget widget-links widget-light pb-2 mb-4">
-                            <h3 className="widget-title text-light">Shop departments</h3>
-                            <ul className="widget-list">
+                            <h3 className="widget-title text-light">Product Categories</h3>
+                            <ul className="widget-list d-none">
                                 {
                                     categoriesData?.map((category, index) => (
                                         <li key={`category_${category.id}`} className="widget-list-item">
@@ -29,9 +29,25 @@ const Footer = () => {
                                     ))
                                 }
                             </ul>
+                            <div className="row">
+                                {
+                                    categoriesData?.map((category, index) => (
+                                        <div key={`category_${category.id}`} className='col-md-3 col-6'>
+                                            <div className="widget-list-item py-1">
+                                                <Link
+                                                    className="widget-list-link"
+                                                    to={`/shop/categories/${category?.id}/${category?.slug}`}
+                                                >
+                                                    {category?.name}
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
                         </div>
                     </div>
-                    <div className="col-md-4 col-sm-6">
+                    <div className="col-md-4 col-sm-6 d-none">
                         <div className="widget widget-links widget-light pb-2 mb-4">
                             <h3 className="widget-title text-light">About us</h3>
                             <ul className="widget-list">
@@ -44,7 +60,7 @@ const Footer = () => {
                                     </Link>
                                 </li>
                                 <li className="widget-list-item">
-                                <Link
+                                    <Link
                                         className="widget-list-link"
                                         to="/"
                                     >
@@ -52,7 +68,7 @@ const Footer = () => {
                                     </Link>
                                 </li>
                                 <li className="widget-list-item">
-                                <Link
+                                    <Link
                                         className="widget-list-link"
                                         to="/"
                                     >
@@ -60,7 +76,7 @@ const Footer = () => {
                                     </Link>
                                 </li>
                                 <li className="widget-list-item">
-                                <Link
+                                    <Link
                                         className="widget-list-link"
                                         to="/"
                                     >
@@ -70,7 +86,7 @@ const Footer = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className="col-md-4">
+                    <div className="col-md-4 d-none">
                         <div className="widget pb-2 mb-4">
                             <h3 className="widget-title text-light pb-1">Stay informed</h3>
                             <form
@@ -188,7 +204,7 @@ const Footer = () => {
                             <div className="text-nowrap mb-4">
                                 <a
                                     className="d-inline-block align-middle mt-n1 me-3"
-                                    href="home-fashion-store-v2.html#"
+                                    href="/"
                                 >
                                     <Image
                                         className="d-block"
@@ -202,28 +218,20 @@ const Footer = () => {
                             <div className="widget widget-links widget-light">
                                 <ul className="widget-list d-flex flex-wrap justify-content-center justify-content-md-start">
                                     <li className="widget-list-item me-4">
-                                        <a
+                                        <Link
                                             className="widget-list-link"
-                                            href="home-fashion-store-v2.html#"
-                                        >
-                                            Support
-                                        </a>
-                                    </li>
-                                    <li className="widget-list-item me-4">
-                                        <a
-                                            className="widget-list-link"
-                                            href="home-fashion-store-v2.html#"
+                                            to={"/"}
                                         >
                                             Privacy
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="widget-list-item me-4">
-                                        <a
+                                        <Link
                                             className="widget-list-link"
-                                            href="home-fashion-store-v2.html#"
+                                            to={"/"}
                                         >
                                             Terms of use
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -232,31 +240,31 @@ const Footer = () => {
                             <div className="mb-3">
                                 <a
                                     className="btn-social bs-light bs-twitter ms-2 mb-2"
-                                    href="home-fashion-store-v2.html#"
+                                    href="#"
                                 >
                                     <i className="ci-twitter" />
                                 </a>
                                 <a
                                     className="btn-social bs-light bs-facebook ms-2 mb-2"
-                                    href="home-fashion-store-v2.html#"
+                                    href="#"
                                 >
                                     <i className="ci-facebook" />
                                 </a>
                                 <a
                                     className="btn-social bs-light bs-instagram ms-2 mb-2"
-                                    href="home-fashion-store-v2.html#"
+                                    href="#"
                                 >
                                     <i className="ci-instagram" />
                                 </a>
                                 <a
                                     className="btn-social bs-light bs-pinterest ms-2 mb-2"
-                                    href="home-fashion-store-v2.html#"
+                                    href="#"
                                 >
                                     <i className="ci-pinterest" />
                                 </a>
                                 <a
                                     className="btn-social bs-light bs-youtube ms-2 mb-2"
-                                    href="home-fashion-store-v2.html#"
+                                    href="#"
                                 >
                                     <i className="ci-youtube" />
                                 </a>

@@ -23,8 +23,6 @@ const ProductCard = ({ product }) => {
         })
     }
 
-    console.log("Product: ", product)
-
     return (
         <div className="card product-card">
             <button
