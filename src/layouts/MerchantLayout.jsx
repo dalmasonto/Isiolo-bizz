@@ -1,21 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import MerchantSidebar from '../components/account/MerchantSidebar'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectLoggedIn, selectMerchant, selectUser } from '../providers/app/appSlice'
+import { selectLoggedIn, selectMerchant, selectToken, selectUser } from '../providers/app/appSlice'
 import { Center, Container, Title } from '@mantine/core'
-import { toDate } from '../config/config'
+import { makeRequestOne, toDate } from '../config/config'
+import { URLS } from '../config/constants'
 
 const MerchantLayout = () => {
+    const [orders, setOrders] = useState(0)
     const loggedIn = useSelector(selectLoggedIn)
     const user = useSelector(selectUser)
     const merchant = useSelector(selectMerchant)
-    console.log("merchant: ", merchant)
+    const token = useSelector(selectToken)
+
     const navigate = useNavigate()
+
+    const loadOrders = () => {
+        makeRequestOne(URLS.ORDERS, 'GET', { Authorization: `Bearer ${token}` }, {}, { "filter[merchant_id]": merchant?.id }).then(res => {
+            setOrders(res?.data?.meta?.total)
+        }).catch(() => {
+            return { merchants: 0 }
+        })
+    }
+
     useEffect(() => {
         if (!loggedIn) {
             navigate('/account/auth')
         }
+        loadOrders()
     }, [loggedIn])
     return (
         <>
@@ -44,8 +57,8 @@ const MerchantLayout = () => {
                                 </div>
                                 <div className="d-flex">
                                     <div className="text-sm-end me-5">
-                                        <div className="text-light fs-base">Total sales</div>
-                                        <h3 className="text-light">426</h3>
+                                        <div className="text-light fs-base">Total orders</div>
+                                        <h3 className="text-light">{orders}</h3>
                                     </div>
                                     <div className="text-sm-end d-none">
                                         <div className="text-light fs-base">Seller rating</div>

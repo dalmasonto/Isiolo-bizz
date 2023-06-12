@@ -1,25 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Rating } from '@mantine/core'
 import AdminSidebar from '../components/account/AdminSidebar'
 import { useSelector } from 'react-redux'
-import { selectLoggedIn, selectUser } from '../providers/app/appSlice'
-import { ADMIN_BASE_URL } from '../config/constants'
+import { selectLoggedIn, selectToken, selectUser } from '../providers/app/appSlice'
+import { ADMIN_BASE_URL, URLS } from '../config/constants'
+import { makeRequestOne } from '../config/config'
 
 const AdminLayout = () => {
+    const [merchants, setMerchants] = useState(0)
     const loggedIn = useSelector(selectLoggedIn)
+    const token = useSelector(selectToken)
     const user = useSelector(selectUser)
     const navigate = useNavigate()
+
+    const loadMerchants = () => {
+        makeRequestOne(URLS.MERCHANTS, 'GET', { Authorization: `Bearer ${token}` }, {}, {}).then(res => {
+            setMerchants(res?.data?.meta?.total)
+        }).catch(() => {
+            return { merchants: 0 }
+        })
+    }
+
     useEffect(() => {
         if (!loggedIn) {
             navigate(`/account/auth?redirect=/${ADMIN_BASE_URL}/`)
         }
-        else{
+        else {
             console.log("Admin: ", user?.user?.isAdministrator)
-            if(user?.user?.isAdministrator === false){
+            if (user?.user?.isAdministrator === false) {
                 navigate(`/merchant/`)
             }
         }
+        loadMerchants()
     }, [loggedIn])
     return (
         <div>
@@ -47,9 +60,9 @@ const AdminLayout = () => {
                     <div className="d-flex">
                         <div className="text-sm-end me-5">
                             <div className="text-light fs-base">Total merchants</div>
-                            <h3 className="text-light">12</h3>
+                            <h3 className="text-light">{merchants}</h3>
                         </div>
-                        <div className="text-sm-end">
+                        <div className="text-sm-end d-none">
                             <div className="text-light fs-base">System rating</div>
                             <div className="star-rating">
                                 <Rating value={4.5} fractions={2} />
