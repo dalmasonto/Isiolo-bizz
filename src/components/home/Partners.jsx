@@ -7,6 +7,7 @@ const partners = [
     "/assets/images/partners/DRIC.png",
     "/assets/images/partners/kenya.jpeg",
     "/assets/images/partners/zebra.jpeg",
+    "/assets/images/partners/NDMA.png",
 ]
 
 const Partners = () => {
