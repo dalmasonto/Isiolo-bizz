@@ -142,12 +142,11 @@ const AddProductForm = ({ updating, product }) => {
                             <FileInput
                                 label="Product Image(s)"
                                 placeholder="URL"
-                                required
                                 multiple
                                 {...productForm.getInputProps('files[]')}
                             />
                         </Grid.Col>
-                        <Grid.Col xs={6} md={4}>
+                        {/* <Grid.Col xs={6} md={4}>
                             <NumberInput
                                 label="Allocated Items"
                                 placeholder="4000"
@@ -170,7 +169,7 @@ const AddProductForm = ({ updating, product }) => {
                                 required
                                 {...productForm.getInputProps('available_items')}
                             />
-                        </Grid.Col>
+                        </Grid.Col> */}
                     </Grid>
                     <Grid>
                         <Grid.Col xs={6} md={6}>
