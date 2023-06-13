@@ -52,7 +52,7 @@ const SingleMerchant = () => {
                   </Link>
                 </li>
                 <li
-                  className="breadcrumb-item text-nowrap active"
+                  className="breadcrumb-item text-nowrap text-capitalize active"
                   aria-current="page"
                 >
                   {merchant?.name}
