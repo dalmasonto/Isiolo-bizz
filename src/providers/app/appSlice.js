@@ -7,10 +7,7 @@ const initialState = {
   theme: 'dark',
   cart: {
     items: [
-      {
-        product: { id: 1, title: "title", price: 123 },
-        qty: 1,
-      }
+      
     ],
     total: 0,
     itemsCount: 0,

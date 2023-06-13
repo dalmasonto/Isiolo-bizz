@@ -1,6 +1,42 @@
+import { useForm } from '@mantine/form'
 import React from 'react'
+import { makeRequestOne } from '../config/config'
+import { URLS } from '../config/constants'
+import { showNotification } from '@mantine/notifications'
+import { IconAlertCircle } from '@tabler/icons'
+import { TextInput, Textarea } from '@mantine/core'
 
 const Contact = () => {
+    const form = useForm({
+        initialValues: {
+            name: "",
+            email: "",
+            telephone: "",
+            subject: "",
+            message: ""
+        },
+        validate: {
+            name: value => value === "" ? "Enter your name" : null,
+            email: value => value === "" ? "Your Email is required" : null,
+            telephone: value => value === "" ? "Enter your Phone Number" : null,
+            subject: value => value === "" ? "Describe your query in a few words" : null,
+            message: value => value === "" ? "Message is required" : null,
+        }
+    })
+
+
+    const handleContact = () => {
+        makeRequestOne(URLS.CONTACT, 'POST', {}, { ...form.values }, {}).then(res => {
+            showNotification({
+                title: "Message sent successfully",
+                message: "Thank you for contacting us.",
+                color: "green",
+                icon: <IconAlertCircle />
+            })
+            form.reset()
+        }).catch(() => { })
+    }
+
     return (
         <>
             <div>
@@ -43,75 +79,52 @@ const Contact = () => {
                         </div>
                         <div className="col-lg-6 px-4 px-xl-5 py-5 border-top">
                             <h2 className="h4 mb-4">Drop us a line</h2>
-                            <form className="needs-validation mb-3" noValidate="">
+                            <form onSubmit={form.onSubmit((values) => handleContact())} className="mb-3" autoComplete='off'>
                                 <div className="row g-3">
                                     <div className="col-sm-6">
-                                        <label className="form-label" htmlFor="cf-name">
-                                            Your name:&nbsp;<span className="text-danger">*</span>
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            id="cf-name"
+                                        <TextInput
+                                            label="Your name"
+                                            withAsterisk
                                             placeholder="John Doe"
                                             required=""
+                                            {...form.getInputProps("name")}
                                         />
-                                        <div className="invalid-feedback">Please fill in you name!</div>
                                     </div>
                                     <div className="col-sm-6">
-                                        <label className="form-label" htmlFor="cf-email">
-                                            Email address:&nbsp;<span className="text-danger">*</span>
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="email"
-                                            id="cf-email"
+                                        <TextInput
+                                            label="Email Adress"
+                                            withAsterisk
                                             placeholder="johndoe@email.com"
                                             required=""
+                                            {...form.getInputProps("email")}
                                         />
-                                        <div className="invalid-feedback">
-                                            Please provide valid email address!
-                                        </div>
                                     </div>
                                     <div className="col-sm-6">
-                                        <label className="form-label" htmlFor="cf-phone">
-                                            Your phone:&nbsp;<span className="text-danger">*</span>
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            id="cf-phone"
-                                            placeholder="+1 (212) 00 000 000"
+                                        <TextInput
+                                            label="Phone Number"
+                                            withAsterisk
+                                            placeholder="+254 700 000 000"
                                             required=""
+                                            {...form.getInputProps("telephone")}
                                         />
-                                        <div className="invalid-feedback">
-                                            Please provide valid phone number!
-                                        </div>
                                     </div>
                                     <div className="col-sm-6">
-                                        <label className="form-label" htmlFor="cf-subject">
-                                            Subject:
-                                        </label>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            id="cf-subject"
+                                        <TextInput
+                                            label="Subject"
+                                            withAsterisk
                                             placeholder="Provide short title of your request"
+                                            required=""
+                                            {...form.getInputProps("subject")}
                                         />
                                     </div>
                                     <div className="col-12">
-                                        <label className="form-label" htmlFor="cf-message">
-                                            Message:&nbsp;<span className="text-danger">*</span>
-                                        </label>
-                                        <textarea
-                                            className="form-control"
-                                            id="cf-message"
-                                            rows={6}
+                                        <Textarea
+                                            label="Message"
+                                            withAsterisk
+                                            minRows={6}
                                             placeholder="Please describe in detail your request"
-                                            required=""
-                                            defaultValue={""}
+                                            {...form.getInputProps("message")}
                                         />
-                                        <div className="invalid-feedback">Please write a message!</div>
                                         <button className="btn btn-primary mt-4" type="submit">
                                             Send message
                                         </button>

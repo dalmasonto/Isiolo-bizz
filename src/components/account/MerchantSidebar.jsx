@@ -7,14 +7,14 @@ const sidebarLinkgs = [
         group: 'Account',
         links: [
             {
-                title: 'Profile',
-                icon: 'ci-settings',
-                to: '/merchant/',
-            },
-            {
                 title: 'Shop Settings',
                 icon: 'ci-settings',
                 to: '/merchant/settings/',
+            },
+            {
+                title: 'Profile',
+                icon: 'ci-settings',
+                to: '/merchant/',
             },
         ]
     },

@@ -16,7 +16,7 @@ const ShopProfile = () => {
     const merchant = useSelector(selectMerchant)
     return (
         <>
-            <h2 className="h3 py-2 text-center text-sm-start">Settings</h2>
+            <h2 className="h3 py-2 text-center text-sm-start">Merchant Settings</h2>
             {/* Tabs*/}
             <ul className="nav nav-tabs nav-justified" role="tablist">
                 <li className="nav-item">

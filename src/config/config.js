@@ -72,7 +72,6 @@ export const makeRequest = async (url, method, extra_headers, data, params = {})
 
 
 export const makeRequestOne = async (url, method, extra_headers, data, params) => {
-    console.log("URL", url)
     const options = {
         method: method,
         url: url,

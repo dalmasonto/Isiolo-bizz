@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { selectCartItems, selectCartTotal } from '../../providers/app/appSlice'
 import { formatCurrency } from '../../config/config';
 import ClientForm from '../../components/clients/ClientForm'
+import slugify from 'slugify'
 
 export const ItemSummary = ({ item }) => {
     const images = JSON.parse(item?.product?.images ? item?.product?.images : "[]")
@@ -14,7 +15,7 @@ export const ItemSummary = ({ item }) => {
         <div className="d-flex align-items-center pb-2 border-bottom">
             <Link
                 className="d-block flex-shrink-0 me-2"
-                to={`/shop/product/${item?.product?.id}/${item?.product?.slug}`}
+                to={`/shop/product/${item?.product?.id}/${slugify(item?.product?.name)}`}
             >
                 <Image
                     radius="md"
@@ -25,7 +26,7 @@ export const ItemSummary = ({ item }) => {
             </Link>
             <div className="ps-1">
                 <h6 className="widget-product-title">
-                    <Link to={`/shop/product/${item?.product?.id}/${item?.product?.slug}`}>
+                    <Link to={`/shop/product/${item?.product?.id}/${slugify(item?.product?.name)}`}>
                         {item?.product?.name}
                     </Link>
                 </h6>
@@ -34,10 +35,10 @@ export const ItemSummary = ({ item }) => {
                         {CURRENCY} {formatCurrency(item?.product?.price)}
                     </span>
                     <span className="fs-xs text-muted border-end pe-2 me-2">
-                        qty: {item?.quantity}
+                        qty: {item?.qty}
                     </span>
                     <span className='fs-xs text-muted' >
-                        {CURRENCY} {formatCurrency(item?.quantity * item?.product?.price)}
+                        {CURRENCY} {formatCurrency(item?.qty * item?.product?.price)}
                     </span>
                 </div>
             </div>

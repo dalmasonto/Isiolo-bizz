@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from '@mantine/form'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectMerchant, selectToken, selectUser, updateMerchantAccount, updateUserAccount } from '../../providers/app/appSlice';
-import { ActionIcon, Button, FileButton, FileInput, Group, Loader, Select, TextInput } from '@mantine/core';
+import { ActionIcon, Button, FileButton, FileInput, Group, Loader, Select, TextInput, Textarea } from '@mantine/core';
 import { makeRequestOne } from '../../config/config';
 import { URLS } from '../../config/constants';
 import { showNotification } from '@mantine/notifications';
@@ -45,6 +45,7 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
             "city": merchant?.city,
             "state": merchant?.state,
             "country": merchant?.country,
+            description: "",
         }
     })
 
@@ -259,8 +260,15 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
                         <TextInput
                             label='Address Line 2'
                             placeholder='Apartment, studio, or floor'
-                            type="text"
                             {...merchantForm.getInputProps('address_line_2')}
+                        />
+                    </div>
+                    <div className="col-sm-12">
+                        <Textarea
+                            label="Group Description"
+                            placeholder='Describe your Group/Merchant here'
+                            minRows={10}
+                            {...merchantForm.getInputProps('description')}
                         />
                     </div>
                     <div className="col-12">

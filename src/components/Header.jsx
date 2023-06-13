@@ -90,7 +90,7 @@ const HeaderCart = () => {
                         <i className="navbar-tool-icon ci-cart" />
                     </a>
                     <a className="navbar-tool-text" href="javascript:void(0)">
-                        <small>My Cart</small>Kes {formatCurrency(cartTotal)}
+                        <small>My Cart</small>{CURRENCY} {formatCurrency(cartTotal)}
                     </a>
                 </Group>
             </HoverCard.Target>

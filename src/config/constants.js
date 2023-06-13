@@ -38,7 +38,9 @@ export const URLS = {
     TRANSACTION: `${BASE_API_URL}/transaction`,
     INITIATE_STK_PUSH: `${BASE_API_URL}/ipn/daraja/lnmo/transact`,
     // MEDIA
-    MEDIA: `${BASE_API_URL}/media`
+    MEDIA: `${BASE_API_URL}/media`,
+    // CONTACT
+    CONTACT: `${BASE_API_URL}/contact`
 }
 
 export const CATEOGORIES = [

@@ -1,4 +1,4 @@
-import { Rating, Box, useMantineTheme } from '@mantine/core'
+import { Rating, Box, useMantineTheme, Group, Button, Text, Anchor, Stack } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck } from '@tabler/icons'
 import React from 'react'
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { addToCart } from '../../providers/app/appSlice'
 import { formatCurrency, limitChars } from '../../config/config'
 import slugify from 'slugify'
+import { modals } from '@mantine/modals'
 
 const ProductCard = ({ product }) => {
 
@@ -14,8 +15,29 @@ const ProductCard = ({ product }) => {
     const dispatch = useDispatch()
     const images = JSON.parse(product?.images ? product?.images : "[]")
 
+    const shopNowModal = () => modals.open({
+        title: "Shop Now!",
+        radius: "md",
+        size: "sm",
+        centered: true,
+        children: (
+            <Box>
+                <Text></Text>
+                <Stack spacing={0}>
+                    <button
+                        className="btn btn-primary btn-sm d-block w-100 mb-2"
+                        onClick={modals.closeAll}>
+                        Continue Shopping
+                    </button>
+                    <Anchor onClick={modals.closeAll} component={Link} className='btn d-block w-100 btn-primary btn-sm' to={'/checkout'}>Checkout</Anchor>
+                </Stack>
+            </Box>
+        )
+    })
+
     const addProductToCart = (product, qty) => {
         dispatch(addToCart({ product, qty }))
+        shopNowModal()
         showNotification({
             title: 'Added to cart',
             message: `${product?.name} added to cart`,

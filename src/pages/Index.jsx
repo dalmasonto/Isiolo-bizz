@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { BackgroundImage } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
@@ -7,13 +7,18 @@ import Social from '../components/home/Social'
 import { SHOPS } from '../config/constants'
 import Shops from '../components/home/Shops'
 import Partners from '../components/home/Partners'
+import Autoplay from 'embla-carousel-autoplay';
 
 const Index = () => {
+    const autoplay = useRef(Autoplay({ delay: 5000 }));
     return (
         <>
             {/* Hero slider*/}
             <section className="mb-4 mb-lg-5">
-                <Carousel controlSize={42} slideSize={"100%"}>
+                <Carousel controlSize={42} 
+                    plugins={[autoplay.current]}
+                    onMouseEnter={autoplay.current.stop}
+                    onMouseLeave={autoplay.current.reset}>
                     <Carousel.Slide>
                         <BackgroundImage src="/assets/images/slider1.png">
                             <div className="px-lg-5">
