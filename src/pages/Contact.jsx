@@ -38,7 +38,7 @@ const Contact = () => {
                                 className="iframe-full-height"
                                 width={600}
                                 height={250}
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d53357.14257194912!2d-73.07268695801845!3d40.78017062807504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e8483b8bffed93%3A0x53467ceb834b7397!2s396+Lillian+Blvd%2C+Holbrook%2C+NY+11741%2C+USA!5e0!3m2!1sen!2sua!4v1558703206875!5m2!1sen!2sua"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9064.699095808513!2d37.571675720706835!3d0.34536108262035947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1788689133feb26f%3A0x18574783a3b2319d!2sIsiolo%20Market!5e0!3m2!1sen!2ske!4v1686641631573!5m2!1sen!2ske"
                             />
                         </div>
                         <div className="col-lg-6 px-4 px-xl-5 py-5 border-top">
