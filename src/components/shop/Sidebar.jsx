@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { URLS } from '../../config/constants';
 import { NavLink } from 'react-router-dom';
-import { Text, TextInput } from '@mantine/core';
+import { Stack, Text, TextInput } from '@mantine/core';
 import useSwr from 'swr';
 import { makeRequestOne } from '../../config/config';
 
@@ -47,26 +47,28 @@ const Sidebar = () => {
                     {/* Categories*/}
                     <div className="widget widget-categories mb-4 pb-4 border-bottom">
                         <h3 className="widget-title">Categories</h3>
-                        {
-                            categoriesData?.map((category) => (
-                                <NavLink
+                        <Stack spacing={8}>
+                            {
+                                categoriesData?.sort((a, b) => a?.name?.localeCompare(b?.name))?.map((category) => (
+                                    <NavLink
 
-                                    key={`_category_${category?.id}`}
-                                    to={`/shop/categories/${category?.id}/${category?.slug}`}
-                                    className={({ isActive, isPending }) =>
-                                        isActive
-                                            ? `${linkClasses} sidebar-active-link` : linkClasses
-                                    }
-                                >
-                                    <Text className="widget-filter-item-text" size="sm">
-                                        {category?.name}
-                                    </Text>
-                                    <span className="fs-xs text-muted ms-3">
-                                        {/* {Math.ceil(Math.random() * 300)} */}
-                                    </span>
-                                </NavLink>
-                            ))
-                        }
+                                        key={`_category_${category?.id}`}
+                                        to={`/shop/categories/${category?.id}/${category?.slug}`}
+                                        className={({ isActive, isPending }) =>
+                                            isActive
+                                                ? `${linkClasses} sidebar-active-link` : linkClasses
+                                        }
+                                    >
+                                        <Text className="widget-filter-item-text text-capitalize" size="sm">
+                                            {category?.name}
+                                        </Text>
+                                        <span className="fs-xs text-muted ms-3">
+                                            
+                                        </span>
+                                    </NavLink>
+                                ))
+                            }
+                        </Stack>
                     </div>
 
                     {/* Filter by Brand*/}
@@ -83,25 +85,27 @@ const Sidebar = () => {
                             />
                         </div>
                         <div className="widge widget-categorie mb-4 pb-4 border-bottom">
-                            {
-                                filteredMerchants()?.map((merchant) => (
-                                    <NavLink
-                                        key={`_merchant_${merchant?.id}`}
-                                        to={`/shop/merchants/${merchant?.id}/${merchant?.slug}`}
-                                        className={({ isActive, isPending }) =>
-                                            isActive
-                                                ? `${linkClasses} sidebar-active-link` : linkClasses
-                                        }
-                                    >
-                                        <Text className="widget-filter-item-text" size="sm">
-                                            {merchant?.name ? merchant?.name : "Another merchant"}
-                                        </Text>
-                                        <span className="fs-xs text-muted ms-3">
-                                            {/* {Math.ceil(Math.random() * 300)} */}
-                                        </span>
-                                    </NavLink>
-                                ))
-                            }
+                            <Stack spacing={8}>
+                                {
+                                    filteredMerchants()?.sort((a, b) => a?.name?.localeCompare(b?.name))?.map((merchant) => (
+                                        <NavLink
+                                            key={`_merchant_${merchant?.id}`}
+                                            to={`/shop/merchants/${merchant?.id}/${merchant?.slug}`}
+                                            className={({ isActive, isPending }) =>
+                                                isActive
+                                                    ? `${linkClasses} sidebar-active-link` : linkClasses
+                                            }
+                                        >
+                                            <Text className="widget-filter-item-text text-capitalize" size="sm">
+                                                {merchant?.name ? merchant?.name : "Another merchant"}
+                                            </Text>
+                                            <span className="fs-xs text-muted ms-3">
+                                                
+                                            </span>
+                                        </NavLink>
+                                    ))
+                                }
+                            </Stack>
                         </div>
                     </div>
                 </div>

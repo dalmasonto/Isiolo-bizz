@@ -2,9 +2,9 @@ import { Box, Card, Center, Container, Grid, Image, Stack, Text, Title, useManti
 import React from 'react'
 
 const partners = [
+    "/assets/images/partners/eu.jpg",
     "/assets/images/partners/e4i.jpg",
     "/assets/images/partners/DRIC.png",
-    "/assets/images/partners/eu.jpg",
     "/assets/images/partners/kenya.jpeg",
     "/assets/images/partners/zebra.jpeg",
 ]
@@ -14,7 +14,6 @@ const Partners = () => {
     return (
         <Box my={100}>
             <Stack align='center' spacing={0} mb="md">
-                <Text align='center' size="sm">Sponsored By</Text>
                 <Title align='center' weight={500} size={42}>Partners</Title>
             </Stack>
             <Container size="lg">

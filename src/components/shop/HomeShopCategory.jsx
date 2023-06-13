@@ -29,7 +29,7 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
                             style={{ backgroundColor: "#f6f8fb" }}
                         >
                             <div>
-                                <h3 className="mb-1">{shop?.name}</h3>
+                                <h3 className="mb-1 text-capitalize">{shop?.name}</h3>
                                 <Link className="fs-md" to={`/shop/${shop?.id}/${shop?.slug}`}>
                                     Shop now!
                                     <i className="ci-arrow-right fs-xs align-middle ms-1" />
@@ -53,11 +53,11 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
                             <Box py={40}>
                                 <Loader variant='dots' size={100} />
                             </Box>
-                        )}
+                        )} 
                         {
                             products?.length > 0 &&
                             (
-                                <Carousel slideSize={matches ? "50%" : "33.33%"} slideGap={10} align={'start'} controlSize={42}>
+                                <Carousel slideSize={matches ? "50%" : "33.33%"} slideGap={10} align={'start'} controlSize={42} loop={true}>
                                     {
                                         products?.slice(0, 6)?.map((product) => (
                                             <Carousel.Slide key={`_product_ks_${product.id}`} pt={20} pb={100} style={{ overflow: "auto !important" }}>

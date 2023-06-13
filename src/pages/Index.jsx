@@ -23,8 +23,9 @@ const Index = () => {
                                         style={{
                                             maxWidth: "42rem",
                                             zIndex: 10,
-                                            backgroundColor: "rgb(245, 177, 176)",
-                                            borderRadius: "1rem",
+                                            // backgroundColor: "rgba(245, 177, 176, 0.3)",
+                                            backgroundColor: "rgba(0, 0, 0, 0.6)",
+                                            borderRadius: "0px",
                                         }}
                                     >
                                         <div className="pb-lg-5 mb-lg-5 text-center text-lg-start text-lg-nowrap">

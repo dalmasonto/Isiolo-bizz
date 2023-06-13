@@ -17,7 +17,7 @@ const Footer = () => {
                             <h3 className="widget-title text-light">Product Categories</h3>
                             <ul className="widget-list d-none">
                                 {
-                                    categoriesData?.map((category, index) => (
+                                    categoriesData?.sort((a, b) => a?.name?.localeCompare(b?.name))?.map((category, index) => (
                                         <li key={`category_${category.id}`} className="widget-list-item">
                                             <Link
                                                 className="widget-list-link"
@@ -183,7 +183,7 @@ const Footer = () => {
                                 </a>
                             </div>
                             <img
-                                className="d-inline-block"
+                                className="d-inline-block d-none"
                                 src="/assets/img/cards-alt.png"
                                 width={187}
                                 alt="Payment methods"

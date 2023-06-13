@@ -11,11 +11,13 @@ import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
 import { addToCart } from '../../providers/app/appSlice';
 import ProductCard from '../../components/shop/ProductCard';
+import { useMediaQuery } from '@mantine/hooks';
 
 const SingleProduct = () => {
     const { id, slug } = useParams()
 
     const dispatch = useDispatch()
+    const matches = useMediaQuery('(max-width: 56.25em)'); 
 
     const productQuery = useSwr([`${URLS.PRODUCTS}/${id}/`, 'GET', {}, {}, { include: 'category,merchant' }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const product = productQuery?.data?.data?.data
@@ -234,7 +236,7 @@ const SingleProduct = () => {
             <div className="container py-5 my-md-3">
                 <h2 className="h3 text-center pb-4">You may also like</h2>
                 <div className="">
-                    <Carousel slideSize={"25%"}>
+                    <Carousel slideSize={matches ? "50%" : "33.33%"} align={"start"} slideGap={10} loop>
                         {
                             products?.map((product) => (
                                 <Carousel.Slide key={`_product_${product.id}`} pt={20} pb={100}>

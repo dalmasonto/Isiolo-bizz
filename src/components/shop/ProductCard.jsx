@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
             </Box>
             <div className="card-body py-2">
                 <Link
-                    className="product-meta d-block fs-xs pb-1"
+                    className="product-meta d-block fs-xs pb-1 d-none"
                     to={`/shop/merchants/${product?.merchant?.id}/${product?.merchant?.slug}/`}
                 >
                     Seller: {limitChars(product?.merchant?.name ?? "Not provided", 16)}

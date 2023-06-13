@@ -10,8 +10,8 @@ const Shops = () => {
     return (
         <div>
             {
-                merchantsData?.map((shop, i) => (
-                    <HomeShopCategory key={`home_shop_${i}`} shop={shop} barnerOrder={i % 2 === 0 ? '' : 'order-md-2'} />
+                merchantsData?.sort((a, b) => a?.name?.localeCompare(b?.name)).map((shop, i) => (
+                    <HomeShopCategory key={`home_shop_${i}`} shop={shop} barnerOrder={''} />
                 ))
             }
         </div>

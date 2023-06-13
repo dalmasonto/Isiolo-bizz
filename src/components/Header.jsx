@@ -19,6 +19,13 @@ const navlinks = [
         children: []
     },
     {
+        id: 'd',
+        label: 'About Us',
+        to: '/about-us',
+        icon: '',
+        children: []
+    },
+    {
         id: 'b',
         label: 'Shop',
         to: '/shop',
@@ -36,13 +43,6 @@ const navlinks = [
         id: 'c',
         label: 'Contact Us',
         to: '/contact-us',
-        icon: '',
-        children: []
-    },
-    {
-        id: 'd',
-        label: 'About Us',
-        to: '/about-us',
         icon: '',
         children: []
     },
@@ -406,7 +406,7 @@ const Header = () => {
                                     <div className="dropdown-menu px-2 pb-4" style={{ width: "800px", maxWidth: '90vw' }}>
                                         <Grid>
                                             {
-                                                merchantsData?.map((shop, index) => (
+                                                merchantsData?.sort((a, b) => a?.name?.localeCompare(b?.name)).map((shop, index) => (
                                                     <Grid.Col key={`shop_${shop?.id}`} span={4} sm={2}>
                                                         <Stack onClick={() => setNavbarOPen(false)} spacing={0} align='center'>
                                                             <Link
@@ -415,7 +415,7 @@ const Header = () => {
                                                             >
                                                                 <Avatar src={shop?.logo ? shop?.logo : "/logos/Bidii-farmers-self--help-group-Reviewed-Logo.jpg"} alt={shop?.name} radius="md" size={72} />
                                                             </Link>
-                                                            <Title order={6} weight={400} size={14} className="mb-2 text-center" mx={4}>{shop?.name}</Title>
+                                                            <Title order={6} weight={400} size={14} className="mb-2 text-center text-capitalize" mx={4}>{shop?.name}</Title>
                                                         </Stack>
                                                     </Grid.Col>
                                                 ))
