@@ -8,9 +8,20 @@ export const getPrimaryColor = (theme) => {
     return theme?.colors?.orange[6]
 }
 
+// export const formatCurrency = (price) => {
+//     return Number(price).toLocaleString()
+// }
+// Given a string number or a number with decimal, write an Numberintl function to make the conversion
+
 export const formatCurrency = (price) => {
-    return Number(price).toLocaleString()
-}
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'KES',
+      minimumFractionDigits: 2,
+    });
+  
+    return formatter.format(Number(price));
+  };
 
 export const checkIfEndwithSlash = (st) => {
     const len = st.length;

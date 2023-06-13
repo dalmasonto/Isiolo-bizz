@@ -1,6 +1,6 @@
 import { Image } from '@mantine/core'
 import React from 'react'
-import { CATEOGORIES, URLS } from '../config/constants'
+import { URLS } from '../config/constants'
 import { Link } from 'react-router-dom'
 import useSwr from 'swr';
 import { makeRequestOne } from '../config/config';

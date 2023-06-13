@@ -3,12 +3,6 @@ import { Link, useParams } from 'react-router-dom';
 import useSwr from 'swr';
 import { URLS } from '../../config/constants';
 import { makeRequestOne } from '../../config/config';
-import Sidebar from '../../components/shop/Sidebar';
-import Toolbar from '../../components/shop/Toolbar';
-import ProductCard from '../../components/shop/ProductCard';
-import CustomPagination from '../../components/shop/CustomPagination';
-import { Title } from '@mantine/core';
-import LoadingProducts from '../../components/common/LoadingProducts';
 import SidebarAndProductsSection from '../../components/shop/SidebarAndProductsSection';
 import { useDebouncedState } from '@mantine/hooks';
 
@@ -18,7 +12,7 @@ const SingleMerchant = () => {
     current_page: 1
   }, 200)
 
-  const { id, slug } = useParams()
+  const { id } = useParams()
   const merchantQuery = useSwr([`${URLS.MERCHANTS}/${id}/`, 'GET', {}, {}, {"page[number]": options?.current_page}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
   const merchant = merchantQuery?.data?.data?.data
 

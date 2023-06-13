@@ -1,4 +1,4 @@
-import { Box, Card, Center, Container, Grid, Image, Stack, Text, Title, useMantineTheme } from '@mantine/core'
+import { Box, Card, Center, Container, Grid, Image, Stack, Title } from '@mantine/core'
 import React from 'react'
 
 const partners = [
@@ -11,7 +11,6 @@ const partners = [
 ]
 
 const Partners = () => {
-    const theme = useMantineTheme()
     return (
         <Box my={100}>
             <Stack align='center' spacing={0} mb="md">

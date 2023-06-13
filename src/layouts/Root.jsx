@@ -8,16 +8,10 @@ const Root = () => {
     const location = useLocation()
 
     function routeChangeListener() {
-        // Load a new script
-        // var script = document.createElement('script');
-        // script.src = "/assets/js/theme.min.js";
-        // document.body.appendChild(script);
         const themeScript = document.getElementById('theme-script')
         if (themeScript) {
-            // Remove themeScript tag
             themeScript.remove()
         }
-        // Add themeScript tag
         const script = document.createElement('script')
         script.id = 'theme-script'
         script.src = '/assets/js/theme.min.js'

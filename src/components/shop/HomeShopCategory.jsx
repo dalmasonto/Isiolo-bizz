@@ -1,8 +1,7 @@
 import { Carousel } from '@mantine/carousel'
 import React from 'react'
 import ProductCard from './ProductCard'
-import { products } from '../../pages/shop/Shop'
-import { Avatar, Box, Button, Group, Image, Loader, Stack, Text, Title } from '@mantine/core'
+import { Box, Button, Group, Image, Loader, Stack, Text, Title } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import useSwr from 'swr'
 import { URLS } from '../../config/constants'
@@ -51,13 +50,6 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
                             className="d-flex flex-column justify-content-center overflow-hidden rounded-3"
                             style={{ backgroundColor: "#f6f8fb" }}
                         >
-                            {/* <div>
-                                <h3 className="mb-1 text-capitalize">{shop?.name}</h3>
-                                <Link className="fs-md" to={`/shop/${shop?.id}/${shop?.slug}`}>
-                                    Shop now!
-                                    <i className="ci-arrow-right fs-xs align-middle ms-1" />
-                                </Link>
-                            </div> */}
                             <Link className="d-md-block w-100" to={`/shop/merchants/${shop?.id}/${slugify(shop?.name)}`}>
                                 <Image
                                     className=""

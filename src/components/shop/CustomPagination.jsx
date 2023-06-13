@@ -1,6 +1,5 @@
 import { Box, Pagination } from '@mantine/core'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { ITEMS_PER_PAGE } from '../../config/constants'
 
 const CustomPagination = ({current_page, total, onPageChange, noPadding}) => {

@@ -1,4 +1,3 @@
-import { Box } from '@mantine/core'
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ADMIN_BASE_URL } from '../../config/constants'
@@ -51,11 +50,6 @@ const sidebarLinkgs = [
                 title: 'Contact Form Entries',
                 icon: 'ci-message',
                 to: `/${ADMIN_BASE_URL}/contact-form-entries/`,
-            },
-            {
-                title: 'Reviews',
-                icon: 'ci-star',
-                to: `/${ADMIN_BASE_URL}/reviews/`,
             }
         ]
     },

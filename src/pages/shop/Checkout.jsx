@@ -1,5 +1,5 @@
 import { Image } from '@mantine/core'
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { CURRENCY } from '../../config/constants'
 import { useSelector } from 'react-redux'
@@ -47,7 +47,6 @@ export const ItemSummary = ({ item }) => {
 }
 
 const Checkout = () => {
-    const [loading, setLoading] = useState(false)
     const items = useSelector(selectCartItems)
     const cartTotal = useSelector(selectCartTotal)
     

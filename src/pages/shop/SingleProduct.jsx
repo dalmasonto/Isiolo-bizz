@@ -1,4 +1,4 @@
-import { Center, Group, Image, NumberInput, Rating, Stack, Text } from '@mantine/core'
+import { Group, Image, NumberInput, Stack, Text } from '@mantine/core'
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { CURRENCY, URLS } from '../../config/constants'
@@ -14,7 +14,7 @@ import ProductCard from '../../components/shop/ProductCard';
 import { useMediaQuery } from '@mantine/hooks';
 
 const SingleProduct = () => {
-    const { id, slug } = useParams()
+    const { id } = useParams()
 
     const dispatch = useDispatch()
     const matches = useMediaQuery('(max-width: 56.25em)'); 
@@ -98,24 +98,6 @@ const SingleProduct = () => {
                             {/* Product details*/}
                             <div className="col-lg-5 pt-4 pt-lg-0">
                                 <div className="product-details ms-auto pb-3">
-                                    {/* <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <a href="shop-single-v1.html#reviews" data-scroll="">
-                                            <div className="star-rating">
-                                                <Rating value={4.5} readOnly size='sm' fractions={2} />
-                                            </div>
-                                            <span className="d-inline-block fs-sm text-body align-middle mt-1 ms-1">
-                                                74 Reviews
-                                            </span>
-                                        </a>
-                                        <button
-                                            className="btn-wishlist me-0 me-lg-n3"
-                                            type="button"
-                                            data-bs-toggle="tooltip"
-                                            title="Add to wishlist"
-                                        >
-                                            <i className="ci-heart" />
-                                        </button>
-                                    </div> */}
                                     <div className="mb-3">
                                         <span className="h3 fw-normal text-accent me-1">
                                             {CURRENCY} {formatCurrency(product?.price)}
@@ -127,10 +109,6 @@ const SingleProduct = () => {
                                     <div className="position-relative me-n4 mb-3" style={{
                                         height: "20px"
                                     }}>
-                                       {/*  <div className="product-badge product-available mt-n1">
-                                            <i className="ci-security-check" />
-                                            Product available
-                                        </div> */}
                                     </div>
                                     <form className="mb-grid-gutter" onSubmit={productForm.onSubmit((values) => addProductToCart())}>
 

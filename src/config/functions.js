@@ -1,26 +1,4 @@
-import axios from 'axios';
 import { isArray } from 'util';
-
-const searchDomains = async (domainName) => {
-    const IDENTIFIER = "234lRlbtBUkJUhy9cNk8Kw82FZax3Q6C"
-    const SECRET = "qFe1O1PMRCe1Sn0HG6ShRYjcwjpLM1br"
-
-    axios.post(`https://hosting.livesoftwaredeveloper.com/includes/api.php?action=DomainWhois&username=${IDENTIFIER}&password=${SECRET}&domain=${domainName}&responsetype=json`, {
-        // action: 'DomainWhois',
-        // username: IDENTIFIER,
-        // password: SECRET,
-        // domain: domainName,
-        // responsetype: 'json'
-    })
-        .then(response => {
-            return response.data
-        })
-        .catch(error => {
-            console.error(error);
-            return null
-        });
-};
-
 
 export function getTitleOrder(order) {
     switch (order) {
@@ -60,8 +38,3 @@ export function displayErrors(form, errors, parentKey = null) {
 export function getFullName(clientDetails) {
     return `${clientDetails?.first_name} ${clientDetails?.middle_name} ${clientDetails?.last_name}`
 }
-
-
-export {searchDomains}
-
-export default searchDomains;

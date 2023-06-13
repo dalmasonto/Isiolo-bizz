@@ -1,14 +1,6 @@
-import { useForm } from '@mantine/form'
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectMerchant, selectToken, selectUser, updateMerchantAccount, updateUserAccount } from '../../providers/app/appSlice';
-import { ActionIcon, Button, FileButton, FileInput, Group, Loader, Select, TextInput } from '@mantine/core';
-import { makeRequestOne } from '../../config/config';
-import { URLS } from '../../config/constants';
-import { showNotification } from '@mantine/notifications';
-import { IconAlertCircle, IconUpload } from '@tabler/icons';
-import { displayErrors } from '../../config/functions';
-import slugify from 'slugify';
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { selectMerchant } from '../../providers/app/appSlice';
 import MerchantUpdateForm from '../../components/merchant/MerchantUpdateForm';
 
 const ShopProfile = () => {

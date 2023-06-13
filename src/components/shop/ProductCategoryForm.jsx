@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form'
 import React, { useState } from 'react'
 import slugify from 'slugify'
 import { makeRequestOne } from '../../config/config'
-import { CATEOGORIES, URLS } from '../../config/constants';
+import { URLS } from '../../config/constants';
 import { useSelector } from 'react-redux'
 import { selectToken } from '../../providers/app/appSlice'
 import { showNotification } from '@mantine/notifications'

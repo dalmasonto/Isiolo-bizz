@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { DataTable } from 'mantine-datatable';
 import useSwr from 'swr';
-import { ActionIcon, Avatar, Button, Drawer, Group, ScrollArea, Stack, Text, Title } from '@mantine/core';
-import { IconAlertCircle, IconAlertTriangle, IconEdit, IconEye, IconPlus, IconTrash } from '@tabler/icons';
+import { ActionIcon, Button, Drawer, Group, ScrollArea, Stack, Text, Title } from '@mantine/core';
+import { IconAlertCircle, IconAlertTriangle, IconEdit, IconPlus, IconTrash } from '@tabler/icons';
 import { modals } from '@mantine/modals';
 import { useSelector } from 'react-redux';
 import { showNotification } from '@mantine/notifications';

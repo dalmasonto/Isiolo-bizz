@@ -4,14 +4,13 @@ import useSwr from 'swr';
 import { CURRENCY, ORDER_STATUS, URLS } from '../../config/constants';
 import { formatCurrency, limitChars, makeRequestOne } from '../../config/config';
 import { ActionIcon, Anchor, Avatar, Box, Drawer, Group, ScrollArea, Stack, Text, Title } from '@mantine/core';
-import { IconAlertCircle, IconAlertTriangle, IconEdit, IconEye, IconTrash } from '@tabler/icons';
+import { IconAlertCircle, IconAlertTriangle, IconEye } from '@tabler/icons';
 import { modals } from '@mantine/modals';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../../providers/app/appSlice';
 import { showNotification } from '@mantine/notifications';
 import { useDebouncedState, useDisclosure } from '@mantine/hooks';
 import CustomPagination from '../../components/shop/CustomPagination';
-import ClientForm from '../../components/clients/ClientForm';
 import { getFullName } from '../../config/functions';
 import SingleOrder from '../../components/shop/SingleOrder';
 

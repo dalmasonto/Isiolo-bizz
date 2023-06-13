@@ -27,7 +27,6 @@ const AdminLayout = () => {
             navigate(`/account/auth?redirect=/${ADMIN_BASE_URL}/`)
         }
         else {
-            console.log("Admin: ", user?.user?.isAdministrator)
             if (user?.user?.isAdministrator === false) {
                 navigate(`/merchant/`)
             }

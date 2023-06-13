@@ -2,9 +2,7 @@ import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { BackgroundImage } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
-import HomeShopCategory from '../components/shop/HomeShopCategory'
 import Social from '../components/home/Social'
-import { SHOPS } from '../config/constants'
 import Shops from '../components/home/Shops'
 import Partners from '../components/home/Partners'
 import Autoplay from 'embla-carousel-autoplay';
@@ -15,7 +13,8 @@ const Index = () => {
         <>
             {/* Hero slider*/}
             <section className="mb-4 mb-lg-5">
-                <Carousel controlSize={42} 
+                <Carousel controlSize={42}
+                    loop
                     plugins={[autoplay.current]}
                     onMouseEnter={autoplay.current.stop}
                     onMouseLeave={autoplay.current.reset}>
@@ -28,8 +27,8 @@ const Index = () => {
                                         style={{
                                             maxWidth: "42rem",
                                             zIndex: 10,
-                                            // backgroundColor: "rgba(245, 177, 176, 0.3)",
-                                            backgroundColor: "rgba(0, 0, 0, 0.6)",
+                                            // backgroundColor: "rgba(16, 115, 60, 0.6)",
+                                            backgroundColor: "rgba(247, 153, 61, 0.8)",
                                             borderRadius: "0px",
                                         }}
                                     >
@@ -61,8 +60,8 @@ const Index = () => {
                                         style={{
                                             maxWidth: "42rem",
                                             zIndex: 10,
-                                            // backgroundColor: "rgba(245, 177, 176, 0.3)",
-                                            backgroundColor: "rgba(0, 0, 0, 0.6)",
+                                            // backgroundColor: "rgba(16, 115, 60, 0.6)",
+                                            backgroundColor: "rgba(247, 153, 61, 0.8)",
                                             borderRadius: "0px",
                                         }}
                                     >
@@ -94,8 +93,8 @@ const Index = () => {
                                         style={{
                                             maxWidth: "42rem",
                                             zIndex: 10,
-                                            // backgroundColor: "rgba(245, 177, 176, 0.3)",
-                                            backgroundColor: "rgba(0, 0, 0, 0.6)",
+                                            // backgroundColor: "rgba(16, 115, 60, 0.6)",
+                                            backgroundColor: "rgba(247, 153, 61, 0.8)",
                                             borderRadius: "0px",
                                         }}
                                     >

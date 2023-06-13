@@ -41,10 +41,8 @@ const AddProductForm = ({ updating, product }) => {
 
     const handleUploadFiles = () => {
         const files = productForm.values['files[]']
-        console.log(files)
         setLoading(true)
         if(!files || files?.length === 0) {
-            console.log("check")
             handleCreate([])
             return
         }
@@ -54,11 +52,7 @@ const AddProductForm = ({ updating, product }) => {
                 const images_ = res?.data?.data
                 const images = images_?.map(image => image?.path)
                 handleCreate(images)
-            }).catch((err) => {
-                console.log(err)
-                const errors = err?.response?.data?.errors
-                
-            })
+            }).catch((err) => {})
         }
     }
 
@@ -83,7 +77,7 @@ const AddProductForm = ({ updating, product }) => {
             URL = URLS.PRODUCTS + "/" + product?.id + "/"
             METHOD = 'PUT'
         }
-        console.log(values)
+
         makeRequestOne(URL, METHOD, { 'Authorization': `Bearer ${token}` }, values, {})
             .then((res) => {
                 showNotification({

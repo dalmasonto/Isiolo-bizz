@@ -5,10 +5,10 @@ import { clearCart, selectCartItems, selectCartTotal } from '../../providers/app
 import { useDispatch, useSelector } from 'react-redux'
 import { makeRequestOne } from '../../config/config'
 import { URLS } from '../../config/constants'
-import { IconAlertCircle, IconAlertOctagon, IconAlertTriangle } from '@tabler/icons'
+import { IconAlertCircle, IconAlertOctagon } from '@tabler/icons'
 import { modals } from '@mantine/modals'
 import { showNotification } from '@mantine/notifications'
-import { displayErrors, getFullName } from '../../config/functions'
+import { displayErrors } from '../../config/functions'
 
 
 const createOrderObjectsPerMerchant = (purchases) => {
@@ -162,9 +162,7 @@ const ClientForm = ({ client, isAdmin }) => {
                 const allOrdersToBePlaced = ORDERS?.map(order => handleCreateOrder(order))
                 placeAllOrders(allOrdersToBePlaced)
             })
-            .catch(error => {
-                console.error('Error:', error);
-            })
+            .catch(error => {})
     }
 
     const handleCheckout = () => {

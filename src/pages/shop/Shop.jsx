@@ -1,12 +1,5 @@
 import React from 'react'
-import QuickView from '../../components/shop/QuickView'
-import ProductCard from '../../components/shop/ProductCard';
 import { Link } from 'react-router-dom';
-import Sidebar from '../../components/shop/Sidebar';
-import Toolbar from '../../components/shop/Toolbar';
-import CustomPagination from '../../components/shop/CustomPagination';
-import { useSelector } from 'react-redux';
-import { selectToken } from '../../providers/app/appSlice';
 import useSwr from 'swr';
 import { URLS } from '../../config/constants';
 import { makeRequestOne } from '../../config/config';
@@ -17,7 +10,7 @@ const Shop = () => {
   const [options, setOptions] = useDebouncedState({
     current_page: 1
   }, 200)
-  const token = useSelector(selectToken)
+  
   const productsQuery = useSwr([URLS.PRODUCTS + "/", 'GET', {}, {}, { "page[number]": options?.current_page, include: 'merchant' }], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
   const productsQueryData = productsQuery?.data?.data
   const productsData = productsQuery?.data?.data?.data

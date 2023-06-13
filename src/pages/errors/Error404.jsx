@@ -2,12 +2,8 @@ import React from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectUser } from '../../providers/app/appSlice'
-import { Text } from '@mantine/core'
 
 const Error404 = () => {
-    const user = useSelector(selectUser)
     return (
         <>
             <main className="page-wrapper">

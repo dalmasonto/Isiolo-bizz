@@ -2,8 +2,8 @@ import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { logout, removeCartItem, selectCartItems, selectCartTotal, selectLoggedIn, selectUser } from '../providers/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { Alert, Anchor, Avatar, Box, Grid, Group, HoverCard, Image, ScrollArea, Stack, Text, Title } from '@mantine/core'
-import { ADMIN_BASE_URL, CURRENCY, SHOPS, URLS } from '../config/constants'
+import { Alert, Avatar, Box, Grid, Group, HoverCard, ScrollArea, Stack, Text, Title } from '@mantine/core'
+import { ADMIN_BASE_URL, CURRENCY, URLS } from '../config/constants'
 import { formatCurrency, limitChars, makeRequestOne } from '../config/config';
 import { modals } from '@mantine/modals'
 import useSwr from 'swr';
@@ -123,7 +123,7 @@ const HeaderCart = () => {
                             <div className="fs-sm me-2 py-2">
                                 <span className="text-muted">Subtotal:</span>
                                 <span className="text-accent fs-base ms-1">
-                                    KES {cartTotal}.<small>00</small>
+                                    {formatCurrency(cartTotal)}
                                 </span>
                             </div>
                             <Link
@@ -176,13 +176,13 @@ const CartItem = ({ item }) => {
                 </a>
                 <div className="ps-2">
                     <h6 className="widget-product-title">
-                        <a href={`/shop/products/${item?.product.id}`}>
+                        <a href={`/shop/products/${item?.product.id}`} className='text-capitalize'>
                             {item?.product?.name}
                         </a>
                     </h6>
                     <div className="widget-product-meta">
                         <span className="text-accent me-2">
-                            {CURRENCY} {item?.product?.price}
+                             {formatCurrency(item?.product?.price)}
                         </span>
                         <span className="text-muted">x {item?.qty}</span>
                     </div>

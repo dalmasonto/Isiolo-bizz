@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { URLS } from '../../config/constants'
 import { useForm } from '@mantine/form'
-import { Loader, PasswordInput, TextInput } from '@mantine/core'
+import { Loader, PasswordInput } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconAlertCircle } from '@tabler/icons'
 import { makeRequestOne } from '../../config/config'

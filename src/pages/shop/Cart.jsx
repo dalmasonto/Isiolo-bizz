@@ -1,4 +1,4 @@
-import { ActionIcon, Alert, Avatar, Box, Button, Group, Image, Text } from '@mantine/core'
+import { ActionIcon, Alert, Box, Group, Image, Text } from '@mantine/core'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useForm } from '@mantine/form'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectMerchant, selectToken, selectUser, updateMerchantAccount, updateUserAccount } from '../../providers/app/appSlice';
-import { ActionIcon, Button, FileButton, FileInput, Group, Loader, Select, TextInput, Textarea } from '@mantine/core';
+import { selectToken, updateMerchantAccount } from '../../providers/app/appSlice';
+import { ActionIcon, FileInput, Group, Loader, TextInput, Textarea } from '@mantine/core';
 import { makeRequestOne } from '../../config/config';
 import { URLS } from '../../config/constants';
 import { showNotification } from '@mantine/notifications';
@@ -59,9 +59,6 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
                 merchantForm.setFieldValue('logo', logo)
                 handleUpdate({ logo: logo })
             }).catch((err) => {
-                console.log(err)
-                const errors = err?.response?.data?.errors
-
             })
     }
 

@@ -1,4 +1,4 @@
-import { Rating, Box, useMantineTheme, Group, Button, Text, Anchor, Stack, Image } from '@mantine/core'
+import { Box, useMantineTheme, Text, Anchor, Stack, Image } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck } from '@tabler/icons'
 import React from 'react'
@@ -8,6 +8,7 @@ import { addToCart } from '../../providers/app/appSlice'
 import { formatCurrency, limitChars } from '../../config/config'
 import slugify from 'slugify'
 import { modals } from '@mantine/modals'
+import { CURRENCY } from '../../config/constants'
 
 const ProductCard = ({ product }) => {
 
@@ -59,8 +60,7 @@ const ProductCard = ({ product }) => {
             </button>
             <Box style={{
                 height: "200px",
-                overflow: "hidden",
-                // background: theme.colors.gray[1]
+                overflow: "hidden"
             }}>
                 <Link
                     className="card-img-top d-block overflow-hidden"
@@ -70,19 +70,13 @@ const ProductCard = ({ product }) => {
                 </Link>
             </Box>
             <div className="card-body py-2">
-                <Link
-                    className="product-meta d-block fs-xs pb-1 d-none"
-                    to={`/shop/merchants/${product?.merchant?.id}/${product?.merchant?.slug}/`}
-                >
-                    Seller: {limitChars(product?.merchant?.name ?? "Not provided", 16)}
-                </Link>
-                <h3 className="product-title fs-sm">
+                <h3 className="product-title fs-sm text-capitalize">
                     <Link to={`/shop/products/${product?.id}/${slugify(product?.name)}`}>{product?.name}</Link>
                 </h3>
                 <div className="d-flex justify-content-between">
                     <div className="product-price">
                         <span className="text-accent">
-                            KES {formatCurrency(product?.price)}
+                            {CURRENCY} {formatCurrency(product?.price)}
                         </span>
                     </div>
                     {/* <Rating value={product?.rating ?? 4.5} readOnly size='sm' fractions={2} /> */}

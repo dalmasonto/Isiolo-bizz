@@ -32,7 +32,6 @@ const LoginForm = () => {
         setLoading(true)
         makeRequestOne(URLS.LOGIN + "/", 'POST', {}, values, {}).then(res => {
             const data = res?.data?.data
-            console.log("Data: ", data)
             if (data && data !== "") {
                 dispatch(login({ token: data?.accessToken, user: data?.user }))
                 showNotification({
@@ -42,12 +41,10 @@ const LoginForm = () => {
                     icon: <IconAlertCircle />,
                 })
                 const redirectTo = searchParams.get('redirect')
-                console.log(redirectTo)
                 if (redirectTo) {
                     navigate(redirectTo)
                 }
                 else {
-                    console.log(data?.user)
                     if(data?.user?.isAdministrator){
                         navigate(`/${ADMIN_BASE_URL}/`)
                     }
