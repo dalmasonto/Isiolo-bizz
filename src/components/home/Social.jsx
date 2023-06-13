@@ -9,7 +9,7 @@ const Social = () => {
                 <div className="col-4">
                     <Anchor
                         className="card border-0 rounded-0 text-decoration-none py-md-4 bg-faded-primary"
-                        to="/shop"
+                        to="https://www.facebook.com/esiolomarketplace" target="_blank"
                         component={Link}
                     >
                         <div className="card-body text-center">
@@ -24,7 +24,7 @@ const Social = () => {
                 <div className="col-4">
                     <Anchor
                         className="card border-0 rounded-0 text-decoration-none py-md-4 bg-faded-accent"
-                        to="/shop"
+                        to="https://twitter.com/esiolodric" target="_blank"
                         component={Link}
                     >
                         <div className="card-body text-center">
@@ -39,7 +39,7 @@ const Social = () => {
                 <div className="col-4">
                     <Anchor
                         className="card border-0 rounded-0 text-decoration-none py-md-4 bg-faded-warning"
-                        to="https://www.instagram.com/esiolomarketplace/"
+                        to="https://www.instagram.com/esiolomarketplace/" target="_blank"
                         component={Link}
                     >
                         <div className="card-body text-center">
