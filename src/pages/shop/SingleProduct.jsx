@@ -174,25 +174,25 @@ const SingleProduct = () => {
                                                     <Stack>
                                                         <div>
                                                             <h6 className="fs-sm mb-2"><strong>Name</strong></h6>
-                                                            <Text className="text-capitalize">
+                                                            <Text className="text-capitalize" size="sm">
                                                                 {product?.name}
                                                             </Text>
                                                         </div>
                                                         <div>
                                                             <h6 className="fs-sm mb-2"><strong>Seller</strong></h6>
-                                                            <Text className="text-capitalize">
+                                                            <Text className="text-capitalize" size="sm">
                                                                 {product?.merchant?.name}
                                                             </Text>
                                                         </div>
                                                         <div>
                                                             <h6 className="fs-sm mb-2"><strong>Product Category</strong></h6>
-                                                            <Text className="text-capitalize">
+                                                            <Text className="text-capitalize" size="sm">
                                                                 {product?.category?.name}
                                                             </Text>
                                                         </div>
                                                         <div>
                                                             <h6 className="fs-sm mb-2"><strong>Description</strong></h6>
-                                                            <Text className="text-capitalize">
+                                                            <Text className="text-capitalize" size="sm">
                                                                 {product?.description}
                                                             </Text>
                                                         </div>
@@ -201,31 +201,7 @@ const SingleProduct = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* Sharing*/}
-                                    {/* <label className="form-label d-inline-block align-middle my-2 me-3">
-                                        Share:
-                                    </label>
-                                    <a
-                                        className="btn-share btn-twitter me-2 my-2"
-                                        href="#"
-                                    >
-                                        <i className="ci-twitter" />
-                                        Twitter
-                                    </a>
-                                    <a
-                                        className="btn-share btn-instagram me-2 my-2"
-                                        href="#"
-                                    >
-                                        <i className="ci-instagram" />
-                                        Instagram
-                                    </a>
-                                    <a
-                                        className="btn-share btn-facebook my-2"
-                                        href="#"
-                                    >
-                                        <i className="ci-facebook" />
-                                        Facebook
-                                    </a> */}
+                                    
                                 </div>
                             </div>
                         </div>

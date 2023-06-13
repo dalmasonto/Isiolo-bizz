@@ -1,4 +1,4 @@
-import { Rating, Box, useMantineTheme, Group, Button, Text, Anchor, Stack } from '@mantine/core'
+import { Rating, Box, useMantineTheme, Group, Button, Text, Anchor, Stack, Image } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck } from '@tabler/icons'
 import React from 'react'
@@ -60,13 +60,13 @@ const ProductCard = ({ product }) => {
             <Box style={{
                 height: "200px",
                 overflow: "hidden",
-                background: theme.colors.gray[1]
+                // background: theme.colors.gray[1]
             }}>
                 <Link
                     className="card-img-top d-block overflow-hidden"
                     to={`/shop/products/${product?.id}/${slugify(product?.name)}/`}
                 >
-                    <img src={images?.length > 0 ? images[0] : "/assets/images/products/Fresh-Camel-Milk.jpg"} alt="Product" />
+                    <Image width="96%" radius="md" mx="auto" src={images?.length > 0 ? images[0] : "/assets/images/products/Fresh-Camel-Milk.jpg"} alt="Product" />
                 </Link>
             </Box>
             <div className="card-body py-2">
