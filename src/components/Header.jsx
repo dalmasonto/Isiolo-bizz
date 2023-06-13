@@ -262,7 +262,7 @@ const Header = () => {
         <header className="shadow-sm">
             {/* Topbar*/}
             <div className="topbar topbar-dark bg-dark">
-                <div className="container">
+                {/* <div className="container">
                     <div className="topbar-text dropdown d-md-none">
                         <a
                             className="topbar-link dropdown-toggle"
@@ -293,7 +293,7 @@ const Header = () => {
                             (00) 33 169 7720
                         </a>
                     </div>
-                    {/* <div className="tns-carousel tns-controls-static d-none d-md-block">
+                    <div className="tns-carousel tns-controls-static d-none d-md-block">
                         <div
                             className="tns-carousel-inner"
                             data-carousel-options='{"mode": "gallery", "nav": false}'
@@ -302,7 +302,7 @@ const Header = () => {
                             <div className="topbar-text">We return money within 30 days</div>
                             <div className="topbar-text">Friendly 24/7 customer support</div>
                         </div>
-                    </div> */}
+                    </div>
                     <div className="ms-3 text-nowrap">
                         <a
                             className="topbar-link me-4 d-none d-md-inline-block"
@@ -315,7 +315,7 @@ const Header = () => {
 
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
             {/* Remove "navbar-sticky" class to make navigation bar scrollable with the page.*/}
             <div className="navbar-sticky bg-light">
