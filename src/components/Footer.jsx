@@ -20,7 +20,7 @@ const Footer = () => {
                                     categoriesData?.sort((a, b) => a?.name?.localeCompare(b?.name))?.map((category, index) => (
                                         <li key={`category_${category.id}`} className="widget-list-item">
                                             <Link
-                                                className="widget-list-link"
+                                                className="widget-list-link text-capitalize"
                                                 to={`/shop/categories/${category?.id}/${category?.slug}`}
                                             >
                                                 {category?.name}
@@ -35,7 +35,7 @@ const Footer = () => {
                                         <div key={`category_${category.id}`} className='col-md-3 col-6'>
                                             <div className="widget-list-item py-1">
                                                 <Link
-                                                    className="widget-list-link"
+                                                    className="widget-list-link text-capitalize"
                                                     to={`/shop/categories/${category?.id}/${category?.slug}`}
                                                 >
                                                     {category?.name}

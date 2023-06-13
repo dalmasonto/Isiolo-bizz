@@ -6,3 +6,7 @@
 .sidebar-active-link {
     color: #fe696a !important;
 }
+
+.capitalize-after-dot::first-letter {
+    text-transform: uppercase;
+}

@@ -55,7 +55,7 @@ const CartItem = ({ item }) => {
                 </span>
             </Box>
             <div className="text-center text-sm-start">
-                <h3 className="h6 product-title mb-2">
+                <h3 className="h6 product-title mb-2 text-capitalize">
                     <Link to={`/shop`}>
                         {item?.product?.name}
                     </Link>

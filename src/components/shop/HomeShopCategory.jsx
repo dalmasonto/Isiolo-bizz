@@ -32,7 +32,7 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
                         <Text align='center' size="xs" color='dimmed'>{shop?.slogan}</Text>
                     </Stack>
                 </Stack>
-                <Text color='dimmed' size="sm" align='justify'>
+                <Text color='dimmed' size="sm" align='justify' className='capitalize-after-dot'>
                     {shop?.description}
                 </Text>
             </Box>
