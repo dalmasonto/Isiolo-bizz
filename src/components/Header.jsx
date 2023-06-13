@@ -8,6 +8,7 @@ import { formatCurrency, limitChars, makeRequestOne } from '../config/config';
 import { modals } from '@mantine/modals'
 import useSwr from 'swr';
 import { IconAlertCircle } from '@tabler/icons'
+import slugify from 'slugify'
 
 
 const navlinks = [
@@ -411,7 +412,7 @@ const Header = () => {
                                                         <Stack onClick={() => setNavbarOPen(false)} spacing={0} align='center'>
                                                             <Link
                                                                 className="d-block overflow-hidden rounded-3"
-                                                                to={`/shop/merchants/${shop?.id}/${shop?.slug}/`}
+                                                                to={`/shop/merchants/${shop?.id}/${slugify(shop?.name)}/`}
                                                             >
                                                                 <Avatar src={shop?.logo ? shop?.logo : "/logos/Bidii-farmers-self--help-group-Reviewed-Logo.jpg"} alt={shop?.name} radius="md" size={72} />
                                                             </Link>

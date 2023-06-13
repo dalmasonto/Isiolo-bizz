@@ -153,19 +153,19 @@ const Footer = () => {
                             <div className="mb-3">
                                 <a
                                     className="btn-social bs-light bs-twitter ms-2 mb-2"
-                                    href="#"
+                                    href="https://twitter.com/esiolodric" target="_blank"
                                 >
                                     <i className="ci-twitter" />
                                 </a>
                                 <a
                                     className="btn-social bs-light bs-facebook ms-2 mb-2"
-                                    href="#"
+                                    href="https://www.facebook.com/esiolomarketplace" target="_blank"
                                 >
                                     <i className="ci-facebook" />
                                 </a>
                                 <a
                                     className="btn-social bs-light bs-instagram ms-2 mb-2"
-                                    href="#"
+                                    href="https://www.instagram.com/esiolomarketplace/" target="_blank"
                                 >
                                     <i className="ci-instagram" />
                                 </a>
