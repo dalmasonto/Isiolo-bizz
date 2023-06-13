@@ -41,28 +41,6 @@ const About = () => {
                         </div>
                     </div>
                 </section>
-                {/* Row: Delivery*/}
-                <section className="row g-0">
-                    <div
-                        className="col-md-6 bg-position-center bg-size-cover bg-secondary order-md-2"
-                        style={{ minHeight: "15rem", backgroundImage: "url(/assets/img/about/02.jpg)" }}
-                    />
-                    <div className="col-md-6 px-3 px-md-5 py-5 order-md-1">
-                        <div className="mx-auto py-lg-5" style={{ maxWidth: "35rem" }}>
-                            <h2 className="h3 pb-3">Fast delivery countrywide</h2>
-                            <p className="fs-sm m-0 p-0 text-muted">
-                                Countrywide Delivery
-                            </p>
-                            <p className="fs-sm m-0 p-0 text-muted">
-                                Delivery anywhere in Kenya
-                            </p>
-                            <p className="fs-sm m-0 p-0 text-muted">
-                                If we don’t deliver, get your money back
-                            </p>
-                        </div>
-                    </div>
-                </section>
-
             </div>
         </>
     )
