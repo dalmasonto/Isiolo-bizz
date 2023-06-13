@@ -261,8 +261,8 @@ const Header = () => {
     return (
         <header className="shadow-sm">
             {/* Topbar*/}
-            <div className="topbar topbar-dark bg-dark">
-                {/* <div className="container">
+            {/* <div className="topbar topbar-dark bg-dark">
+                <div className="container">
                     <div className="topbar-text dropdown d-md-none">
                         <a
                             className="topbar-link dropdown-toggle"
@@ -315,8 +315,8 @@ const Header = () => {
 
                         </div>
                     </div>
-                </div> */}
-            </div>
+                </div>
+            </div> */}
             {/* Remove "navbar-sticky" class to make navigation bar scrollable with the page.*/}
             <div className="navbar-sticky bg-light">
                 <div className="navbar navbar-expand-lg navbar-light navbar-sticky-top">
