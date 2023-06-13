@@ -169,18 +169,6 @@ const Footer = () => {
                                 >
                                     <i className="ci-instagram" />
                                 </a>
-                                <a
-                                    className="btn-social bs-light bs-pinterest ms-2 mb-2"
-                                    href="#"
-                                >
-                                    <i className="ci-pinterest" />
-                                </a>
-                                <a
-                                    className="btn-social bs-light bs-youtube ms-2 mb-2"
-                                    href="#"
-                                >
-                                    <i className="ci-youtube" />
-                                </a>
                             </div>
                             <img
                                 className="d-inline-block d-none"
