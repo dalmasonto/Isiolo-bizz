@@ -98,7 +98,7 @@ const SingleProduct = () => {
                             {/* Product details*/}
                             <div className="col-lg-5 pt-4 pt-lg-0">
                                 <div className="product-details ms-auto pb-3">
-                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                    {/* <div className="d-flex justify-content-between align-items-center mb-2">
                                         <a href="shop-single-v1.html#reviews" data-scroll="">
                                             <div className="star-rating">
                                                 <Rating value={4.5} readOnly size='sm' fractions={2} />
@@ -115,7 +115,7 @@ const SingleProduct = () => {
                                         >
                                             <i className="ci-heart" />
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <div className="mb-3">
                                         <span className="h3 fw-normal text-accent me-1">
                                             {CURRENCY} {formatCurrency(product?.price)}
@@ -127,10 +127,10 @@ const SingleProduct = () => {
                                     <div className="position-relative me-n4 mb-3" style={{
                                         height: "20px"
                                     }}>
-                                        <div className="product-badge product-available mt-n1">
+                                       {/*  <div className="product-badge product-available mt-n1">
                                             <i className="ci-security-check" />
                                             Product available
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <form className="mb-grid-gutter" onSubmit={productForm.onSubmit((values) => addProductToCart())}>
 
@@ -173,26 +173,26 @@ const SingleProduct = () => {
                                                 <div className="accordion-body">
                                                     <Stack>
                                                         <div>
-                                                            <h6 className="fs-sm mb-2">Name</h6>
-                                                            <Text>
+                                                            <h6 className="fs-sm mb-2"><strong>Name</strong></h6>
+                                                            <Text className="text-capitalize">
                                                                 {product?.name}
                                                             </Text>
                                                         </div>
                                                         <div>
-                                                            <h6 className="fs-sm mb-2">Seller</h6>
-                                                            <Text>
+                                                            <h6 className="fs-sm mb-2"><strong>Seller</strong></h6>
+                                                            <Text className="text-capitalize">
                                                                 {product?.merchant?.name}
                                                             </Text>
                                                         </div>
                                                         <div>
-                                                            <h6 className="fs-sm mb-2">Product Category</h6>
-                                                            <Text>
+                                                            <h6 className="fs-sm mb-2"><strong>Product Category</strong></h6>
+                                                            <Text className="text-capitalize">
                                                                 {product?.category?.name}
                                                             </Text>
                                                         </div>
                                                         <div>
-                                                            <h6 className="fs-sm mb-2">Description</h6>
-                                                            <Text>
+                                                            <h6 className="fs-sm mb-2"><strong>Description</strong></h6>
+                                                            <Text className="text-capitalize">
                                                                 {product?.description}
                                                             </Text>
                                                         </div>
@@ -202,7 +202,7 @@ const SingleProduct = () => {
                                         </div>
                                     </div>
                                     {/* Sharing*/}
-                                    <label className="form-label d-inline-block align-middle my-2 me-3">
+                                    {/* <label className="form-label d-inline-block align-middle my-2 me-3">
                                         Share:
                                     </label>
                                     <a
@@ -225,7 +225,7 @@ const SingleProduct = () => {
                                     >
                                         <i className="ci-facebook" />
                                         Facebook
-                                    </a>
+                                    </a> */}
                                 </div>
                             </div>
                         </div>
