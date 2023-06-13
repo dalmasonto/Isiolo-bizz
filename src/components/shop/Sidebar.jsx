@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { Stack, Text, TextInput } from '@mantine/core';
 import useSwr from 'swr';
 import { makeRequestOne } from '../../config/config';
+import slugify from 'slugify';
 
 const Sidebar = () => {
 
@@ -90,7 +91,7 @@ const Sidebar = () => {
                                     filteredMerchants()?.sort((a, b) => a?.name?.localeCompare(b?.name))?.map((merchant) => (
                                         <NavLink
                                             key={`_merchant_${merchant?.id}`}
-                                            to={`/shop/merchants/${merchant?.id}/${merchant?.slug}`}
+                                            to={`/shop/merchants/${merchant?.id}/${slugify(merchant?.name)}`}
                                             className={({ isActive, isPending }) =>
                                                 isActive
                                                     ? `${linkClasses} sidebar-active-link` : linkClasses

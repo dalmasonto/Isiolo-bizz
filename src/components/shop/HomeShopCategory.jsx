@@ -8,6 +8,7 @@ import useSwr from 'swr'
 import { URLS } from '../../config/constants'
 import { makeRequestOne } from '../../config/config'
 import { useMediaQuery } from '@mantine/hooks'
+import slugify from 'slugify'
 
 const HomeShopCategory = ({ shop, barnerOrder }) => {
 
@@ -25,17 +26,17 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
                     <div className={`col-md-5 ${barnerOrder}`}>
                         <Box
                             p="xl"
-                            className="d-flex flex-column h-100 overflow-hidden rounded-3"
+                            className="d-flex flex-column overflow-hidden rounded-3"
                             style={{ backgroundColor: "#f6f8fb" }}
                         >
-                            <div>
+                            {/* <div>
                                 <h3 className="mb-1 text-capitalize">{shop?.name}</h3>
                                 <Link className="fs-md" to={`/shop/${shop?.id}/${shop?.slug}`}>
                                     Shop now!
                                     <i className="ci-arrow-right fs-xs align-middle ms-1" />
                                 </Link>
-                            </div>
-                            <Link className="d-none d-md-block mt-auto w-100" to={`/shop/${shop?.id}/${shop?.slug}`}>
+                            </div> */}
+                            <Link className="d-none d-md-block w-100" to={`/shop/merchants/${shop?.id}/${slugify(shop?.name)}`}>
                                 <Image
                                     className=""
                                     radius="md"

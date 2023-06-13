@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart } from '../../providers/app/appSlice'
 import { formatCurrency, limitChars } from '../../config/config'
+import slugify from 'slugify'
 
 const ProductCard = ({ product }) => {
 
@@ -41,7 +42,7 @@ const ProductCard = ({ product }) => {
             }}>
                 <Link
                     className="card-img-top d-block overflow-hidden"
-                    to={`/shop/products/${product?.id}/${product?.slug}/`}
+                    to={`/shop/products/${product?.id}/${slugify(product?.name)}/`}
                 >
                     <img src={images?.length > 0 ? images[0] : "/assets/images/products/Fresh-Camel-Milk.jpg"} alt="Product" />
                 </Link>
@@ -54,7 +55,7 @@ const ProductCard = ({ product }) => {
                     Seller: {limitChars(product?.merchant?.name ?? "Not provided", 16)}
                 </Link>
                 <h3 className="product-title fs-sm">
-                    <Link to={`/shop/products/${product?.id}/${product?.slug}`}>{product?.name}</Link>
+                    <Link to={`/shop/products/${product?.id}/${slugify(product?.name)}`}>{product?.name}</Link>
                 </h3>
                 <div className="d-flex justify-content-between">
                     <div className="product-price">
