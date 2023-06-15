@@ -6,17 +6,21 @@ import { showNotification } from '@mantine/notifications'
 import { IconAlertCircle } from '@tabler/icons'
 import { makeRequestOne } from '../../config/config'
 import { displayErrors } from '../../config/functions'
+import { useSearchParams } from 'react-router-dom'
 
 const ResetPassword = () => {
 
     const [loading, setLoading] = useState(false)
+    const [searchParams, setSearchParams] = useSearchParams();
+    const token = searchParams.get('token')
+    const email = searchParams.get('email')
 
     const form = useForm({
         initialValues: {
             password: "",
             password_confirmation: "",
-            token: "",
-            email: "",
+            token: token,
+            email: email,
         },
         validate: {
             password: value => value === "" ? "Your new password is required" : null,
@@ -29,7 +33,6 @@ const ResetPassword = () => {
                 }
                 return null
             },
-            token: value => value === "" ? "Token field is required" : null
         }
     })
 
@@ -50,7 +53,7 @@ const ResetPassword = () => {
             else {
                 showNotification({
                     title: `Resetting Password Failed!`,
-                    message: `We could`,
+                    message: `We could not reset your password. Please try again later.`,
                     color: 'red',
                     icon: <IconAlertCircle />,
                 })

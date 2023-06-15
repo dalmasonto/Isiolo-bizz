@@ -40,7 +40,7 @@ export const URLS = {
     // MEDIA
     MEDIA: `${BASE_API_URL}/media`,
     // CONTACT
-    CONTACT: `${BASE_API_URL}/contact`
+    CONTACT: `${BASE_API_URL}/feedback`
 }
 
 

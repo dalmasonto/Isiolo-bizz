@@ -13,14 +13,14 @@ const Contact = () => {
             email: "",
             telephone: "",
             subject: "",
-            message: ""
+            content: ""
         },
         validate: {
             name: value => value === "" ? "Enter your name" : null,
             email: value => value === "" ? "Your Email is required" : null,
             telephone: value => value === "" ? "Enter your Phone Number" : null,
             subject: value => value === "" ? "Describe your query in a few words" : null,
-            message: value => value === "" ? "Message is required" : null,
+            content: value => value === "" ? "Message is required" : null,
         }
     })
 
@@ -123,7 +123,7 @@ const Contact = () => {
                                             withAsterisk
                                             minRows={6}
                                             placeholder="Please describe in detail your request"
-                                            {...form.getInputProps("message")}
+                                            {...form.getInputProps("content")}
                                         />
                                         <button className="btn btn-primary mt-4" type="submit">
                                             Send message

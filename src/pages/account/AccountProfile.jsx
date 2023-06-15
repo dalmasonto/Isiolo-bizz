@@ -2,11 +2,11 @@ import { useForm } from '@mantine/form'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectToken, selectUser, updateUserAccount } from '../../providers/app/appSlice';
-import { ActionIcon, FileInput, Group, Loader, Select, TextInput } from '@mantine/core';
+import { ActionIcon, Alert, FileInput, Group, Loader, Select, Text, TextInput } from '@mantine/core';
 import { makeRequestOne } from '../../config/config';
 import { URLS } from '../../config/constants';
 import { showNotification } from '@mantine/notifications';
-import { IconAlertCircle, IconUpload } from '@tabler/icons';
+import { IconAlertCircle, IconAlertTriangle, IconUpload } from '@tabler/icons';
 import { displayErrors } from '../../config/functions';
 
 const AccountProfile = ({isAdmin, accountFromAdmin, onUpdate}) => {
@@ -98,7 +98,6 @@ const AccountProfile = ({isAdmin, accountFromAdmin, onUpdate}) => {
             setLoading(false)
         })
     }
-
     return (
         <>
             <h2 className="h3 py-2 text-center text-sm-start">Account Settings</h2>
@@ -160,6 +159,15 @@ const AccountProfile = ({isAdmin, accountFromAdmin, onUpdate}) => {
                             </div>
                         </div>
                     </div>
+                    {
+                        user?.user?.email_verified_at === null ? (
+                            <Alert mb={10} icon={<IconAlertTriangle />} color='red' variant='light' title="Email not verified">
+                                <Text>
+                                    You have not verified your email. Kindly find a link sent to you in your email to verify.
+                                </Text>
+                            </Alert>
+                        ) : null
+                    }
                     <form onSubmit={userForm.onSubmit((values) => handleUpdate(values))}>
                         <div className="row gx-4 gy-3">
                             <div className="col-sm-4">

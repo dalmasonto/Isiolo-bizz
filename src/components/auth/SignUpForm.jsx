@@ -1,18 +1,27 @@
 import { useForm } from '@mantine/form'
-import React from 'react'
-import { URLS } from '../../config/constants'
+import React, { useEffect } from 'react'
+import { ADMIN_BASE_URL, URLS } from '../../config/constants'
 import { showNotification } from '@mantine/notifications'
 import { IconAlertCircle } from '@tabler/icons'
 import { displayErrors, getFullName } from '../../config/functions'
 import { Loader, PasswordInput, Select, TextInput } from '@mantine/core'
 import { makeRequestOne } from '../../config/config'
-import { useSelector } from 'react-redux'
-import { selectToken } from '../../providers/app/appSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { login, selectLoggedIn, selectToken, selectUser } from '../../providers/app/appSlice'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
 
   const [loading, setLoading] = React.useState(false)
   const token = useSelector(selectToken)
+  const dispatch = useDispatch()
+
+
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const loggedIn = useSelector(selectLoggedIn)
+  const user_ = useSelector(selectUser)
+
   const signUpForm = useForm({
     initialValues: {
       name: updating ? user?.name : '',
@@ -57,6 +66,9 @@ const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
     }
     setLoading(true)
     makeRequestOne(URL, METHOD, HEADERS, { ...data }, {}).then(res => {
+      const data = res?.data?.data
+
+      dispatch(login({ token: data?.accessToken, user: data?.user }))
       if (res?.status === 200) {
         showNotification({
           title: `${updating ? 'Update' : 'Sign Up'} Success`,
@@ -89,6 +101,23 @@ const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
       setLoading(false)
     })
   }
+
+  useEffect(() => {
+    if (loggedIn) {
+      const redirectTo = searchParams.get('redirect')
+      if (redirectTo) {
+        navigate(redirectTo)
+      }
+      else {
+        if (user_?.isAdministrator) {
+          navigate(`/${ADMIN_BASE_URL}/`)
+        }
+        else {
+          navigate('/merchant/')
+        }
+      }
+    }
+  }, [])
 
 
   return (

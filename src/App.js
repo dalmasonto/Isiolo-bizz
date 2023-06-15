@@ -33,6 +33,7 @@ import Clients from './pages/admin/Clients';
 import AdminOrders from './pages/admin/AdminOrders';
 import Statements from './pages/merchant/Statements';
 import ResetPassword from './pages/auth/ResetPassword';
+import EmailVerification from './pages/auth/ActivateAccount';
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "/account/auth/password-reset",
         element: <ResetPassword />,
+      },
+      {
+        path: "/account/auth/email-verification",
+        element: <EmailVerification />,
       },
       {
         path: "/account/profile",

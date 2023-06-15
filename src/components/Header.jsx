@@ -356,7 +356,7 @@ const Header = () => {
                                 <span className="navbar-toggler-icon" />
                             </button>
                             <div className="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" style={{ cursor: "pointer" }}>
-                                <div className="navbar-tool-icon-box">
+                                <div className="navbar-tool-icon-box" onClick={handleLogout}>
                                     <i className="navbar-tool-icon ci-user" />
                                 </div>
                                 {

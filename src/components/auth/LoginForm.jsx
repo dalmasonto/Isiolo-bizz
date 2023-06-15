@@ -1,21 +1,23 @@
 import { Loader, PasswordInput, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { displayErrors } from '../../config/functions'
 import { showNotification } from '@mantine/notifications'
 import { useForm } from '@mantine/form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { makeRequestOne } from '../../config/config'
 import { ADMIN_BASE_URL, URLS } from '../../config/constants'
-import { login } from '../../providers/app/appSlice'
+import { login, selectLoggedIn, selectUser } from '../../providers/app/appSlice'
 
 const LoginForm = () => {
     const [loading, setLoading] = React.useState(false)
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     // Get query params redirect to redirect user after login
     const [searchParams, setSearchParams] = useSearchParams()
+    const navigate = useNavigate()
+    const loggedIn = useSelector(selectLoggedIn)
+    const user = useSelector(selectUser)
 
     const loginForm = useForm({
         initialValues: {
@@ -45,10 +47,10 @@ const LoginForm = () => {
                     navigate(redirectTo)
                 }
                 else {
-                    if(data?.user?.isAdministrator){
+                    if (data?.user?.isAdministrator) {
                         navigate(`/${ADMIN_BASE_URL}/`)
                     }
-                    else{
+                    else {
                         navigate('/merchant/')
                     }
                 }
@@ -73,6 +75,25 @@ const LoginForm = () => {
             setLoading(false)
         })
     }
+
+
+    useEffect(() => {
+        if (loggedIn) {
+            const redirectTo = searchParams.get('redirect')
+            if (redirectTo) {
+                navigate(redirectTo)
+            }
+            else {
+                if (user?.isAdministrator) {
+                    navigate(`/${ADMIN_BASE_URL}/`)
+                }
+                else {
+                    navigate('/merchant/')
+                }
+            }
+        }
+    }, [])
+
     return (
         <div className="card border-0 shadow">
             <div className="card-body">
