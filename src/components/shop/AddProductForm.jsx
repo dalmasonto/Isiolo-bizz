@@ -28,9 +28,9 @@ const AddProductForm = ({ updating, product }) => {
             "category_id": product?.category_id + "" ?? "",
             "name": product?.name ?? "",
             "description": product?.description ?? "",
-            "allocated_items": product?.allocated_items ?? "",
-            "assigned_items": product?.assigned_items ?? "",
-            "available_items": product?.available_items ?? "",
+            "allocated": product?.allocated ?? "",
+            "assigned": product?.assigned ?? "",
+            "available": product?.available ?? "",
             "price": parseFloat(product?.price) ?? "",
             "discount": parseFloat(product?.discount) ?? "",
             "configuration": product?.configuration ?? "[]",
@@ -151,7 +151,7 @@ const AddProductForm = ({ updating, product }) => {
                                 label="Allocated Items"
                                 placeholder="4000"
                                 required
-                                {...productForm.getInputProps('allocated_items')}
+                                {...productForm.getInputProps('allocated')}
                             />
                         </Grid.Col>
                         <Grid.Col xs={6} md={4}>
@@ -159,7 +159,7 @@ const AddProductForm = ({ updating, product }) => {
                                 label="Assigned Items"
                                 placeholder="2000"
                                 required
-                                {...productForm.getInputProps('assigned_items')}
+                                {...productForm.getInputProps('assigned')}
                             />
                         </Grid.Col>
                         <Grid.Col xs={6} md={4}>
@@ -167,7 +167,7 @@ const AddProductForm = ({ updating, product }) => {
                                 label="Available Items"
                                 placeholder="2000"
                                 required
-                                {...productForm.getInputProps('available_items')}
+                                {...productForm.getInputProps('available')}
                             />
                         </Grid.Col> */}
                     </Grid>
