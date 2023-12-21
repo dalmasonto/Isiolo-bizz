@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { login, selectLoggedIn, selectToken, selectUser } from '../../providers/app/appSlice'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
+const SignUpForm = ({ fromAdmin, isAdmin, user, updating, onUpdate }) => {
 
   const [loading, setLoading] = React.useState(false)
   const token = useSelector(selectToken)
@@ -67,8 +67,9 @@ const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
     setLoading(true)
     makeRequestOne(URL, METHOD, HEADERS, { ...data }, {}).then(res => {
       const data = res?.data?.data
-
-      dispatch(login({ token: data?.accessToken, user: data?.user }))
+      if(!fromAdmin){
+        dispatch(login({ token: data?.accessToken, user: data?.user }))
+      }
       if (res?.status === 200) {
         showNotification({
           title: `${updating ? 'Update' : 'Sign Up'} Success`,
@@ -103,7 +104,7 @@ const SignUpForm = ({ isAdmin, user, updating, onUpdate }) => {
   }
 
   useEffect(() => {
-    if (loggedIn) {
+    if (loggedIn && !fromAdmin) {
       const redirectTo = searchParams.get('redirect')
       if (redirectTo) {
         navigate(redirectTo)

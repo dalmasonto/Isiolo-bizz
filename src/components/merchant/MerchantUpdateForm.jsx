@@ -2,18 +2,24 @@ import React, { useState } from 'react'
 import { useForm } from '@mantine/form'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectToken, updateMerchantAccount } from '../../providers/app/appSlice';
-import { ActionIcon, FileInput, Group, Loader, TextInput, Textarea } from '@mantine/core';
+import { ActionIcon, FileInput, Group, Loader, Select, TextInput, Textarea } from '@mantine/core';
 import { makeRequestOne } from '../../config/config';
 import { URLS } from '../../config/constants';
 import { showNotification } from '@mantine/notifications';
 import { IconAlertCircle, IconUpload } from '@tabler/icons';
 import { displayErrors } from '../../config/functions';
 import slugify from 'slugify';
+import useSWR from 'swr';
+
+
 const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
 
     const [loading, setLoading] = useState(false)
 
     const token = useSelector(selectToken)
+
+    const merchantCategoriesQuery = useSWR([URLS.MERCHANT_CATEGORIES + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
+    const merchantCategories = merchantCategoriesQuery?.data?.data?.data
 
     const dispatch = useDispatch()
 
@@ -31,6 +37,7 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
             "name": merchant?.name,
             "slogan": merchant?.slogan,
             "slug": "",
+            "category_id": merchant?.category_id?.toString() ?? "",
             "telephone": merchant?.telephone,
             "email": merchant?.email,
             "bank_code": merchant?.bank_code,
@@ -59,6 +66,8 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
                 merchantForm.setFieldValue('logo', logo)
                 handleUpdate({ logo: logo })
             }).catch((err) => {
+            }).finally(() => {
+                setLoading(false)
             })
     }
 
@@ -121,7 +130,10 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
                                     }}
                                 />
                                 <ActionIcon type='submit' size={32} color='red' radius={"xl"} variant='filled'>
-                                    <IconUpload size={18} />
+                                    {
+                                        loading ? <Loader size={'sm'} color='white' /> :
+                                            <IconUpload size={18} />
+                                    }
                                 </ActionIcon>
                             </Group>
                         </form>
@@ -133,6 +145,17 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
             </div>
             <form onSubmit={merchantForm.onSubmit((values) => handleUpdate(values))}>
                 <div className="row gx-4 gy-3">
+                    <div className="col-sm-4">
+                        <Select
+                            label='Shop Category'
+                            placeholder='Shop Category'
+                            {...merchantForm.getInputProps('category_id')}
+                            data={merchantCategories?.map((cat) => ({
+                                value: cat?.id?.toString(),
+                                label: cat?.name
+                            })) ?? []}
+                        />
+                    </div>
                     <div className="col-sm-4">
                         <TextInput
                             label='Shop Name'
@@ -173,7 +196,7 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
                             {...merchantForm.getInputProps('bank_code')}
                         />
                     </div>
-                    <div className="col-sm-4">
+                    <div className="col-sm-6">
                         <TextInput
                             label='Bank Account Name'
                             placeholder='Account Name'
@@ -197,7 +220,7 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
                             {...merchantForm.getInputProps('bank_account_branch')}
                         />
                     </div>
-                    <div className="col-sm-4">
+                    <div className="col-sm-6">
                         <TextInput
                             label='Incorporation Number'
                             placeholder='08012345678'
@@ -245,7 +268,7 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
                             {...merchantForm.getInputProps('city')}
                         />
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-sm-4">
                         <TextInput
                             label='Address Line 1'
                             placeholder='1234 Main St'
@@ -253,7 +276,7 @@ const MerchantUpdateForm = ({ merchant, onUpdate, isAdmin }) => {
                             {...merchantForm.getInputProps('address_line_1')}
                         />
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-sm-4">
                         <TextInput
                             label='Address Line 2'
                             placeholder='Apartment, studio, or floor'

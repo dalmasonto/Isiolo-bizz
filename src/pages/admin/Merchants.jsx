@@ -107,6 +107,13 @@ const Merchants = () => {
                       columns={
                         [
                           {
+                            accessor: 'name', title: '#',
+                            width: '80px',
+                            render: (item, i) => (
+                              <>{i + 1}</>
+                            )
+                          },
+                          {
                             accessor: 'name', sortable: true, render: ({ name, logo }) => (
                               <Group>
                                 <Avatar src={logo} size="lg" />

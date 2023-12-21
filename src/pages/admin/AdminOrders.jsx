@@ -109,6 +109,13 @@ const AdminOrders = () => {
                       columns={
                         [
                           {
+                            accessor: 'name', title: '#',
+                            width: '80px',
+                            render: (item, i) => (
+                              <>{(options?.current_page * i) + 1}</>
+                            )
+                          },
+                          {
                             accessor: 'merchant.name', sortable: true, render: (order) => (
                               <Group>
                                 <Avatar src={order?.merchant?.logo} size="sm" />

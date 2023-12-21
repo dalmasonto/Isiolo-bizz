@@ -36,5 +36,5 @@ export function displayErrors(form, errors, parentKey = null) {
 }
 
 export function getFullName(clientDetails) {
-    return `${clientDetails?.first_name} ${clientDetails?.middle_name} ${clientDetails?.last_name}`
+    return `${clientDetails?.first_name ?? ''} ${clientDetails?.middle_name ?? ''} ${clientDetails?.last_name ?? ''}`
 }

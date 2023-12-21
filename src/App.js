@@ -34,6 +34,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import Statements from './pages/merchant/Statements';
 import ResetPassword from './pages/auth/ResetPassword';
 import EmailVerification from './pages/auth/ActivateAccount';
+import MerchantCategories from './pages/admin/MerchantCategories';
 
 const router = createBrowserRouter([
   {
@@ -154,6 +155,10 @@ const router = createBrowserRouter([
           {
             path: "merchants",
             element: <Merchants />,
+          },
+          {
+            path: "merchants/categories",
+            element: <MerchantCategories />,
           },
           {
             path: "clients",

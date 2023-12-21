@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { BackgroundImage } from '@mantine/core'
+import { BackgroundImage, Container } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
 import Social from '../components/home/Social'
 import Shops from '../components/home/Shops'
@@ -119,8 +119,9 @@ const Index = () => {
                     </Carousel.Slide>
                 </Carousel>
             </section>
-
-            <Shops />
+            <Container size={'xl'}>
+                <Shops />
+            </Container>
             <Partners />
             <Social />
         </>

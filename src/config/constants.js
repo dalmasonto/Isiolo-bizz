@@ -15,7 +15,8 @@ export const URLS = {
     // Account
     ACCOUNT: `${BASE_API_URL}/user/account`,
     // Merchant
-    MERCHANTS: `${BASE_API_URL}/merchant`,
+    MERCHANTS: `${BASE_API_URL}/merchant/catalog`,
+    MERCHANT_CATEGORIES: `${BASE_API_URL}/merchant/category`,
     // CLient
     CLIENTS: `${BASE_API_URL}/client`,
     // COUPONS

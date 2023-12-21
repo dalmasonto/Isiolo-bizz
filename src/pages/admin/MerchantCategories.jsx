@@ -7,17 +7,17 @@ import { modals } from '@mantine/modals';
 import { useSelector } from 'react-redux';
 import { showNotification } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
-import { URLS } from '../../../config/constants';
-import { makeRequestOne } from '../../../config/config';
-import { selectToken } from '../../../providers/app/appSlice';
-import ProductCategoryForm from '../../../components/shop/ProductCategoryForm';
+import { URLS } from '../../config/constants';
+import { makeRequestOne } from '../../config/config';
+import { selectToken } from '../../providers/app/appSlice';
+import MerchantCategoryForm from '../../components/shop/MerchantCategoryForm';
 
-const Categories = () => {
+const MerchantCategories = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [activeCategory, setActiveCategory] = useState(null)
   const token = useSelector(selectToken)
 
-  const categoriesQuery = useSwr([URLS.CATEGORIES + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
+  const categoriesQuery = useSwr([URLS.MERCHANT_CATEGORIES + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params), {
     refreshInterval: 36000
   })
   const categoriesData = categoriesQuery?.data?.data?.data
@@ -33,18 +33,18 @@ const Categories = () => {
 
   const deleteItem = (id) => {
 
-    makeRequestOne(`${URLS.CATEGORIES}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {}).then(res => {
+    makeRequestOne(`${URLS.MERCHANT_CATEGORIES}/${id}`, 'DELETE', { 'Authorization': `Bearer ${token}` }, {}, {}).then(res => {
       showNotification({
-        title: 'Product Category Deleted',
-        message: 'Product Category has been deleted successfully',
+        title: 'Merchant Category Deleted',
+        message: 'Merchant Category has been deleted successfully',
         color: 'green',
         icon: <IconAlertCircle />,
       })
       categoriesQuery.mutate()
     }).catch(err => {
       showNotification({
-        title: 'Product Category Deletion Failed',
-        message: 'Product Category could not be deleted. Please try again later',
+        title: 'Merchant Category Deletion Failed',
+        message: 'Merchant Category could not be deleted. Please try again later',
         color: 'red',
         icon: <IconAlertTriangle />,
       })
@@ -71,7 +71,7 @@ const Categories = () => {
     size: "md",
     children: (
       <>
-        <ProductCategoryForm updating={false} onUpdate={categoriesQuery.mutate} />
+        <MerchantCategoryForm updating={false} onUpdate={categoriesQuery.mutate} />
       </>
     )
   })
@@ -88,13 +88,13 @@ const Categories = () => {
       >
         {
           activeCategory && (
-            <ProductCategoryForm category={activeCategory} updating={true} onUpdate={categoriesQuery.mutate} />
+            <MerchantCategoryForm category={activeCategory} updating={true} onUpdate={categoriesQuery.mutate} />
           )
         }
       </Drawer>
       <Stack>
         <Group position='apart'>
-          <Title weight={500}>Product Categories</Title>
+          <Title weight={500}>Merchant Categories</Title>
           <Button onClick={addNew} radius="md" size='sm' leftIcon={<IconPlus />}>Add New</Button>
         </Group>
 
@@ -110,7 +110,7 @@ const Categories = () => {
                       <>{i + 1}</>
                     )
                   },
-                  { accessor: 'name' },
+                  { accessor: 'name', title: 'Name' },
                   {
                     accessor: 'actions',
                     title: <Text mr="xs">Actions</Text>,
@@ -139,4 +139,4 @@ const Categories = () => {
   )
 }
 
-export default Categories
+export default MerchantCategories

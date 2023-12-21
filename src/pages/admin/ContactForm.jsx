@@ -112,6 +112,13 @@ const ContactForm = () => {
                       columns={
                         [
                           {
+                            accessor: 'name', title: '#',
+                            width: '80px',
+                            render: (item, i) => (
+                              <>{i + 1}</>
+                            )
+                          },
+                          {
                             accessor: 'name', sortable: true, render: ({ name, logo }) => (
                               <Group>
                                 <Avatar src={logo} size="lg" />
@@ -151,7 +158,7 @@ const ContactForm = () => {
               <CustomPagination {...queryMeta} onPageChange={changePage} noPadding={true} />
             </>
           ) : (
-            <Title order={3} weight={400}>No merchants found</Title>
+            <Title order={3} weight={400}>No entries found</Title>
           )
         }
       </Stack>

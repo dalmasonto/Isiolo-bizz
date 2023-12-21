@@ -45,7 +45,20 @@ const AdminDashboard = () => {
 
             makeRequestOne(URLS.CLIENTS, 'GET', { Authorization: `Bearer ${token}` }, {}, {}).then(res => {
                 return { clients: res?.data?.meta?.total }
-            }).catch(() => { })]).then(responses => {
+            }).catch((e) => {
+                return { clients: 0 }
+            }),
+
+            makeRequestOne(URLS.MERCHANT_CATEGORIES, 'GET', { Authorization: `Bearer ${token}` }, {}, {}).then(res => {
+                return { merchant_categories: res?.data?.meta?.total }
+            }).catch((e) => {
+                return { merchant_categories: 0 }
+            }),
+
+
+        ])
+            .then(responses => {
+                console.log(responses)
                 const result = responses.reduce((obj, item) => {
                     const key = Object.keys(item)[0];
                     const value = item[key];
@@ -61,7 +74,6 @@ const AdminDashboard = () => {
     useEffect(() => {
         loadStats()
     }, [])
-    console.log("statssd: ", stats)
 
     return (
         <div>
@@ -73,9 +85,13 @@ const AdminDashboard = () => {
                         value={stats?.merchants ?? 0}
                         tagline="Total No. of merchants"
                     />
-                    <StatCard title="Categories"
+                    <StatCard title="Merchant Categories"
+                        value={stats?.merchant_categories ?? 0}
+                        tagline="Total No. of merchant categories"
+                    />
+                    <StatCard title="Product Categories"
                         value={stats?.categories ?? 0}
-                        tagline="Total No. of categories"
+                        tagline="Total No. of product categories"
                     />
                     <StatCard title="Products"
                         value={stats?.products ?? 0}

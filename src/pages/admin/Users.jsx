@@ -101,12 +101,12 @@ const Users = () => {
         title={`Add new User`}
         scrollAreaComponent={ScrollArea.Autosize}
       >
-        <SignUpForm isAdmin={true} onUpdate={usersQuery.mutate} />
+        <SignUpForm fromAdmin={true} isAdmin={true} onUpdate={usersQuery.mutate} />
       </Drawer>
       <Stack align='start'>
         <Group className='w-100' align='center' position='apart'>
           <Title mb="md" weight={500}>Users</Title>
-          <Button size='sm' radius="md" onClick={handlers.open} leftIcon={<IconPlus size={18} />}>User</Button>
+          <Button size='sm' radius="md" onClick={handlers.open} leftIcon={<IconPlus size={18} />}>Merchant</Button>
         </Group>
         <CustomPagination {...queryMeta} onPageChange={changePage} noPadding={true} />
         <Box className='w-100'>
@@ -116,6 +116,13 @@ const Users = () => {
                 columns={
                   [
                     {
+                      accessor: 'name', title: '#',
+                      width: '80px',
+                      render: (item, i) => (
+                        <>{(options?.current_page * i) + 1}</>
+                      )
+                    },
+                    {
                       accessor: 'name', sortable: true, render: (item) => (
                         <Group>
                           <Avatar src={item?.avatar} size="lg" />
@@ -124,9 +131,11 @@ const Users = () => {
                       )
                     },
                     { accessor: 'telephone' },
-                    { accessor: 'user.email', sortable: true, render: ({user}) => (
-                      <Text>{limitChars(user?.email, 16)}</Text>
-                    ) },
+                    {
+                      accessor: 'user.email', sortable: true, render: ({ user }) => (
+                        <Text>{limitChars(user?.email, 16)}</Text>
+                      )
+                    },
                     { accessor: 'state' },
                     {
                       accessor: 'actions',

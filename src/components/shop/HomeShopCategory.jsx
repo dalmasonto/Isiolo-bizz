@@ -22,7 +22,7 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
         title: "",
         size: "lg",
         centered: true,
-        radius: "lg",
+        radius: "md",
         children: (
             <Box>
                 <Stack mb="md" spacing={10}>
@@ -41,7 +41,7 @@ const HomeShopCategory = ({ shop, barnerOrder }) => {
 
     return (
         <>
-            <section className="container pt-lg-3 mb-4 mb-sm-5">
+            <section className=" pt-lg-3 mb-4 mb-sm-5">
                 <div className="row">
                     {/* Banner with controls*/}
                     <div className={`col-md-5 ${barnerOrder}`}>

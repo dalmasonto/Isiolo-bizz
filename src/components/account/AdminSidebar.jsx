@@ -32,6 +32,11 @@ const sidebarLinkgs = [
                 to: `/${ADMIN_BASE_URL}/merchants/`,
             },
             {
+                title: 'Merchant Categories',
+                icon: 'ci-package',
+                to: `/${ADMIN_BASE_URL}/merchants/categories/`,
+            },
+            {
                 title: 'Clients',
                 icon: 'ci-user',
                 to: `/${ADMIN_BASE_URL}/clients/`,
@@ -42,7 +47,7 @@ const sidebarLinkgs = [
                 to: `/${ADMIN_BASE_URL}/orders/`,
             },
             {
-                title: 'Categories',
+                title: 'Product Categories',
                 icon: 'ci-package',
                 to: `/${ADMIN_BASE_URL}/categories/`,
             },
