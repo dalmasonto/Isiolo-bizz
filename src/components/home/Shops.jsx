@@ -12,13 +12,15 @@ function groupByCategory({ category_id }) {
 const ShopCategory = ({ category_id, shops }) => {
     const [loading, setLoading] = useState(false)
     const [category, setCategory] = useState(null)
+    console.log(category_id)
 
     const fetchCategoryInfo = () => {
         setLoading(true)
         makeRequestOne(`${URLS.MERCHANT_CATEGORIES}/${category_id}`, 'GET', {}, {}, {}).then(res => {
-
+            console.log(res)
+            setCategory(res?.data?.data)
         }).catch(e => {
-
+            console.log(e)
         }).finally(() => {
             setLoading(false)
         })
@@ -53,7 +55,7 @@ const Shops = () => {
     const merchantsQuery = useSwr([URLS.MERCHANTS + "/", 'GET', {}, {}, {}], ([url, method, headers, data, params]) => makeRequestOne(url, method, headers, data, params))
     const merchantsData = merchantsQuery?.data?.data?.data
 
-    const grouped = Object.groupBy(merchantsData, groupByCategory)
+    const grouped = Object.groupBy(merchantsData ?? [], groupByCategory)
 
     return (
         <div>
